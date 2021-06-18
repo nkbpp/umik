@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Справочник конвертов</title>
+    <script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.js"></script>
+    <link type="text/css" rel="stylesheet" href="/webjars/materialize/1.0.0-rc.2/dist/css/materialize.min.css"/>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".dropdown-trigger").dropdown(); //чтобы меню хренячило
+
+            $("body").on('click', 'a', function () {
+
+                if ($(this).attr('id') == "addvidanykonv") {
+
+                    var param = "vidanykonv=" + $("#vidanykonv").val();
+
+                    $("#tablevk").load("/umik/main/vidanykonv/add", param, function () {
+                        $('select').formSelect();//селект с конвертами
+                    });
+                    return false;
+                }
+
+                if (this.getAttribute("name") == "del") {
+                    var id = $(this).attr('id');
+
+                    var param = "id=" + id;
+                    if (confirm("Точно удалить заявление с id " +
+                        id + "?")) {
+                        var url = "/umik/main/vidanykonv/del" + "?" + param;
+                        location.href = url;
+                    }
+                }
+
+
+            });
+
+        });
+
+    </script>
+</head>
+<body>
+<div th:insert="fragment/logout :: logout(${user})"></div>
+<div th:insert="fragment/menu :: menu"></div>
+
+
+<div class="row">
+    <div class="col s6 row">
+        <div class="col s6">Адресат</div>
+        <div class="col s3">
+            <input type="text" id="vidanykonv">
+        </div>
+        <div class="col s3">
+            <a class="waves-effect waves-light btn" id="addvidanykonv">Добавить</a>
+        </div>
+    </div>
+</div>
+
+<div id="tablevk" th:insert="fragment/vidanykonvfrag :: tablevk"></div>
+
+
+
+<script type="text/javascript" src="/webjars/materialize/1.0.0-rc.2/dist/js/materialize.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Болгария</title>
+    <script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.js"></script>
+    <link type="text/css" rel="stylesheet" href="/webjars/materialize/1.0.0-rc.2/dist/css/materialize.min.css"/>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".dropdown-trigger").dropdown(); //чтобы меню хренячило
+            $('select').formSelect();//селекты
+
+            var date = new Date();
+            $("#reg_date").val(
+                date.getFullYear() + "-" +
+                ((+date.getMonth()+1)<10?"0"+(+date.getMonth()+1): (+date.getMonth()+1))
+                + "-" +
+                (date.getDate()<10?"0"+date.getDate(): date.getDate()));
+
+
+            $("body").on('click', 'a', function () {
+
+                if ($(this).attr('id') == "vvod") {
+
+                    if($("#kol_vo").val()=="" || $("#text_org").val()==""){
+                        alert("Не все поля заполнены!");
+                        return;
+                    }
+
+                    var param =
+                        "reg_number=" + $("#regnum").val() +
+                        "&reg_date=" + $("#reg_date").val() +
+                        "&text_org=" + $("#text_org").val() +
+                        "&id_name=" + $("#typest").val() +
+                        "&name=" + $("#typest [value='"+$("#typest").val()+"']").text() +
+                        "&type=" + $("#type").val() +
+                        "&kol_vo=" + $("#kol_vo").val() +
+                        "&sum=" + $("#sum").val().replace(",",".");
+                    console.log("param=" + param);
+                    var url = "/umik/main/bolgaria/add" + "?" + param;
+                    location.href = url;
+                    return false;
+                }
+
+                if (this.getAttribute("name") == "delBolgaria") {
+                    var id = $(this).attr('id');
+
+                    var param = "id=" + id;
+                    if (confirm("Точно удалить заявление с id " +
+                        id + "?")) {
+                        var url = "/umik/main/bolgaria/del" + "?" + param;
+                        location.href = url;
+                    }
+                }
+            });
+        });
+
+    </script>
+</head>
+<body>
+<div th:insert="fragment/logout :: logout(${user})"></div>
+<div th:insert="fragment/menu :: menu"></div>
+
+<div class="row">
+
+    <div class="row">
+        <div class="col s6 row">
+            <div class="col s6">Введите Рег ном</div>
+            <div class="col s6">
+                <input type="text" id="regnum">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s6 row">
+            <div class="col s6">Дата регистрации</div>
+            <div class="col s6">
+                <input type="date" id="reg_date">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s6 row">
+            <div class="col s6">Адресат</div>
+            <div class="col s6">
+                <input type="text" id="text_org">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s6 row">
+            <div class="col s6">Тип доставки</div>
+            <div class="col s6">
+
+                <div class="input-field col s12">
+                    <select id="typest">
+                        <option th:each="st : ${sendtypes}" th:text="${st.name}"
+                                th:value="${st.sendtypeid}"></option>
+                    </select>
+                    <label>Тип доставки</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col s6 row">
+            <div class="col s6">Конверт</div>
+            <div class="col s6">
+
+                <div class="input-field col s12">
+                    <select id="type">
+                        <option th:each="sk : ${spravkonvs}"  th:text="${sk.type}"
+                                th:value="${sk.id}"></option>
+                    </select>
+                    <label>Тип конверта</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s6 row">
+            <div class="col s6">Количество конвертов</div>
+            <div class="col s6">
+                <input type="text" id="kol_vo">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s6 row">
+            <div class="col s6">Сумма марок</div>
+            <div class="col s6">
+                <input type="text" id="sum" value="0">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s6 row">
+            <div class="col s6"></div>
+            <div class="col s6">
+                <a class="waves-effect waves-light btn" id="vvod">Добавить</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="tablebolgaria" th:insert="fragment/bolgariafrag :: tablebolgaria"></div>
+
+<script type="text/javascript" src="/webjars/materialize/1.0.0-rc.2/dist/js/materialize.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<body>
+
+<div id="ttt" th:fragment="menu">
+    <ul id="dropdown1" class="dropdown-content">
+        <li><a th:href="@{/umik/main/deloproiz}">Делопроизводство</a></li>
+        <li class="divider"></li>
+        <li><a th:href="@{/umik/main/obragraj}">Обращение граждан</a></li>
+    </ul>
+
+    <ul id="dropdown2" class="dropdown-content">
+        <li><a th:href="@{/umik/main/bolgaria}">Болгария</a></li>
+        <li class="divider"></li>
+        <li><a th:href="@{/umik/main/pravopriem}">Правопреемники</a></li>
+        <li class="divider"></li>
+        <li><a th:href="@{/umik/main/inoe}">Иное</a></li>
+    </ul>
+
+    <ul id="dropdown3" class="dropdown-content">
+        <li><a th:href="@{/umik/main/reestr1}">Реестр №1</a></li>
+        <li class="divider"></li>
+        <li><a th:href="@{/umik/main/reestr2}">Реестр №2</a></li>
+        <li class="divider"></li>
+        <li><a th:href="@{/umik/main/otchpokon}">Отчет по конвертам</a></li>
+        <li class="divider"></li>
+        <li><a th:href="@{/umik/main/otchmarkandkonv}">Отчет марки и конверты</a></li>
+        <li class="divider"></li>
+        <li><a th:href="@{/umik/main/avans}">Авансовый отчет</a></li>
+    </ul>
+
+    <ul id="dropdown4" class="dropdown-content">
+        <li><a th:href="@{/umik/main/spravkonv}">Справочник конвертов</a></li>
+        <li class="divider"></li>
+        <li><a th:href="@{/umik/main/vidanykonv}">Выданы конверты</a></li>
+        <li class="divider"></li>
+        <li><a th:href="@{/umik/main/prihod}">Приход конверты</a></li>
+        <li class="divider"></li>
+        <li><a th:href="@{/umik/main/prihodmarki}">Приход марки</a></li>
+        <li class="divider"></li>
+    </ul>
+
+    <ul id="dropdown5" class="dropdown-content">
+        <li><a th:href="@{/umik/main/history}">История отчетов</a></li>
+        <li class="divider"></li>
+    </ul>
+
+    <nav>
+        <div class="nav-wrapper row">
+            <ul class="left hide-on-med-and-down col s12 row">
+                <li class="col s1 center center-align">
+                    <a th:href="@{/umik/main}">
+                    Главная</a>
+                </li>
+                <li class="col s2 center center-align">
+                    <a class="dropdown-trigger" href="#!" data-target="dropdown1">
+                    Письма ПЭД</a>
+                </li>
+                <li class="col s2 center center-align">
+                    <a class="dropdown-trigger" href="#!" data-target="dropdown2">
+                    Письма не ПЭД</a>
+                </li>
+                <li class="col s2 center center-align">
+                    <a class="dropdown-trigger" href="#!" data-target="dropdown3">
+                    Реестры и отчеты</a>
+                </li>
+                <li class="col s3 center center-align">
+                    <a class="dropdown-trigger" href="#!" data-target="dropdown4">
+                    Справочная информация</a>
+                </li>
+                <li class="col s2 center center-align">
+                    <a class="dropdown-trigger" href="#!" data-target="dropdown5">
+                    История</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+
+<div class="row" th:fragment="dat">
+    <div class="row">
+        <div class="col s12 row">
+            <div class="col s3"><p>Выбор месяца</p></div>
+            <div class="col s4">
+                <div class="input-field col s6">
+                    <select id="mounth">
+                        <option text="Январь" value="1">Январь</option>
+                        <option text="Февраль" value="2">Февраль</option>
+                        <option text="Март" value="3">Март</option>
+                        <option text="Апрель" value="4">Апрель</option>
+                        <option text="Май" value="5">Май</option>
+                        <option text="Июнь" value="6">Июнь</option>
+                        <option text="Июль" value="7">Июль</option>
+                        <option text="Август" value="8">Август</option>
+                        <option text="Сентябрь" value="9">Сентябрь</option>
+                        <option text="Октябрь" value="10">Октябрь</option>
+                        <option text="Ноябрь" value="11">Ноябрь</option>
+                        <option text="Декабрь" value="12">Декабрь</option>
+                    </select>
+                    <label>Месяц</label>
+                </div>
+                <div class="input-field col s6">
+                    <select id="year">
+                        <option text="2019" value="2019">2019</option>
+                        <option text="2020" value="2020">2020</option>
+                        <option text="2021" value="2021">2021</option>
+                        <option text="2022" value="2022">2022</option>
+                        <option text="2023" value="2023">2023</option>
+                        <option text="2024" value="2024">2024</option>
+                        <option text="2025" value="2025">2025</option>
+                        <option text="2026" value="2026">2026</option>
+                        <option text="2027" value="2027">2027</option>
+                    </select>
+                    <label>Год</label>
+                </div>
+            </div>
+            <div class="col s4">
+                <a class="waves-effect waves-light btn" id="go">Выбрать</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row hide">
+            <input id="dat1" type="date" th:value="${date1}">
+            <input id="dat2" type="date" th:value="${date2}">
+    </div>
+
+</div>
+
+</body>
+</html>

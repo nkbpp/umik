@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<body>
+
+<div th:fragment="form">
+    <div class="row">
+        <div class="col s12">
+            <div class="row">
+
+                <!--D-->
+                <div class="col s12" id="Dot">
+                    <div class="row">
+                        <div class="col s12" th:text="'D ' + ${k}"></div>
+                    </div>
+                    <div class="row" th:each="o : ${otchmarkandkonvD}" th:name="'ot-' + ${o.id}">
+                        <!--${o.prihod.spravkonv.id=1}-->
+                        <div class="col s12 row">
+                            <div class="col s3" th:text="'Реестр 1 ' + ${o.prihod.getFullName()}">
+                            </div>
+                            <div class="col s1" th:text="${o.ostatok}">
+                            </div>
+                            <div class="col s3">
+                                <input type="text" value="0" name="reestr1" th:value="${k}">
+                            </div>
+                        </div>
+                    </div>
+                    <!--Приход-->
+                    <div class="row" th:each="p : ${prihods3}" th:name="'p-' + ${p.id}">
+                        <!--${o.prihod.spravkonv.id=1}-->
+                        <div class="col s12 row">
+                            <div class="col s3" th:text="'Реестр 1 ' + ${p.getFullName()}">
+                            </div>
+                            <div class="col s1" th:text="${p.kol_vo}">
+                            </div>
+                            <div class="col s3">
+                                <input type="text" value="0" name="reestr1" th:value="${k}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--110x220-->
+                <div class="col s12" id="110x220ot">
+                    <div class="row">
+                        <div class="col s12" th:text="'110x220'"></div>
+                    </div>
+                    <div class="row" th:each="o : ${otchmarkandkonv110x120}" th:name="'ot-' + ${o.id}">
+                        <div class="col s12 row">
+                            <div class="col s3" th:text="'Реестр 1 ' + ${o.prihod.getFullName()}">
+                            </div>
+                            <div class="col s1" th:text="${o.ostatok}">
+                            </div>
+                            <div class="col s3">
+                                <input type="text" value="0" name="reestr1" th:value="${reestr1i.id_konv5}">
+                            </div>
+                        </div>
+                    </div>
+                    <!--Приход-->
+                    <div class="row" th:each="p : ${prihods5}" th:name="'p-' + ${p.id}">
+                        <div class="col s12 row">
+                            <div class="col s3" th:text="'Реестр 1 ' + ${p.getFullName()}">
+                            </div>
+                            <div class="col s1" th:text="${p.kol_vo}">
+                            </div>
+                            <div class="col s3">
+                                <input type="text" value="0" name="reestr1" th:value="${reestr1i.id_konv5}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Марки-->
+                <div class="col s12" id="markot">
+                    <div class="row">
+                        <div class="col s3" th:text="'Марки'"></div>
+                        <div class="col s3" id="ostat" th:value="${ostat}" th:text="'Остаток ' + ${ostat}"></div>
+                        <div class="col s3" id="prihodm" th:value="${prihodm}" th:text="'Приход ' + ${prihodm}"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 row">
+                            <div class="col s3" th:text="'Реестр 1'">
+                            </div>
+                            <div class="col s3">
+                                <input type="text" th:value="${r1}" id="reestr1m">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 row">
+                            <div class="col s3" th:text="'Реестр заказных писем'">
+                            </div>
+                            <div class="col s3">
+                                <input type="text" th:value="${r2}" id="reestr2m">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <a class="waves-effect waves-light btn" id="vvod">Добавить</a>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="link">
+    <a id="docx" th:href="@{/umik/main/otchmarkandkonv/pechatdocx(date1=${date1},date2=${date2})}" download>
+        Скачать в формате Docx
+    </a>
+</div>
+
+</body>
+</html>

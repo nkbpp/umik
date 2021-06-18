@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<body>
+
+<div  th:fragment="error">
+    <div class="row">
+        <div class="col s12 row">
+            <div class="col s6">Что-то пошло не так</div>
+        </div>
+    </div>
+</div>
+
+<div  th:fragment="tabledelo">
+    <table id="tab">
+        <thead>
+        <tr>
+            <!--<td align="center">ID</td>-->
+            <td align="center">Рег номер</td>
+            <td align="center">Дата регистрации</td>
+            <td align="center">Адресат</td>
+            <td align="center">ФИО</td>
+            <td align="center">Вид доставки</td>
+            <td align="center">Тип конверта</td>
+            <td align="center">Количество конвертов</td>
+            <td align="center">Сумма марок</td>
+            <td align="center">Удалить</td>
+        </tr>
+        </thead>
+        <tr th:each="p : ${peDdeloproizvodstvos}">
+            <!--<td th:text="${p.id}"></td>-->
+            <td th:text="${p.reg_number}"></td>
+            <td th:text="${p.getReg_datestr()}"></td>
+            <td th:text="${p.text_org}"></td>
+            <td th:text="${p.text_fio}"></td>
+            <td th:text="${p.addr_list}" class="hide"></td>
+            <td th:text="${p.name}"></td>
+            <td th:text="${p.spravkonv.type}"></td>
+            <td th:text="${p.kol_vo}"></td>
+            <td th:text="${p.sum}"></td>
+            <td>
+                <a name="delDeloproizvodstvo" th:id="${p.id}"
+                   class="red waves-effect waves-light btn">X</a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div th:fragment="find">
+
+    <table id="tableadd">
+        <thead>
+        <tr>
+            <td align="center">Регистрационный номер</td>
+            <td align="center">Дата регистрации</td>
+            <td align="center">Адресат</td>
+            <td align="center">ФИО</td>
+
+            <td align="center">Вид доставки</td>
+            <td align="center">Тип конверта</td>
+            <td align="center">Количество конвертов</td>
+            <td align="center">Сумма марок</td>
+            <td align="center">Удалить</td>
+        </tr>
+        </thead>
+        <tr th:each="d : ${deloproizvodstvos}" th:name="${d.id2}">
+            <td th:text="${d.regnumber}" name="reg_number"></td>
+            <td th:text="${d.getReg_datestr()}" name="reg_date"></td>
+            <td th:text="${d.text_org}" name="text_org"></td>
+            <td th:text="${d.text_fio}" name="text_fio"></td>
+<!--            <td th:text="${d.addr_list}" name="addr_list"></td>-->
+            <td th:text="${d.name}" name="name"></td>
+            <td>
+                <select name="type">
+                    <option th:each="sk : ${spravkonvs}"  th:text="${sk.type}" th:value="${sk.id}"></option>
+                </select>
+            </td>
+            <td>
+                <input type="text" name="kol_vo">
+            </td>
+            <td>
+                <input type="text" name="sum">
+            </td>
+            <td>
+                <a name="vvod" th:id="${d.id2}"
+                   class="waves-effect waves-light btn">Добавить</a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div  th:fragment="mf">
+    <div class="row">
+        <div class="col s4 row">
+            <div class="col s6">Введите Рег ном c</div>
+            <div class="col s3">
+                <input type="text" id="regnum">
+            </div>
+        </div>
+        <div class="col s4 row">
+            <div class="col s6">Введите Рег ном по</div>
+            <div class="col s3">
+                <input type="text" id="regnumpo">
+            </div>
+        </div>
+        <div class="col s4 row">
+            <div class="col s6">Введите год</div>
+            <div class="col s3">
+                <input type="text" id="god">
+            </div>
+            <div class="col s3">
+                <a class="waves-effect waves-light btn" id="find">Найти</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Отчет марки и конверты</title>
+    <script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.js"></script>
+    <link type="text/css" rel="stylesheet" href="/webjars/materialize/1.0.0-rc.2/dist/css/materialize.min.css"/>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".dropdown-trigger").dropdown(); //чтобы меню хренячило
+
+            var date = new Date();
+            $("#mounth").val(+date.getMonth()+1);
+            $("#year").val(+date.getFullYear());
+            $('select').formSelect();//селекты
+
+
+            $("body").on('click', 'a', function () {
+
+                if ($(this).attr('id') == "go") {
+                    //Последнее число этого месяца
+                    var mounth = +$("#mounth").val();
+                    var year = $("#year").val();
+                    var day = 1;
+                    var now;
+                    var now1;
+                    var BeginDate;
+
+                    if(mounth==12){
+                        BeginDate=year+"-12-01";
+                    } else {
+                        now1 = new Date(year, mounth, day);
+                        BeginDate = now1.getFullYear() + "-" +
+                            ((+now1.getMonth())<10? "0"+(+now1.getMonth()):(+now1.getMonth())) + "-" +
+                            ((+now1.getDate())<10? "0"+(+now1.getDate()):(+now1.getDate()));
+                    }
+
+                    BeginDate;
+
+                    if(mounth==12){
+                        mounth=0;
+                        year = +year+1;
+                        now = new Date(year, mounth, day);
+                        now.setDate(0);
+                    } else {
+                        mounth = +mounth;
+                        year = year;
+                        now = new Date(year, mounth, day);
+                        now.setDate(0);
+                    }
+
+                    var EndDate = now.getFullYear() + "-" +
+                        ((+now.getMonth()+1)<10? "0"+(+now.getMonth()+1):(+now.getMonth()+1))
+                        + "-" + now.getDate();
+
+                    var param =
+                        "date1=" + BeginDate +
+                        "&date2=" + EndDate;
+
+                    $("#form").load("/umik/main/otchmarkandkonv/form", param, function () {
+                        $('select').formSelect();//селект с конвертами
+                        $("#mounth").add("disabled", "disabled");//не работают вроде
+                        $("#year").add("class", "disabled");
+                    });
+                    return false;
+                }
+
+                if ($(this).attr('id') == "vvod") {
+
+                    var mounth = +$("#mounth").val();
+                    var year = $("#year").val();
+                    var day = 13;
+                    var now;
+                    var now1;
+                    var BeginDate;
+
+                    if(mounth==12){
+                        BeginDate=year+"-12-13";
+                    } else {
+                        now1 = new Date(year, mounth, day);
+                        BeginDate = now1.getFullYear() + "-" +
+                            ((+now1.getMonth())<10? "0"+(+now1.getMonth()):(+now1.getMonth())) + "-" +
+                            ((+now1.getDate())<10? "0"+(+now1.getDate()):(+now1.getDate()));
+                    }
+
+                    BeginDate;
+
+/*                    var mounth = +$("#mounth").val();
+                    var year = $("#year").val();
+                    var now1;
+
+                    if(mounth==12){
+                        BeginDate=year+"-12-13";
+                    } else {
+                        now1 = new Date(year, +mounth-1, 13);
+                        BeginDate = now1.getFullYear() + "-" +
+                            ((+now1.getMonth())<10? "0"+(+now1.getMonth()):(+now1.getMonth())) + "-" +
+                            ((+now1.getDate())<10? "0"+(+now1.getDate()):(+now1.getDate()));
+                    }
+
+                    BeginDate;*/
+
+
+                    var otDid = [];
+                    $("#Dot [name^='ot-']").each(function(indx, element){
+                        otDid.push(+$(element).attr("name").replace("ot-",""));
+                    });
+                    var otDr1 = [];
+                    $("#Dot [name^='ot-'] [name='reestr1']").each(function(indx, element){
+                        otDr1.push($(element).val());
+                    });
+                    var otD = [];
+                    for (var i = 0; i < otDid.length; i++) {
+                        otD.push(otDid[i]+";"+(otDr1[i]==""?"0":otDr1[i]));
+                    }
+
+                    var pDid = [];
+                    $("#Dot [name^='p-']").each(function(indx, element){
+                        pDid.push(+$(element).attr("name").replace("p-",""));
+                    });
+                    var pDr1 = [];
+                    $("#Dot [name^='p-'] [name='reestr1']").each(function(indx, element){
+                        pDr1.push($(element).val());
+                    });
+                    var pD = [];
+                    for (var i = 0; i < pDid.length; i++) {
+                        pD.push(pDid[i]+";"+(pDr1[i]==""?"0":pDr1[i]));
+                    }
+
+                    var ot110x220id = [];
+                    $("#110x220ot [name^='ot-']").each(function(indx, element){
+                        ot110x220id.push(+$(element).attr("name").replace("ot-",""));
+                    });
+                    var ot110x220r1 = [];
+                    $("#110x220ot [name^='ot-'] [name='reestr1']").each(function(indx, element){
+                        ot110x220r1.push($(element).val());
+                    });
+                    var ot110x220 = [];
+                    for (var i = 0; i < ot110x220id.length; i++) {
+                        ot110x220.push(ot110x220id[i]+";"+(ot110x220r1[i]==""?"0":ot110x220r1[i]));
+                    }ot110x220
+
+                    var p110x220id = [];
+                    $("#110x220ot [name^='p-']").each(function(indx, element){
+                        p110x220id.push(+$(element).attr("name").replace("p-",""));
+                    });
+                    var p110x220r1 = [];
+                    $("#110x220ot [name^='p-'] [name='reestr1']").each(function(indx, element){
+                        p110x220r1.push($(element).val());
+                    });
+                    var p110x220 = [];
+                    for (var i = 0; i < p110x220id.length; i++) {
+                        p110x220.push(p110x220id[i]+";"+(p110x220r1[i]==""?"0":p110x220r1[i]));
+                    }
+
+                    var delim="!";
+                    var param =
+                        "date=" + BeginDate +
+                        "&otD=" + otD.join(delim) +
+                        "&pD=" + pD.join(delim) +
+                        "&ot110x220=" + ot110x220.join(delim) +
+                        "&p110x220=" + p110x220.join(delim) +
+                        "&reestr1m=" + $("#reestr1m").val() +
+                        "&reestr2m=" + $("#reestr2m").val() +
+                        "&ostat=" + $("#ostat").val() +
+                        "&prihodm=" + $("#prihodm").val();
+
+                    console.log(param);
+
+                    $("#link").load("/umik/main/otchmarkandkonv/link", param, function () {
+                        $("#form").html("");
+                    });
+
+                    return false;
+                }
+
+            });
+        });
+
+    </script>
+</head>
+<body>
+<div th:insert="fragment/logout :: logout(${user})"></div>
+<div th:insert="fragment/menu :: menu"></div>
+
+<div th:insert="fragment/menu :: dat"></div>
+
+<div id="link"></div>
+
+<div id="form"></div>
+
+<script type="text/javascript" src="/webjars/materialize/1.0.0-rc.2/dist/js/materialize.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<body>
+
+<div  th:fragment="tableinoe">
+    <table id="tab">
+        <thead>
+        <tr>
+            <td align="center">Дата регистрации</td>
+            <td align="center">Адресат</td>
+            <td align="center">Тип конверта</td>
+            <td align="center">Количество конвертов</td>
+            <td align="center">Удалить</td>
+        </tr>
+        </thead>
+        <tr th:each="i : ${inoes}">
+            <td th:text="${i.getReg_datestr()}"></td>
+            <td th:text="${i.vidanykonv.adres}"></td>
+            <td th:text="${i.spravkonv.type}"></td>
+            <td th:text="${i.kol_vo}"></td>
+            <td>
+                <a name="delInoe" th:id="${i.id}"
+                   class="red waves-effect waves-light btn">X</a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Приход</title>
+    <script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.js"></script>
+    <link type="text/css" rel="stylesheet" href="/webjars/materialize/1.0.0-rc.2/dist/css/materialize.min.css"/>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".dropdown-trigger").dropdown(); //чтобы меню хренячило
+            $('select').formSelect();//селекты
+
+            $("body").on('click', 'a', function () {
+
+                if ($(this).attr('id') == "vvod") {
+
+                    var mounth = +$("#mounth").val();
+                    var year = $("#year").val();
+                    var day = 1;
+                    var now;
+                    now = new Date(year, mounth, day);
+
+                    var FullDate = now.getFullYear() + "-" +
+                        ((+now.getMonth())<10? "0"+(+now.getMonth()):(+now.getMonth())) + "-" +
+                        ((+now.getDate())<10? "0"+(+now.getDate()):(+now.getDate()));
+
+                    console.log("Дата = " + FullDate);
+
+                    var param = "price=" + $("#price").val().replace(',','.') +
+                        "&date=" + FullDate;
+
+                    $("#tablekonv").load("/umik/main/prihodmarki/add", param, function () {
+                        $('select').formSelect();//селект с конвертами
+                        alert('Успешно добавлено!');
+                    });
+                    return false;
+                }
+
+                if (this.getAttribute("name") == "del") {
+                    var id = $(this).attr('id');
+
+                    var param = "id=" + id;
+                    if (confirm("Точно удалить заявление с id " +
+                        id + "?")) {
+                        var url = "/umik/main/prihodmarki/del" + "?" + param;
+                        location.href = url;
+                    }
+                }
+
+            });
+
+        });
+
+    </script>
+</head>
+<body>
+<div th:insert="fragment/logout :: logout(${user})"></div>
+<div th:insert="fragment/menu :: menu"></div>
+
+<div class="row">
+    <div class="row">
+        <div class="col s6 row">
+            <div class="col s6">Выбор месяца</div>
+            <div class="col s6">
+                <div class="input-field col s6">
+                    <select id="mounth">
+                        <option text="Январь" value="1">Январь</option>
+                        <option text="Февраль" value="2">Февраль</option>
+                        <option text="Март" value="3">Март</option>
+                        <option text="Апрель" value="4">Апрель</option>
+                        <option text="Май" value="5">Май</option>
+                        <option text="Июнь" value="6">Июнь</option>
+                        <option text="Июль" value="7">Июль</option>
+                        <option text="Август" value="8">Август</option>
+                        <option text="Сентябрь" value="9">Сентябрь</option>
+                        <option text="Октябрь" value="10">Октябрь</option>
+                        <option text="Ноябрь" value="11">Ноябрь</option>
+                        <option text="Декабрь" value="12">Декабрь</option>
+                    </select>
+                    <label>Месяц</label>
+                </div>
+                <div class="input-field col s6">
+                    <select id="year">
+                        <option text="2019" value="2019">2019</option>
+                        <option text="2020" value="2020">2020</option>
+                        <option text="2021" value="2021">2021</option>
+                        <option text="2022" value="2022">2022</option>
+                        <option text="2023" value="2023">2023</option>
+                        <option text="2024" value="2024">2024</option>
+                        <option text="2025" value="2025">2025</option>
+                        <option text="2026" value="2026">2026</option>
+                        <option text="2027" value="2027">2027</option>
+                    </select>
+                    <label>Год</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s6 row">
+            <div class="col s6">Цена</div>
+            <div class="col s6">
+                <input type="text" id="price">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s6 row">
+            <div class="col s6"></div>
+            <div class="col s6">
+                <a class="waves-effect waves-light btn" id="vvod">Добавить</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="tablekonv" th:insert="fragment/prihodmarkifrag :: tablekonv"></div>
+
+<script type="text/javascript" src="/webjars/materialize/1.0.0-rc.2/dist/js/materialize.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<body>
+
+<div  th:fragment="tablebolgaria">
+    <table id="tab">
+        <thead>
+        <tr>
+            <td align="center">ID</td>
+            <td align="center">Рег номер</td>
+            <td align="center">Дата регистрации</td>
+            <td align="center">Адресат</td>
+            <td align="center">Вид доставки</td>
+            <td align="center">Тип конверта</td>
+            <td align="center">Количество конвертов</td>
+            <td align="center">Сумма марок</td>
+            <td align="center">Удалить</td>
+        </tr>
+        </thead>
+        <tr th:each="b : ${bolgarias}">
+            <td th:text="${b.id}"></td>
+            <td th:text="${b.getReg_datestr()}"></td>
+            <td th:text="${b.reg_number}"></td>
+            <td th:text="${b.text_org}"></td>
+            <td th:text="${b.name}"></td>
+            <td th:text="${b.spravkonv.type}"></td>
+            <td th:text="${b.kol_vo}"></td>
+            <td th:text="${b.sum}"></td>
+            <td>
+                <a name="delBolgaria" th:id="${b.id}"
+                   class="red waves-effect waves-light btn">X</a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

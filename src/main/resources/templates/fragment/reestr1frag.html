@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<body>
+
+<div th:fragment="tablereestr1">
+    <table>
+        <tr>
+            <td align="center">Рег номер</td>
+            <td align="center">Дата регистрации</td>
+            <td align="center">Адресат</td>
+            <td align="center">Вид доставки</td>
+            <td align="center">Конверт А4</td>
+            <td align="center">Конверт С5</td>
+            <td align="center">Конверт 110x220</td>
+            <td align="center">Полиэтиленовый конверт</td>
+            <td align="center">Марки</td>
+            <td align="center">Удалить</td>
+        </tr>
+        <tr th:each="r : ${reestr1s}">
+            <td  th:text="${r.reg_number}">
+            </td>
+            <td  th:text="${r.getReg_datestr()}">
+            </td>
+            <td  th:text="${r.getAddr()}">
+            </td>
+            <td  th:text="${r.name}">
+            </td>
+
+            <td  th:text="${r.id_konv1}">
+            </td>
+            <td  th:text="${r.id_konv4}">
+            </td>
+            <td  th:text="${r.id_konv5}">
+            </td>
+            <td  th:text="${r.id_konv6}">
+            </td>
+            <td  th:text="${r.sum}">
+            </td>
+            <td>
+                <a name="del" th:id="${r.getId()}"
+                   class="red waves-effect waves-light btn">X</a>
+            </td>
+        </tr>
+
+        <!--Для общей суммы-->
+        <tr>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center" th:text="${reestr1i.id_konv1}"></td>
+            <td align="center" th:text="${reestr1i.id_konv4}"></td>
+            <td align="center" th:text="${reestr1i.id_konv5}"></td>
+            <td align="center" th:text="${reestr1i.id_konv6}"></td>
+            <td align="center" th:text="${reestr1i.sum}"></td>
+        </tr>
+        <tr>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center">Конверт А4</td>
+            <td align="center">Конверт С5</td>
+            <td align="center">Конверт 110x220</td>
+            <td align="center">Полиэтиленовый конверт</td>
+            <td align="center">Марки</td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

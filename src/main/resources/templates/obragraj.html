@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Обращение граждан</title>
+    <script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.js"></script>
+    <link type="text/css" rel="stylesheet" href="/webjars/materialize/1.0.0-rc.2/dist/css/materialize.min.css"/>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".dropdown-trigger").dropdown(); //чтобы меню хренячило
+
+            //устанавливаю текущий год
+            var date = new Date();
+            $("#god").val(date.getFullYear());
+
+            $("body").on('click', 'a', function () {
+                if ($(this).attr('id') == "find") {
+                    var param = "regnum=" + $("#regnum").val() +
+                        "&regnumpo=" + $("#regnumpo").val() +
+                        "&god=" + $("#god").val();
+
+                    $("#inf").load("/umik/main/obragraj/find", param, function () {
+                        $('select').formSelect(); //селект с конвертами
+                    });
+                    return false;
+                }
+
+                if (this.getAttribute("name") == "vvod") {
+                    var id = $(this).attr('id');
+
+                    var param =
+                        "reg_number=" + $("tr[name=" + id + "] [name=reg_number]").text() +
+                        "&reg_date=" + $("tr[name=" + id + "] [name=reg_date]").text() +
+                        "&name=" + $("tr[name=" + id + "] [name=name]").text() +
+                        "&text_org=" + $("tr[name=" + id + "] [name=text_org]").text() +
+                        "&text_fio=" + $("tr[name=" + id + "] [name=text_fio]").text() +
+                        "&addr_list=" + $("tr[name=" + id + "] [name=addr_list]").text() +
+                        "&kol_vo=" + $("tr[name=" + id + "] [name=kol_vo]").val() +
+                        "&type=" + $("tr[name=" + id + "] [name=type]").val() +
+                        "&sum=" + $("tr[name=" + id + "] [name=sum]").val().replace(",",".");
+
+                    console.log("param= " + param);
+
+                    $("#tabledelo").load("/umik/main/obragraj/add", param, function () {
+                        $('select').formSelect();//селект с конвертами
+                        //скрыть добавленное
+                        $("[name="+id+"]").remove();
+                    });
+
+                    return false;
+                }
+
+                if (this.getAttribute("name") == "delDeloproizvodstvo") {
+                    var id = $(this).attr('id');
+                    var param = "id=" + id;
+                    if (confirm("Точно удалить заявление с id " +
+                        id + "?")) {
+                        var url = "/umik/main/obragraj/del" + "?" + param;
+                        location.href = url;
+                    }
+                }
+            });
+        });
+
+    </script>
+</head>
+<body>
+<div th:insert="fragment/logout :: logout(${user})"></div>
+<div th:insert="fragment/menu :: menu"></div>
+
+<div th:insert="fragment/oblagrajfrag :: mf"></div>
+
+<div id="inf"></div>
+
+<div id="tabledelo" th:insert="fragment/oblagrajfrag :: tabledelo"></div>
+
+<script type="text/javascript" src="/webjars/materialize/1.0.0-rc.2/dist/js/materialize.min.js"></script>
+</body>
+</html>

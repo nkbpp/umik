@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<body>
+
+<div th:fragment="tablereestr2">
+    <table>
+        <tr>
+            <td align="center">№ п/п</td>
+            <td align="center">Дата</td>
+            <td align="center">Сумма по чеку </td>
+            <td align="center">Марки</td>
+            <td align="center">Количество конвертов</td>
+            <!--<td align="center">Название конверта</td>-->
+            <td align="center">Марки к заказным письмам</td>
+            <td align="center">Удалить</td>
+        </tr>
+        <tr th:each="r,iterStat : ${pravopriems}">
+            <td  th:text="${iterStat.count}">
+            </td>
+            <td  th:text="${r.get_datestr()}">
+            </td>
+            <td  th:text="${r.get_sumob()}">
+            </td>
+            <td th:text="${r.get_sumk()}"></td>
+            <td th:text="${r.konvert_d}"></td>
+            <!--<td th:text="${r.prihod.getFullName()}"></td>-->
+            <td  th:text="${r.marki_k_zak_pis}">
+            </td>
+            <td><a name="del" th:id="${r.getId()}"
+                class="red waves-effect waves-light btn">X</a>
+            </td>
+        </tr>
+        <tr>
+            <td align="center"></td>
+            <td align="center">ИТОГО</td>
+            <td align="center" th:text="${so}"></td>
+            <td align="center" th:text="${m}"></td>
+            <td align="center" th:text="${k}"></td>
+            <td align="center" th:text="${mzp}"></td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

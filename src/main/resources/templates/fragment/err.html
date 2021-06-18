@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<body>
+
+<div id="ttt" th:fragment="error">
+    <div class="row">
+        <div class="col s12 row">
+            <div class="col s6">Что-то пошло не так</div>
+        </div>
+        <div class="col s12 row">
+            <div th:text="${errtext}">Что-то пошло не так</div>
+        </div>
+        <div th:text="${err}">
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

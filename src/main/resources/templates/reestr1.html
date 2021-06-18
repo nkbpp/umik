@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Реестр №1</title>
+    <script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.js"></script>
+    <link type="text/css" rel="stylesheet" href="/webjars/materialize/1.0.0-rc.2/dist/css/materialize.min.css"/>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".dropdown-trigger").dropdown(); //чтобы меню хренячило
+
+            var date = new Date();
+            console.log($("#dat1").val().substring(0,4));
+            console.log(+$("#dat1").val().substring(5,7));
+            $("#mounth").val(+$("#dat1").val().substring(5,7));
+            $("#year").val(+$("#dat1").val().substring(0,4));
+/*            $("#mounth").val(+date.getMonth()+1);
+            $("#year").val(+date.getFullYear());*/
+            $('select').formSelect();//селекты
+
+            $("body").on('click', 'a', function () {
+
+                if (this.getAttribute("name") == "del") {
+                    var id = $(this).attr('id');
+
+                    var param = "id=" + id;
+                    var url = "/umik/main/bolgaria/del" + "?" + param;
+                    var str = "Болгария";
+                    if(+id>=3000000000 && +id<9000000000){
+                        param = "id=" + (+id-3000000000)
+                        url = "/umik/main/obragraj/del" + "?" + param;
+                        str = "Обращение граждан";
+                    }
+                    if(+id>=9000000000 && +id<12000000000){
+                        param = "id=" + (+id-9000000000)
+                        url = "/umik/main/deloproiz/del" + "?" + param;
+                        str = "Делопроизводство";
+                    }
+                    if(id>=12000000000){
+                        param = "id=" + (+id-12000000000)
+                        url = "/umik/main/inoe/del" + "?" + param;
+                        str = "Иное";
+                    }
+
+                    if (confirm("Точно удалить заявление из " + str + " с " +
+                        param + "?")) {
+                        alert(url);
+                        $.get(url, function(data) {
+                            location.href = "/umik/main/reestr1";
+                        });
+                    }
+                }
+
+                if ($(this).attr('id') == "go") {
+                    console.log("1");
+                    //Последнее число этого месяца
+                    var mounth = +$("#mounth").val();
+                    var year = $("#year").val();
+                    var day = 1;
+                    var now;
+
+                    var now1 = new Date(year, mounth-1, day);
+
+                    var BeginDate = now1.getFullYear() + "-" +
+                        ((+now1.getMonth()+1)<10? "0"+(+now1.getMonth()+1):(+now1.getMonth()+1)) + "-" +
+                        ((+now1.getDate())<10? "0"+(+now1.getDate()):(+now1.getDate()));
+
+                    if(mounth==12){
+                        mounth=0;
+                        year = +year+1;
+                        now = new Date(year, mounth, day);
+                        now.setDate(0);
+                    } else {
+                        mounth = +mounth;
+                        year = year;
+                        now = new Date(year, mounth, day);
+                        now.setDate(0);
+                    }
+
+                    var EndDate = now.getFullYear() + "-" +
+                        ((+now.getMonth()+1)<10? "0"+(+now.getMonth()+1):(+now.getMonth()+1))
+                        + "-" + now.getDate();
+
+                    var param =
+                        "dat1=" + BeginDate +
+                        "&dat2=" + EndDate;
+                    console.log("dat1=" + BeginDate +
+                        "&dat2=" + EndDate);
+                    var url = "/umik/main/reestr1" + "?" + param;
+                    location.href = url;
+
+                }
+
+            });
+        });
+
+    </script>
+</head>
+<body>
+<div th:insert="fragment/logout :: logout(${user})"></div>
+<div th:insert="fragment/menu :: menu"></div>
+
+<div th:insert="fragment/menu :: dat"></div>
+
+
+
+<!--<div class="row hide">
+    <div class="col s4">
+        <label for="dat1">Дата с</label>
+        <input placeholder="Дата с" id="dat1" type="date" th:value="${date1}">
+    </div>
+    <div class="col s4">
+        <label for="dat2">Дата по</label>
+        <input placeholder="Дата по" id="dat2" type="date" th:value="${date2}">
+    </div>
+    <div class="col s4">
+        <a class="waves-effect waves-light btn" id="filtergo">Применить фильтр</a>
+    </div>
+</div>-->
+
+<div class="row">
+    <div class="col center">
+        <a id="xls" th:href="@{/umik/main/reestr1/pechatdocx(date1=${date1},date2=${date2})}" download>Скачать в формате Docx</a>
+    </div>
+</div>
+
+<div id="tablereestr1" th:insert="fragment/reestr1frag :: tablereestr1"></div>
+
+<script type="text/javascript" src="/webjars/materialize/1.0.0-rc.2/dist/js/materialize.min.js"></script>
+</body>
+</html>

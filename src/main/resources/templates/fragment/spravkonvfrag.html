@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<body>
+
+<div th:fragment="tablekonv">
+    <table>
+        <tr>
+            <th align="center">№ п/п</th>
+            <th align="center">Тип конверта</th>
+            <th align="center">Удалить</th>
+        </tr>
+        <tr th:each="sk : ${spravkonvs}">
+            <td  th:text="${sk.id}">
+            </td>
+            <td  th:text="${sk.type}">
+            </td>
+            <td>
+                <a name="del" th:id="${sk.id}"
+                   class="red waves-effect waves-light btn">X</a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

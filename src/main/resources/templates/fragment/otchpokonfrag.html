@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<body>
+
+<div th:fragment="form">
+    <div class="row">
+        <div class="col s12">
+            <div class="row">
+                <!--A4-->
+                <div class="col s12" id="a4ot">
+                    <div class="row">
+                        <div class="col s12" th:text="'A4 ' + ${reestr1i.id_konv1}"></div>
+                    </div>
+                    <div class="row" th:each="o : ${otchraschodkonv1}" th:name="'ot-' + ${o.id}"><!--${o.prihod.spravkonv.id=1}-->
+                        <div class="col s12 row" >
+                            <div class="col s3" th:text="'Реестр 1 ' + ${o.prihod.getFullName()}">
+                            </div>
+                            <div class="col s1" th:text="${o.ostatok}">
+                            </div>
+                            <div class="col s3">
+                                <input type="text" value="0" name="reestr1">
+                            </div>
+                        </div>
+
+                    </div>
+                    <!--Приход-->
+                    <div class="row" th:each="p : ${prihods1}" th:name="'p-' + ${p.id}"><!--${o.prihod.spravkonv.id=1}-->
+                        <div class="col s12 row" >
+                            <div class="col s3" th:text="'Реестр 1 ' + ${p.getFullName()}">
+                            </div>
+                            <div class="col s1" th:text="${p.kol_vo}">
+                            </div>
+                            <div class="col s3">
+                                <input type="text" value="0" name="reestr1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--C5-->
+                <div class="col s12" id="c5ot">
+                    <div class="row">
+                        <div class="col s12" th:text="'C5 ' + ${reestr1i.id_konv4}"></div>
+                    </div>
+                    <div class="row" th:each="o : ${otchraschodkonv4}" th:name="'ot-' + ${o.id}">
+                        <div class="col s12 row" >
+                            <div class="col s3" th:text="'Реестр 1 ' + ${o.prihod.getFullName()}">
+                            </div>
+                            <div class="col s1" th:text="${o.ostatok}">
+                            </div>
+                            <div class="col s3">
+                                <input type="text" value="0" name="reestr1">
+                            </div>
+                        </div>
+
+                    </div>
+                    <!--Приход-->
+                    <div class="row" th:each="p : ${prihods4}" th:name="'p-' + ${p.id}"><!--${o.prihod.spravkonv.id=1}-->
+                        <div class="col s12 row" >
+                            <div class="col s3" th:text="'Реестр 1 ' + ${p.getFullName()}">
+                            </div>
+                            <div class="col s1" th:text="${p.kol_vo}">
+                            </div>
+                            <div class="col s3">
+                                <input type="text" value="0" name="reestr1">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!--110x220-->
+<!--                <div class="col s12" id="110x220ot">
+                    <div class="row">
+                        <div class="col s12" th:text="'110x220 ' + ${reestr1i.id_konv5}"></div>
+                    </div>
+                    <div class="row" th:each="o : ${otchraschodkonv5}" th:name="'ot-' + ${o.id}">&lt;!&ndash;${o.prihod.spravkonv.id=1}&ndash;&gt;
+                        <div class="col s12 row" >
+                            <div class="col s3" th:text="'Реестр 1 ' + ${o.prihod.getFullName()}">
+                            </div>
+                            <div class="col s1" th:text="${o.ostatok}">
+                            </div>
+                            <div class="col s3">
+                                <input type="text" value="0" name="reestr1">
+                            </div>
+                        </div>
+
+                    </div>
+                    &lt;!&ndash;Приход&ndash;&gt;
+                    <div class="row" th:each="p : ${prihods5}" th:name="'p-' + ${p.id}">&lt;!&ndash;${o.prihod.spravkonv.id=1}&ndash;&gt;
+                        <div class="col s12 row" >
+                            <div class="col s3" th:text="'Реестр 1 ' + ${p.getFullName()}">
+                            </div>
+                            <div class="col s1" th:text="${p.kol_vo}">
+                            </div>
+                            <div class="col s3">
+                                <input type="text" value="0" name="reestr1">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>-->
+                <!--Полиэтиленовый конверт-->
+                <div class="col s12" id="pkot">
+                    <div class="row">
+                        <div class="col s12" th:text="'Полиэтиленовый конверт ' + ${reestr1i.id_konv6}"></div>
+                    </div>
+                    <div class="row" th:each="o : ${otchraschodkonv6}" th:name="'ot-' + ${o.id}"><!--${o.prihod.spravkonv.id=1}-->
+                        <div class="col s12 row" >
+                            <div class="col s3" th:text="'Реестр 1 ' + ${o.prihod.getFullName()}">
+                            </div>
+                            <div class="col s1" th:text="${o.ostatok}">
+                            </div>
+                            <div class="col s3">
+                                <input type="text" value="0" name="reestr1">
+                            </div>
+                        </div>
+                    </div>
+                    <!--Приход-->
+                    <div class="row" th:each="p : ${prihods6}" th:name="'p-' + ${p.id}"><!--${o.prihod.spravkonv.id=1}-->
+                        <div class="col s12 row" >
+                            <div class="col s3" th:text="'Реестр 1 ' + ${p.getFullName()}">
+                            </div>
+                            <div class="col s1" th:text="${p.kol_vo}">
+                            </div>
+                            <div class="col s3">
+                                <input type="text" value="0" name="reestr1">
+                            </div>
+                        </div>
+<!--                        <div class="col s12 row" >
+                            <div class="col s3" th:text="'Реестр 2 ' + ${p.getFullName()}">
+                            </div>
+                            <div class="col s1">
+                            </div>
+                            <div class="col s3">
+                                <input type="text" value="0" name="reestr2">
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+
+                <!--Термо Эко-->
+                <div class="col s12" id="teot">
+                    <div class="row">
+                        <div class="col s12" th:text="'Этикетка ТермоЭко ' + ${reestr1i.id_konv7}"></div>
+                    </div>
+                    <div class="row" th:each="o : ${otchraschodkonv7}" th:name="'ot-' + ${o.id}">
+                        <div class="col s12 row" >
+                            <div class="col s3" th:text="'Реестр 1 ' + ${o.prihod.getFullName()}">
+                            </div>
+                            <div class="col s1" th:text="${o.ostatok}">
+                            </div>
+                            <div class="col s3">
+                                <input type="text" value="0" name="reestr1">
+                            </div>
+                        </div>
+                    </div>
+                    <!--Приход-->
+                    <div class="row" th:each="p : ${prihods7}" th:name="'p-' + ${p.id}"><!--${o.prihod.spravkonv.id=1}-->
+                        <div class="col s12 row" >
+                            <div class="col s3" th:text="'Реестр 1 ' + ${p.getFullName()}">
+                            </div>
+                            <div class="col s1" th:text="${p.kol_vo}">
+                            </div>
+                            <div class="col s3">
+                                <input type="text" value="0" name="reestr1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <a class="waves-effect waves-light btn" id="vvod">Добавить</a>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="link">
+    <a id="docx" th:href="@{/umik/main/otchpokon/pechatdocx(date1=${date1},date2=${date2})}" download>
+        Скачать в формате Docx
+    </a>
+</div>
+
+</body>
+</html>

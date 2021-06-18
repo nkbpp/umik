@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<body>
+
+<div  th:fragment="ot">
+
+    <div class="row">
+        <div class="col center">
+            <a id="r1xls" th:href="@{/umik/main/reestr1/pechatdocx(date1=${date1},date2=${date2})}"
+               th:text="'Реестр 1 c ' + ${dat1} + ' по ' + ${dat2}" download></a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col center">
+            <a id="r2xls" th:href="@{/umik/main/reestr2/pechatdocx(dat1=${date1},dat2=${date2})}"
+               th:text="'Реестр 2 c ' + ${dat1} + ' по ' + ${dat2}" download></a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col center">
+            <a id="otchpokondocx" th:href="@{/umik/main/otchpokon/pechatdocx(date1=${date1},date2=${date2})}"
+               th:text="'Отчет по конвертам c ' + ${dat1} + ' по ' + ${dat2}" download></a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col center">
+            <a id="otchmarkandkonvdocx" th:href="@{/umik/main/otchmarkandkonv/pechatdocx(date1=${date1},date2=${date2})}"
+               th:text="'Отчет по маркам и конвертам c ' + ${dat1} + ' по ' + ${dat2}" download></a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col center">
+            <a id="avansdocx" th:href="@{/umik/main/avans/pechatdocx(date1=${date1},date2=${date2})}"
+               th:text="'Авансовый отчёт c ' + ${dat1} + ' по ' + ${dat2}" download></a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
