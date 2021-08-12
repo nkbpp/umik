@@ -35,6 +35,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -545,10 +546,60 @@ public class OpfrController {
         List<Pravopriem> pravopriems = pravopriemService.findAllTekMounth();
         model.addAttribute("pravopriems", pravopriems);
 //
-        List<Prihod> prihodsD = prihodService.findAllTypeD();
+
+        YearMonth month = YearMonth.now();
+        String firstDay = month.atDay(1).toString(),
+        endDay = month.atEndOfMonth().toString();
+
+        Date date1 = new Date();
+        Date date2 = new Date();
+        Date date1minusMonths = new Date();
+        Date date2minusMonths = new Date();
+        try {
+            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(firstDay);
+            date2 = new SimpleDateFormat("yyyy-MM-dd").parse(endDay);
+
+            //минус месяц
+            //что осталось с прошлого месяца
+            String[] subStr;
+            String[] subStr2;
+            String delimeter = "-"; // Разделитель
+            subStr = firstDay.split(delimeter);
+            subStr2 = endDay.split(delimeter);
+            LocalDate first = LocalDate.of(Integer.valueOf(subStr[0]), Integer.valueOf(subStr[1]), Integer.valueOf(subStr[2])).minusMonths(1);
+            LocalDate end = LocalDate.of(Integer.valueOf(subStr2[0]), Integer.valueOf(subStr2[1]), Integer.valueOf(subStr2[2])).minusMonths(1);
+
+            date1minusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(first.toString());
+            date2minusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(end.toString());
+        } catch (Exception e) {
+        }
+
+        List<Otchmarkandkonv> otchmarkandkonvD = otchmarkandkonvService.findAllDatOnlyTypeD(date1minusMonths, date2minusMonths);
+        List<Prihod> prihodsD = new ArrayList<>();
+        otchmarkandkonvD.forEach(otchmarkandkonv -> {
+            prihodsD.add(otchmarkandkonv.getPrihod());
+        });
+        if(otchmarkandkonvD.size()==0){
+            prihodsD.add(prihodService.findTypeDLast());
+        }
+
+
+
         model.addAttribute("prihodsD", prihodsD);
 
+/*        String test = "";
+        for (Otchmarkandkonv o:
+        otchmarkandkonvD) {
+            test+=o.toString();
+        }
+        test += (" dat1 " + date1minusMonths + " dat2 " + date2minusMonths);
+        model.addAttribute("test", test);*/
+        //model.addAttribute("test", otchmarkandkonvService.findAllDatOnlyTypeD(date1minusMonths, date2minusMonths).size());
+
         model.addAttribute("user", user);
+
+        model.addAttribute("max", pravopriemService.getMaxCena_Sell());
+
         return "pravopriem";
     }
 
@@ -557,6 +608,7 @@ public class OpfrController {
             @RequestParam String date,
             @RequestParam Long kol_d,
             @RequestParam String id_prihod,
+            @RequestParam String cena_sell,
             @RequestParam String sum_mark,
             @AuthenticationPrincipal User user,
             Model model) {
@@ -565,6 +617,7 @@ public class OpfrController {
                 " date = " + date +
                 " kol_d = " + kol_d +
                 " id_prihod = " + id_prihod +
+                " cena_sell = " + cena_sell +
                 " sum_mark = " + sum_mark
         ));
 
@@ -575,7 +628,7 @@ public class OpfrController {
             Prihod p = prihodService.findById(Long.valueOf(id_prihod));
 
             Pravopriem pravopriem = new Pravopriem(
-                    date1, kol_d, p, Float.valueOf(sum_mark)
+                    date1, kol_d, p, Float.valueOf(cena_sell), Float.valueOf(sum_mark)
             );
             pravopriemService.save(pravopriem);
 

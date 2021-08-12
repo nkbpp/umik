@@ -11,6 +11,7 @@
             <td align="center">Дата</td>
             <td align="center">Конверт D количество</td>
             <td align="center">Конверт D цена</td>
+            <td align="center">Тариф за пересылку 20гр</td>
             <td align="center">Сумма марок к заказным письмам (руб)</td>
             <td align="center">Удалить</td>
         </tr>
@@ -20,6 +21,7 @@
             <td th:text="${p.get_datestr()}"></td>
             <td th:text="${p.konvert_d}"></td>
             <td th:text="${p.getPrice()}"></td>
+            <td th:text="${p.getCena_sell()}"></td>
             <td th:text="${p.marki_k_zak_pis}"></td>
             <td>
                 <a name="delPravopriem" th:id="${p.id}"

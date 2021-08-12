@@ -31,7 +31,14 @@ public interface PrihodRepository extends JpaRepository<Prihod, Long> {
     @Query(
             value = "select id, prefix, indexx, kol_vo, price, id_konv, dat " +
                     "from prihod " +
-                    "where id=12",
+                    "where id_konv=3",
             nativeQuery = true)
     public List<Prihod> findAllTypeD();
+
+    //Конверт D max
+    @Query(
+            value = "select id, prefix, indexx, kol_vo, price, id_konv, dat " +
+                    "from prihod where id = (select max(id) from prihod where id_konv=3) ",
+            nativeQuery = true)
+    public Prihod findTypeDLast();
 }

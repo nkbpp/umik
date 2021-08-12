@@ -28,6 +28,10 @@ public class PrihodService {
         return prihodRepository.findAllTypeD();
     }
 
+    public Prihod findTypeDLast() {
+        return prihodRepository.findTypeDLast();
+    }
+
     public List<Prihod> findAllD(Date d1, Date d2) {
         return prihodRepository.findAllD(d1, d2);
     }

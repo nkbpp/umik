@@ -27,6 +27,7 @@
                         "date=" + $("#date").val() +
                         "&kol_d=" + $("#kol_d").val() +
                         "&id_prihod=" + $("#id_prihod").val() +
+                        "&cena_sell=" + $("#cena_sell").val() +
                         "&sum_mark=" + ($("#sum_mark").val()==""?0:$("#sum_mark").val().replace(",","."));
                     console.log("param=" + param);
                     var url = "/umik/main/pravopriem/add" + "?" + param;
@@ -78,7 +79,7 @@
             <div class="col s6">
                 <div class="input-field col s12">
                     <select id="id_prihod">
-                        <option th:each="p : ${prihodsD}"  th:text="${p.getFullName()}"
+                        <option th:each="p : ${prihodsD}"  th:text="${p.getFullNamePrice()}"
                                 th:value="${p.id}"></option>
                     </select>
                     <label>Тип конверта</label>
@@ -87,14 +88,16 @@
         </div>
     </div>
 
-<!--    <div class="row">
+    <div th:text="${test}"></div>
+
+    <div class="row">
         <div class="col s6 row">
-            <div class="col s6">Цена конверта D</div>
+            <div class="col s6">Тариф за пересылку 20гр</div>
             <div class="col s6">
-                <input type="text" id="sum_d">
+                <input type="text" id="cena_sell" th:value="${max}">
             </div>
         </div>
-    </div>-->
+    </div>
 
     <div class="row">
         <div class="col s6 row">

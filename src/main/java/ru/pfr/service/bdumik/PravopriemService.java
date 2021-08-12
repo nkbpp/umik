@@ -27,6 +27,10 @@ public class PravopriemService {
         return pravopriemRepository.findAll();
     }
 
+    public Long getMaxCena_Sell() {
+        return pravopriemRepository.getMaxCena_Sell();
+    }
+
     public List<Pravopriem> findAllD(Date d1, Date d2) {
         return pravopriemRepository.findAllD(d1, d2);
     }

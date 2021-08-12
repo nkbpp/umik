@@ -40,6 +40,10 @@ public class Prihod {
         return this.prefix + " " + this.index;
     }
 
+    public String getFullNamePrice() {
+        return this.prefix + " " + this.index + " Цена: " + this.price;
+    }
+
     public Prihod() {
     }
 
