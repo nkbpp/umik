@@ -1,7 +1,5 @@
 package ru.pfr.configuration;
 
-
-
 import javafx.application.Application;
 import jodd.http.HttpUtil;
 import jodd.http.HttpValuesMap;

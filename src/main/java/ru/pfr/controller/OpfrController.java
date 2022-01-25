@@ -20,9 +20,9 @@ import ru.pfr.model.rsdoc_pfr.Oblagraj;
 import ru.pfr.model.rsdoc_pfr.Sendtype;
 import ru.pfr.model.umikbd.*;
 import ru.pfr.service.bdumik.*;
-import ru.pfr.service.rsdoc_pfr.DeloproizvodstvoService;
+/*import ru.pfr.service.rsdoc_pfr.DeloproizvodstvoService;
 import ru.pfr.service.rsdoc_pfr.OblagrajService;
-import ru.pfr.service.rsdoc_pfr.SendtypeService;
+import ru.pfr.service.rsdoc_pfr.SendtypeService;*/
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
@@ -45,17 +45,18 @@ import java.util.List;
 @RequestMapping("/umik/main")
 public class OpfrController {
 
-    @Autowired
+/*    @Autowired
     DeloproizvodstvoService deloproizvodstvoService;
+    @Autowired
+    SendtypeService sendtypeService;
+    @Autowired
+    OblagrajService oblagrajService;*/
 
     @Autowired
     PEDdeloproizvodstvoService peDdeloproizvodstvoService;
 
     @Autowired
     PEDobragrajService peDobragrajService;
-
-    @Autowired
-    SendtypeService sendtypeService;
 
     @Autowired
     SpravkonvService spravkonvService;
@@ -79,9 +80,6 @@ public class OpfrController {
     InoeService inoeService;
 
     @Autowired
-    OblagrajService oblagrajService;
-
-    @Autowired
     PrihodService prihodService;
 
     @Autowired
@@ -98,6 +96,9 @@ public class OpfrController {
 
     @Autowired
     LogiService logiService;
+
+    @Autowired
+    VidDostService vidDostService;
 
     @GetMapping()
     public String startupfr(
@@ -116,6 +117,10 @@ public class OpfrController {
     public String deloproiz(
             @AuthenticationPrincipal User user,
             Model model) {
+        List<VidDost> vidDosts = vidDostService.findAll();
+        model.addAttribute("viddost_ruki", vidDosts);
+        List<Spravkonv> spravkonvs = spravkonvService.findAll();
+        model.addAttribute("spravkonvs", spravkonvs);
 
         logiService.save(new Logi(new Date(), user.getLogin(), "deloproiz"));
 
@@ -126,7 +131,83 @@ public class OpfrController {
         return "deloproiz";
     }
 
-    @GetMapping("/deloproiz/find")
+    @GetMapping("/deloproiz/ruki")
+    public String deloproizfind_ruki(
+            @AuthenticationPrincipal User user,
+            Model model) {
+
+        try {
+            List<VidDost> vidDosts = vidDostService.findAll();
+            model.addAttribute("viddost_ruki", vidDosts);
+            List<Spravkonv> spravkonvs = spravkonvService.findAll();
+            model.addAttribute("spravkonvs", spravkonvs);
+        } catch (DataAccessResourceFailureException e) {
+            return "fragment/err :: error";
+        } catch (Exception e) {
+        }
+        model.addAttribute("user", user);
+        return "fragment/deloproizfrag :: rukivvod";
+    }
+
+    @GetMapping("/deloproiz/add_ruki")
+    public String deloproizadd_ruki(
+            @RequestParam Integer reg_number,
+            @RequestParam String reg_date,
+            @RequestParam String reg_pref,
+            @RequestParam String reg_postf,
+            //@RequestParam String name,
+            @RequestParam Long viddost,
+            @RequestParam String text_org,
+            @RequestParam Long type,
+            @RequestParam String sum,
+            @RequestParam Integer kol_vo,
+            @AuthenticationPrincipal User user,
+            Model model) {
+
+        logiService.save(new Logi(new Date(), user.getLogin(), "deloproizadd param=" +
+                " reg_pref = " + reg_pref +
+                " reg_number = " + reg_number +
+                " reg_postf = " + reg_postf +
+                " reg_date = " + reg_date +
+                " viddost = " + viddost +
+                " text_org = " + text_org +
+                " type = " + type +
+                " sum = " + sum +
+                " kol_vo = " + kol_vo
+        ));
+
+        try {
+            Spravkonv spravkonv = spravkonvService.findById(type);
+
+            VidDost vidDost = vidDostService.findById(viddost);
+
+            Date date = dateddMMyyyy(reg_date);
+
+            LocalDate first = new java.sql.Date(date.getTime()).toLocalDate();
+            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+
+            PEDdeloproizvodstvo peDdeloproizvodstvo = new PEDdeloproizvodstvo(
+                    null, reg_pref, reg_number.toString(),
+                    reg_postf, date, vidDost.getId(),/*peDdeloproizvodstvoService.findNameId(name),*/
+                    vidDost.getName(), text_org, spravkonv, Double.valueOf(sum), kol_vo
+            );
+            System.out.println("");
+            peDdeloproizvodstvoService.save(peDdeloproizvodstvo);
+        } catch (Exception e) {
+            model.addAttribute("user", user);
+            model.addAttribute("errtext", "Не смог добавить(, возможно вы не все ввели или ключевые поля в базе отсутствуют");
+            model.addAttribute("err", e);
+            return "fragment/err :: error";
+        }
+
+        List<PEDdeloproizvodstvo> peDobragrajs = peDdeloproizvodstvoService.findAllTekMounth();
+        model.addAttribute("peDdeloproizvodstvos", peDobragrajs);
+        model.addAttribute("user", user);
+        return "fragment/deloproizfrag :: tabledelo";
+    }
+
+/*    @GetMapping("/deloproiz/find")
     public String deloproizfind(
             @RequestParam String regnum,
             @RequestParam(value = "regnumpo", defaultValue = "0") String regnumpo,
@@ -186,9 +267,9 @@ public class OpfrController {
         }
         model.addAttribute("user", user);
         return "fragment/deloproizfrag :: find";
-    }
+    }*/
 
-    @GetMapping("/deloproiz/add")
+    /*@GetMapping("/deloproiz/add")
     public String deloproizadd(
             @RequestParam Integer reg_number,
             @RequestParam String reg_date,
@@ -228,7 +309,7 @@ public class OpfrController {
             PEDdeloproizvodstvo peDdeloproizvodstvo = new PEDdeloproizvodstvo(
                     deloproizvodstvo.getId(), deloproizvodstvo.getReg_pref(), deloproizvodstvo.getRegnumber(),
                     deloproizvodstvo.getReg_postf(), date, deloproizvodstvo.getId_type_send(),
-                    name, text_org, spravkonv, Float.valueOf(sum), kol_vo
+                    name, text_org, spravkonv, Double.valueOf(sum), kol_vo
             );
             peDdeloproizvodstvoService.save(peDdeloproizvodstvo);
         } catch (DataAccessResourceFailureException e) {
@@ -247,7 +328,7 @@ public class OpfrController {
         model.addAttribute("peDdeloproizvodstvos", peDobragrajs);
         model.addAttribute("user", user);
         return "fragment/deloproizfrag :: tabledelo";
-    }
+    }*/
 
 
     @GetMapping("/deloproiz/del")
@@ -280,7 +361,10 @@ public class OpfrController {
     public String obragraj(
             @AuthenticationPrincipal User user,
             Model model) {
-
+        List<VidDost> vidDosts = vidDostService.findAll();
+        model.addAttribute("viddost_ruki", vidDosts);
+        List<Spravkonv> spravkonvs = spravkonvService.findAll();
+        model.addAttribute("spravkonvs", spravkonvs);
         logiService.save(new Logi(new Date(), user.getLogin(), "obragraj"));
 
         List<PEDobragraj> peDobragrajs = peDobragrajService.findAllTekMounth();
@@ -290,7 +374,64 @@ public class OpfrController {
         return "obragraj";
     }
 
-    @GetMapping("/obragraj/add")
+    @GetMapping("/obragraj/add_ruki")
+    public String obragrajadd_ruki(
+            @RequestParam Integer reg_number,
+            @RequestParam String reg_date,
+            @RequestParam String reg_pref,
+            @RequestParam String reg_postf,
+            @RequestParam Long viddost,
+            @RequestParam String text_org,
+            @RequestParam Long type,
+            @RequestParam String sum,
+            @RequestParam String text_fio,
+            @RequestParam String addr_list,
+            @RequestParam Integer kol_vo,
+            @AuthenticationPrincipal User user,
+            Model model) {
+
+        logiService.save(new Logi(new Date(), user.getLogin(), "obragraj param=" +
+                " reg_pref = " + reg_pref +
+                " reg_number = " + reg_number +
+                " reg_postf = " + reg_postf +
+                " reg_date = " + reg_date +
+                " viddost = " + viddost +
+                " text_org = " + text_org +
+                " type = " + type +
+                " sum = " + sum +
+                " kol_vo = " + kol_vo
+        ));
+
+        try {
+            Spravkonv spravkonv = spravkonvService.findById(type);
+
+            VidDost vidDost = vidDostService.findById(viddost);
+
+            Date date = dateddMMyyyy(reg_date);
+
+            PEDobragraj peDobragraj = new PEDobragraj(
+                    null, reg_pref, reg_number.toString(),
+                    reg_postf, date, vidDost.getId(),/*peDdeloproizvodstvoService.findNameId(name),*/
+                    vidDost.getName(), text_org,
+                    text_fio, addr_list,
+                    spravkonv, Double.valueOf(sum), kol_vo
+            );
+            System.out.println("");
+            peDobragrajService.save(peDobragraj);
+        } catch (Exception e) {
+            model.addAttribute("user", user);
+            model.addAttribute("errtext", "Не смог добавить(, возможно вы не все ввели или ключевые поля в базе отсутствуют");
+            model.addAttribute("err", e);
+            return "fragment/err :: error";
+        }
+
+        List<PEDdeloproizvodstvo> peDobragrajs = peDdeloproizvodstvoService.findAllTekMounth();
+        model.addAttribute("peDdeloproizvodstvos", peDobragrajs);
+        model.addAttribute("user", user);
+        return "fragment/deloproizfrag :: tabledelo";
+    }
+
+/*    @GetMapping("/obragraj/add")
     public String obragrajadd(
             @RequestParam Integer reg_number,
             @RequestParam String reg_date,
@@ -304,7 +445,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "deloproizadd param=" +
+        logiService.save(new Logi(new Date(), user.getLogin(), "obragraj param=" +
                 " reg_number = " + reg_number +
                 " reg_date = " + reg_date +
                 " name = " + name +
@@ -334,7 +475,7 @@ public class OpfrController {
             PEDobragraj peDdeloproizvodstvo = new PEDobragraj(
                     deloproizvodstvo.getId(), deloproizvodstvo.getReg_pref(), deloproizvodstvo.getRegnumber(),
                     deloproizvodstvo.getReg_postf(), date, deloproizvodstvo.getId_type_send(),
-                    name, text_org, text_fio, addr_list, spravkonv, Float.valueOf(sum), kol_vo
+                    name, text_org, text_fio, addr_list, spravkonv, Double.valueOf(sum), kol_vo
             );
             peDobragrajService.save(peDdeloproizvodstvo);
         } catch (DataAccessResourceFailureException e) {
@@ -353,9 +494,9 @@ public class OpfrController {
         model.addAttribute("peDdeloproizvodstvos", peDobragrajs);
         model.addAttribute("user", user);
         return "fragment/oblagrajfrag :: tabledelo";
-    }
+    }*/
 
-    @GetMapping("/obragraj/find")
+    /*@GetMapping("/obragraj/find")
     public String obragrajfind(
             @RequestParam String regnum,
             @RequestParam(value = "regnumpo", defaultValue = "0") String regnumpo,
@@ -415,7 +556,7 @@ public class OpfrController {
         }
         model.addAttribute("user", user);
         return "fragment/oblagrajfrag :: find";
-    }
+    }*/
 
     @GetMapping("/obragraj/del")
     public String obragrajdel(
@@ -628,7 +769,7 @@ public class OpfrController {
             Prihod p = prihodService.findById(Long.valueOf(id_prihod));
 
             Pravopriem pravopriem = new Pravopriem(
-                    date1, kol_d, p, Float.valueOf(cena_sell), Float.valueOf(sum_mark)
+                    date1, kol_d, p, Double.valueOf(cena_sell), Double.valueOf(sum_mark)
             );
             pravopriemService.save(pravopriem);
 
@@ -683,8 +824,11 @@ public class OpfrController {
 
         logiService.save(new Logi(new Date(), user.getLogin(), "bolgaria"));
 
-        List<Sendtype> sendtypes = sendtypeService.findAllS();
-        model.addAttribute("sendtypes", sendtypes);
+        //List<Sendtype> sendtypes = sendtypeService.findAllS();
+        //model.addAttribute("sendtypes", sendtypes);
+
+        List<VidDost> vidDosts = vidDostService.findAll();
+        model.addAttribute("viddost_ruki", vidDosts);
 
         List<Spravkonv> spravkonvs = spravkonvService.findAll();
         model.addAttribute("spravkonvs", spravkonvs);
@@ -728,8 +872,9 @@ public class OpfrController {
 
             Bolgaria bolgaria = new Bolgaria(
                     reg_number, date,
-                    id_name, name, text_org, spravkonv, Float.valueOf(sum), kol_vo
+                    id_name, name, text_org, spravkonv, Double.valueOf(sum), kol_vo
             );
+            System.out.println("");
             bolgariaService.save(bolgaria);
 
         } catch (DataAccessResourceFailureException e) {
@@ -795,7 +940,8 @@ public class OpfrController {
             date2 = dateyyyyMMdd(dat2);
         } else {
             LocalDate first = LocalDate.now().withDayOfMonth(1);
-            LocalDate last = first.plusMonths(1).minusDays(1);
+            //LocalDate last = first.plusMonths(1).minusDays(1);
+            LocalDate last = first.plusMonths(1);
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             try {
                 date1 = new SimpleDateFormat("dd.MM.yyyy").parse(first.format(formatter));
@@ -851,7 +997,8 @@ public class OpfrController {
             date2 = dateyyyyMMdd(dat2);
         } else {
             LocalDate first = LocalDate.now().withDayOfMonth(1);
-            LocalDate last = first.plusMonths(1).minusDays(1);
+            //LocalDate last = first.plusMonths(1).minusDays(1);
+            LocalDate last = first.plusMonths(1);
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             try {
                 date1 = new SimpleDateFormat("dd.MM.yyyy").parse(first.format(formatter));
@@ -1028,7 +1175,8 @@ public class OpfrController {
             date2 = dateyyyyMMdd(dat2);
         } else {
             LocalDate first = LocalDate.now().withDayOfMonth(1);
-            LocalDate last = first.plusMonths(1).minusDays(1);
+            LocalDate last = first.plusMonths(1);
+            //LocalDate last = first.plusMonths(1).minusDays(1);
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             try {
                 date1 = new SimpleDateFormat("dd.MM.yyyy").parse(first.format(formatter));
@@ -1073,7 +1221,8 @@ public class OpfrController {
             date2 = dateyyyyMMdd(dat2);
         } else {
             LocalDate first = LocalDate.now().withDayOfMonth(1);
-            LocalDate last = first.plusMonths(1).minusDays(1);
+            LocalDate last = first.plusMonths(1);
+            //LocalDate last = first.plusMonths(1).minusDays(1);
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             try {
                 date1 = new SimpleDateFormat("dd.MM.yyyy").parse(first.format(formatter));
@@ -1325,6 +1474,7 @@ public class OpfrController {
         List<Otchraschodkonv> otchraschodkonv6 = new ArrayList<>();
 
         List<Otchraschodkonv> otchraschodkonv7 = new ArrayList<>();
+        List<Otchraschodkonv> otchraschodkonv22 = new ArrayList<>();//110х220 чистый
 
         for (Otchraschodkonv o :
                 otchraschodkonv) {
@@ -1344,18 +1494,25 @@ public class OpfrController {
             if (o.getPrihod().getSpravkonv().getId() == 7 && o.getOstatok() != 0) {
                 otchraschodkonv7.add(o);
             }
+
+            if (o.getPrihod().getSpravkonv().getId() == 22 && o.getOstatok() != 0) {
+                otchraschodkonv22.add(o);
+            }
+
         }
         model.addAttribute("otchraschodkonv1", otchraschodkonv1);
         model.addAttribute("otchraschodkonv4", otchraschodkonv4);
 //        model.addAttribute("otchraschodkonv5", otchraschodkonv5);
         model.addAttribute("otchraschodkonv6", otchraschodkonv6);
         model.addAttribute("otchraschodkonv7", otchraschodkonv7);
+        model.addAttribute("otchraschodkonv22", otchraschodkonv22);
 
         List<Prihod> prihods1 = new ArrayList<>();
         List<Prihod> prihods4 = new ArrayList<>();
 //        List<Prihod> prihods5 = new ArrayList<>();
         List<Prihod> prihods6 = new ArrayList<>();
         List<Prihod> prihods7 = new ArrayList<>();
+        List<Prihod> prihods22 = new ArrayList<>();
         List<Prihod> prihods = prihodService.findAllD(date1, date2);
         for (Prihod p :
                 prihods) {
@@ -1375,12 +1532,17 @@ public class OpfrController {
             if (p.getSpravkonv().getId() == 7) {
                 prihods7.add(p);
             }
+
+            if (p.getSpravkonv().getId() == 22) {
+                prihods22.add(p);
+            }
         }
         model.addAttribute("prihods1", prihods1);
         model.addAttribute("prihods4", prihods4);
 //        model.addAttribute("prihods5", prihods5);
         model.addAttribute("prihods6", prihods6);
         model.addAttribute("prihods7", prihods7);
+        model.addAttribute("prihods22", prihods22);
 
 
         model.addAttribute("user", user);
@@ -1402,6 +1564,9 @@ public class OpfrController {
             @RequestParam(value = "ppk", defaultValue = "") String ppk,
             @RequestParam(value = "otte", defaultValue = "") String otte,
             @RequestParam(value = "pte", defaultValue = "") String pte,
+
+            @RequestParam(value = "ot110x220clear", defaultValue = "") String ot110x220clear,
+            @RequestParam(value = "p110x220clear", defaultValue = "") String p110x220clear,
             @AuthenticationPrincipal User user,
             Model model) {
 
@@ -1416,7 +1581,9 @@ public class OpfrController {
                 " otpk = " + otpk +
                 " ppk = " + ppk +
                 " otte = " + otte +
-                " pte = " + pte
+                " pte = " + pte +
+                " ot110x220clear = " + ot110x220clear +
+                " p110x220clear = " + p110x220clear
         ));
 
         Date date1 = new Date();
@@ -1429,7 +1596,8 @@ public class OpfrController {
             String delimeter = "-"; // Разделитель
             subStr = date.split(delimeter);
             LocalDate first = LocalDate.of(Integer.valueOf(subStr[0]), Integer.valueOf(subStr[1]), 1);
-            LocalDate end = first.plusMonths(1).minusDays(1);
+            LocalDate end = first.plusMonths(1);
+            //LocalDate end = first.plusMonths(1).minusDays(1);
 
             date1Begin = new SimpleDateFormat("yyyy-MM-dd").parse(first.toString());
             date2End = new SimpleDateFormat("yyyy-MM-dd").parse(end.toString());
@@ -1453,6 +1621,11 @@ public class OpfrController {
 
         String[] otte1 = otte.split(delimeter1);
         String[] pte1 = pte.split(delimeter1);
+
+        String[] ot110x220clear1 = ot110x220clear.split(delimeter1);
+        String[] p110x220clear1 = p110x220clear.split(delimeter1);
+
+
 
         if (otpk1.length > 0 && !otpk1[0].equals("")) {
             for (String ot :
@@ -1607,12 +1780,43 @@ public class OpfrController {
             }
         }
 
+        //
+        if (ot110x220clear1.length > 0 && !ot110x220clear1[0].equals("")) {
+            for (String ot :
+                    ot110x220clear1) {
+                String[] sm = ot.split(delimeter2);
+                Otchraschodkonv otchraschodkonv = otchraschodkonvService.findById(Long.valueOf(sm[0]));
+                Otchraschodkonv otchraschodkonvNEW = new Otchraschodkonv(
+                        otchraschodkonv.getPrihod(),
+                        date1,
+                        Integer.valueOf(sm[1]),
+                        otchraschodkonv.getOstatok() - Integer.valueOf(sm[1])
+                );
+                otchraschodkonvService.save(otchraschodkonvNEW);
+            }
+        }
+
+        if (p110x220clear1.length > 0 && !p110x220clear1[0].equals("")) {
+            for (String ot :
+                    p110x220clear1) {
+                String[] sm = ot.split(delimeter2);
+                Prihod prihod = prihodService.findById(Long.valueOf(sm[0]));
+                Otchraschodkonv otchraschodkonvNEW = new Otchraschodkonv(
+                        prihod,
+                        date1,
+                        Integer.valueOf(sm[1]),
+                        prihod.getKol_vo() - Integer.valueOf(sm[1])
+                );
+                otchraschodkonvService.save(otchraschodkonvNEW);
+            }
+        }
+
         SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
         model.addAttribute("date1", dateFormat1.format(date1Begin));
         model.addAttribute("date2", dateFormat1.format(date2End));
 
         model.addAttribute("user", user);
-        return "fragment/otchpokonfrag :: link";
+        return "fragment/otchpokonfrag :: link"; //TODO дошли до сюда
     }
 
     @GetMapping("/otchpokon/pechatdocx")
@@ -1677,10 +1881,10 @@ public class OpfrController {
             XWPFRun run;
 
             int ras = 0;     //для итоговых сумм
-            float s1 = 0;
-            float s2 = 0;
-            float s3 = 0;
-            float s4 = 0;
+            double s1 = 0;
+            double s2 = 0;
+            double s3 = 0;
+            double s4 = 0;
             XWPFTableRow tableRowTwo;
             for (Otchraschodkonv otchraschodkonv : otchraschodkonvs) {
                 tableRowTwo = T.createRow();
@@ -1925,7 +2129,6 @@ public class OpfrController {
         model.addAttribute("k", k);
         model.addAttribute("r2", mzp);
         model.addAttribute("r1", reestr1i.getSum());
-        //model.addAttribute("rashodmarki", Float.valueOf(reestr1i.getSum())+mzp);
 
         List<Prihodmarki> prihodmarkis = prihodmarkiService.findAllDat(date1, date2);
         List<Otchmark> otchmark = otchmarkService.findAllD(date1minusMonths, date2minusMonths);
@@ -1995,7 +2198,8 @@ public class OpfrController {
             String delimeter = "-"; // Разделитель
             subStr = date.split(delimeter);
             LocalDate first = LocalDate.of(Integer.valueOf(subStr[0]), Integer.valueOf(subStr[1]), 1);
-            LocalDate end = first.plusMonths(1).minusDays(1);
+            LocalDate end = first.plusMonths(1);
+            //LocalDate end = first.plusMonths(1).minusDays(1);
 
             date1Begin = new SimpleDateFormat("yyyy-MM-dd").parse(first.toString());
             date2End = new SimpleDateFormat("yyyy-MM-dd").parse(end.toString());
@@ -2010,7 +2214,7 @@ public class OpfrController {
 
         //Работа с марками
         List<Prihodmarki> prihodmarkis = prihodmarkiService.findAllDat(date1Begin, date2End);
-        Float prihodm = prihodmarkis.size() != 0 ? prihodmarkis.get(0).getPrice() : 0;
+        Double prihodm = prihodmarkis.size() != 0 ? prihodmarkis.get(0).getPrice() : 0D;
 
         List<Otchmark> otchmarks = otchmarkService.findAllD(date1BeginMinusMonths, date2EndMinusMonths);
         Double ostatm = otchmarks.size() != 0 ? otchmarks.get(0).getOstatok() : 0;
@@ -2166,10 +2370,10 @@ public class OpfrController {
             XWPFRun run;
 
             int ras = 0;
-            float s1 = 0;
-            float s2 = 0;
-            float s3 = 0;
-            float s4 = 0;
+            double s1 = 0;
+            double s2 = 0;
+            double s3 = 0;
+            double s4 = 0;
             XWPFTableRow tableRowTwo;
             for (Otchmarkandkonv otchmarkandkonv : otchmarkandkonvs) {
                 tableRowTwo = T.createRow();
@@ -2293,7 +2497,7 @@ public class OpfrController {
             Otchmark otchmark = otchmarkService.findAllD(date1, date2).get(0);
 
             List<Prihodmarki> prihodmarkis = prihodmarkiService.findAllDat(date1, date2);
-            Float prihodm = prihodmarkis.size() != 0 ? prihodmarkis.get(0).getPrice() : 0;
+            Double prihodm = prihodmarkis.size() != 0 ? prihodmarkis.get(0).getPrice() : 0D;
 
             tableRowTwo = T.createRow();
             for (int i = 0; i < 10; i++) {
@@ -2642,8 +2846,7 @@ public class OpfrController {
             model.addAttribute("err", e);
             return "fragment/err :: error";
         }
-        //Prihod prihod = new Prihod(prefix, index, kol_vo, Float.valueOf(price), spravkonv, date1);
-        Prihod prihod = new Prihod(prefix, index, Integer.valueOf(kol_vo), Float.valueOf(price), spravkonv, date1);
+        Prihod prihod = new Prihod(prefix, index, Integer.valueOf(kol_vo), Double.valueOf(price), spravkonv, date1);
         prihodService.save(prihod);
 
         List<Prihod> prihods = prihodService.findAll();
@@ -2718,7 +2921,7 @@ public class OpfrController {
             return "fragment/err :: error";
         }
 
-        Prihodmarki prihodmarki = new Prihodmarki(Float.valueOf(price), date1);
+        Prihodmarki prihodmarki = new Prihodmarki(Double.valueOf(price), date1);
         prihodmarkiService.save(prihodmarki);
 
         List<Prihodmarki> prihods = prihodmarkiService.findAll();
@@ -2839,7 +3042,8 @@ public class OpfrController {
             String delimeter = "-"; // Разделитель
             subStr = dat2.split(delimeter);
             LocalDate first = LocalDate.of(Integer.valueOf(subStr[0]), Integer.valueOf(subStr[1]), 1);
-            LocalDate end = first.plusMonths(1).minusDays(1);
+            //LocalDate end = first.plusMonths(1).minusDays(1);
+            LocalDate end = first.plusMonths(1);
             date1BeginMinusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(first.minusMonths(1).toString());
             date2EndMinusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(end.minusMonths(1).toString());
             String[] moumths = {"января", "февраля", "марта", "апреля", "мая", "июня",
@@ -2856,13 +3060,13 @@ public class OpfrController {
         try {
 
             List<Otchmarkandkonv> otchmarkandkonvs = otchmarkandkonvService.findAllD(date1, date2);
-            float r1 = 0;
-            float r2 = 0;
-            float r3 = 0;
-            float s1 = 0;
-            float s2 = 0;
-            float s3 = 0;
-            float s4 = 0;
+            double r1 = 0;
+            double r2 = 0;
+            double r3 = 0;
+            double s1 = 0;
+            double s2 = 0;
+            double s3 = 0;
+            double s4 = 0;
             for (Otchmarkandkonv otchmarkandkonv : otchmarkandkonvs) {
                 boolean b = prihodService.findbyDatId(date1, date2, otchmarkandkonv.getPrihod().getId());
                 if (b) {
@@ -2882,7 +3086,7 @@ public class OpfrController {
             //марки!!!!!!!!!!!!
             Otchmark otchmark = otchmarkService.findAllD(date1, date2).get(0);
             List<Prihodmarki> prihodmarkis = prihodmarkiService.findAllDat(date1, date2);
-            Float prihodm = prihodmarkis.size() != 0 ? prihodmarkis.get(0).getPrice() : 0;
+            Double prihodm = prihodmarkis.size() != 0 ? prihodmarkis.get(0).getPrice() : 0D;
             s1 += otchmark.getOstatok() + otchmark.getRashod1() + otchmark.getRashod2() - prihodm;
             s2 += prihodm;
             r3 += otchmark.getRashod1() + otchmark.getRashod2();
@@ -3001,7 +3205,8 @@ public class OpfrController {
             date2 = dateyyyyMMdd(dat2);
         } else {
             LocalDate first = LocalDate.now().withDayOfMonth(1);
-            LocalDate last = first.plusMonths(1).minusDays(1);
+            //LocalDate last = first.plusMonths(1).minusDays(1);
+            LocalDate last = first.plusMonths(1);
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             try {
                 date1 = new SimpleDateFormat("dd.MM.yyyy").parse(first.format(formatter));
@@ -3026,7 +3231,12 @@ public class OpfrController {
 
     Date dateddMMyyyy(String dat) {
         Date date = new Date();
-        DateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        DateFormat format = null;
+        try{
+            format = new SimpleDateFormat("dd.MM.yyyy");
+        }catch (Exception e){
+            return dateyyyyMMdd(dat);
+        }
         try {
             date = format.parse(dat);
         } catch (ParseException e) {
@@ -3046,9 +3256,9 @@ public class OpfrController {
         return date;
     }
 
-    String okrug(Float f) {
+    /*String okrug(Float f) {
         return f != null ? new DecimalFormat("#0.00").format(f) : null;
-    }
+    }*/
     String okrug(Double f) {
         return f != null ? new DecimalFormat("#0.00").format(f) : null;
     }

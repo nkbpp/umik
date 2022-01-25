@@ -6,6 +6,7 @@
     <script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.js"></script>
     <link type="text/css" rel="stylesheet" href="/webjars/materialize/1.0.0-rc.2/dist/css/materialize.min.css"/>
     <script type="text/javascript">
+
         $(document).ready(function () {
             $(".dropdown-trigger").dropdown(); //чтобы меню хренячило
         });
@@ -13,6 +14,8 @@
     </script>
 </head>
 <body>
+
+
 <div th:insert="fragment/logout :: logout(${user})"></div>
 <div th:insert="fragment/menu :: menu"></div>
 

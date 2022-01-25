@@ -1,3 +1,4 @@
+/*
 package ru.pfr.repo.rsdoc_pfr;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,3 +24,4 @@ public interface SendtypeRepository extends JpaRepository<Sendtype, Long> {
 
     public List<Sendtype> findAll();
 }
+*/

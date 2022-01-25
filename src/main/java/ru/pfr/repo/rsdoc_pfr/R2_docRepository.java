@@ -1,3 +1,4 @@
+/*
 package ru.pfr.repo.rsdoc_pfr;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,3 +13,4 @@ public interface R2_docRepository extends JpaRepository<R2_doc, Long> {
 
     public List<R2_doc> findAll();
 }
+*/

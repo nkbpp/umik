@@ -13,7 +13,7 @@ public class Prihodmarki {
     private Long id;
 
     @Column(name = "price")
-    private Float price;
+    private Double price;
 
     @Column(name = "dat")
     private Date date;
@@ -26,7 +26,7 @@ public class Prihodmarki {
     public Prihodmarki() {
     }
 
-    public Prihodmarki(Float price, Date date) {
+    public Prihodmarki(Double price, Date date) {
         this.price = price;
         this.date = date;
     }
@@ -39,11 +39,11 @@ public class Prihodmarki {
         this.id = id;
     }
 
-    public Float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

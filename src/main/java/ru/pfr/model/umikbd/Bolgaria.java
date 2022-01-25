@@ -33,7 +33,7 @@ public class Bolgaria {
     private Spravkonv spravkonv;
 
     @Column(name = "sum")
-    private Float sum;
+    private Double sum;
 
     @Column(name = "kol_vo")
     private Integer kol_vo;
@@ -46,7 +46,7 @@ public class Bolgaria {
     public Bolgaria() {
     }
 
-    public Bolgaria(String reg_number, Date reg_date, Long id_name, String name, String text_org, Spravkonv spravkonv, Float sum, Integer kol_vo) {
+    public Bolgaria(String reg_number, Date reg_date, Long id_name, String name, String text_org, Spravkonv spravkonv, Double sum, Integer kol_vo) {
         this.reg_number = reg_number;
         this.reg_date = reg_date;
         this.id_name = id_name;
@@ -113,11 +113,11 @@ public class Bolgaria {
         this.spravkonv = spravkonv;
     }
 
-    public Float getSum() {
+    public Double getSum() {
         return sum;
     }
 
-    public void setSum(Float sum) {
+    public void setSum(Double sum) {
         this.sum = sum;
     }
 

@@ -26,16 +26,25 @@
 
                     console.log("Дата = " + FullDate);
 
-                    var param = "prefix=" + $("#prefix").val() +
+                    var param = "prefix=" + encodeURIComponent($("#prefix").val()) +
                         "&index=" + $("#index").val() +
                         "&kol_vo=" + $("#kol_vo").val() +
                         "&price=" + $("#price").val().replace(',','.') +
                         "&id_konv=" + $("#type").val() +
                         "&date=" + FullDate;
 
-                    $("#tablekonv").load("/umik/main/prihod/add", param, function () {
-                        $('select').formSelect();//селект с конвертами
-                        alert('Успешно добавлено!');
+                    console.log(param)
+                    console.log("encodeURI",encodeURIComponent($("#prefix").val()))
+
+                    $("#tablekonv").load("/umik/main/prihod/add", param, function (responseText, textStatus, req) {
+                        console.log(responseText," as ", textStatus)
+                        if (textStatus == "error") {
+                                alert("Добавить не удалось!");
+                        } else {
+                            //селект с конвертами
+                            alert('Успешно добавлено!');
+                        }
+                        $('select').formSelect();
                     });
                     return false;
                 }

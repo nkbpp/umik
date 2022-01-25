@@ -5,7 +5,6 @@ import org.junit.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class OpfrControllerTest {
@@ -117,11 +116,11 @@ public class OpfrControllerTest {
     @Test
     public void okrug() {
 
-        float f = 15.33333f;
+        double f = 15.33333f;
         String s = opfrController.okrug(f);
 
         assertEquals("15,33",s);
-        assertEquals("1,00",opfrController.okrug(1f));
+        assertEquals("1,00",opfrController.okrug(1d));
 
         //assertNull("Not NaN for null", opfrController.okrug());
 

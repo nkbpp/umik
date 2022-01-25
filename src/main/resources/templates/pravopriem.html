@@ -13,13 +13,13 @@
             var date = new Date();
             $("#date").val(
                 date.getFullYear() + "-" +
-                ((+date.getMonth()+1)<10?"0"+(+date.getMonth()+1): (+date.getMonth()+1))
+                ((+date.getMonth() + 1) < 10 ? "0" + (+date.getMonth() + 1) : (+date.getMonth() + 1))
                 + "-" +
-                (date.getDate()<10?"0"+date.getDate(): date.getDate()));
+                (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()));
 
             $("body").on('click', 'a', function () {
                 if ($(this).attr('id') == "vvod") {
-                    if($("#kol_d").val()==""){
+                    if ($("#kol_d").val() == "") {
                         alert("Введите количество!");
                         return;
                     }
@@ -28,7 +28,7 @@
                         "&kol_d=" + $("#kol_d").val() +
                         "&id_prihod=" + $("#id_prihod").val() +
                         "&cena_sell=" + $("#cena_sell").val() +
-                        "&sum_mark=" + ($("#sum_mark").val()==""?0:$("#sum_mark").val().replace(",","."));
+                        "&sum_mark=" + ($("#sum_mark").val() == "" ? 0 : $("#sum_mark").val().replace(",", "."));
                     console.log("param=" + param);
                     var url = "/umik/main/pravopriem/add" + "?" + param;
                     location.href = url;
@@ -55,64 +55,67 @@
 <div th:insert="fragment/menu :: menu"></div>
 
 <div class="row">
-    <div class="row">
-        <div class="col s6 row">
-            <div class="col s6">Дата</div>
-            <div class="col s6">
-                <input type="date" id="date">
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col s6 row">
-            <div class="col s6">Количество конверта D</div>
-            <div class="col s6">
-                <input type="text" id="kol_d">
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col s6 row">
-            <div class="col s6">Конверт</div>
-            <div class="col s6">
-                <div class="input-field col s12">
-                    <select id="id_prihod">
-                        <option th:each="p : ${prihodsD}"  th:text="${p.getFullNamePrice()}"
-                                th:value="${p.id}"></option>
-                    </select>
-                    <label>Тип конверта</label>
+    <div class="col s3"></div>
+    <div class="col s6">
+        <div class="row">
+            <div class="col s12 row">
+                <div class="col s6">Дата</div>
+                <div class="col s6">
+                    <input type="date" id="date">
                 </div>
             </div>
         </div>
-    </div>
 
-    <div th:text="${test}"></div>
-
-    <div class="row">
-        <div class="col s6 row">
-            <div class="col s6">Тариф за пересылку 20гр</div>
-            <div class="col s6">
-                <input type="text" id="cena_sell" th:value="${max}">
+        <div class="row">
+            <div class="col s12 row">
+                <div class="col s6">Количество конверта D</div>
+                <div class="col s6">
+                    <input type="text" id="kol_d">
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col s6 row">
-            <div class="col s6">Сумма марок к заказным конвертам</div>
-            <div class="col s6">
-                <input type="text" id="sum_mark">
+        <div class="row">
+            <div class="col s12 row">
+                <div class="col s6">Конверт</div>
+                <div class="col s6">
+                    <div class="input-field col s12">
+                        <select id="id_prihod">
+                            <option th:each="p : ${prihodsD}" th:text="${p.getFullNamePrice()}"
+                                    th:value="${p.id}"></option>
+                        </select>
+                        <label>Тип конверта</label>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col s6 row">
-            <div class="col s6"></div>
-            <div class="col s6">
-                <a class="waves-effect waves-light btn" id="vvod">Добавить</a>
+
+
+        <div class="row">
+            <div class="col s12 row">
+                <div class="col s6">Тариф за пересылку 20гр</div>
+                <div class="col s6">
+                    <input type="text" id="cena_sell" th:value="${max}">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12 row">
+                <div class="col s6">Сумма марок к заказным конвертам</div>
+                <div class="col s6">
+                    <input type="text" id="sum_mark">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12 row">
+                <div class="col s6"></div>
+                <div class="col s6">
+                    <a class="waves-effect waves-light btn" id="vvod">Добавить</a>
+                </div>
             </div>
         </div>
     </div>

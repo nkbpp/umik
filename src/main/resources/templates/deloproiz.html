@@ -8,6 +8,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $(".dropdown-trigger").dropdown(); //чтобы меню хренячило
+            $('select').formSelect();//селект с конвертами
 
             //устанавливаю текущий год
             var date = new Date();
@@ -22,6 +23,48 @@
 
                     $("#inf").load("/umik/main/deloproiz/find", param, function () {
                         $('select').formSelect();//селект с конвертами
+                    });
+                    return false;
+                }
+
+/*                if ($(this).attr('id') == "ruki") {
+                    var param = "regnum=" + $("#regnum").val() +
+                        "&regnumpo=" + $("#regnumpo").val() +
+                        "&god=" + $("#god").val();
+
+                    $("#inf").load("/umik/main/deloproiz/ruki", param, function () {
+                        $('select').formSelect();//селект с конвертами
+                    });
+                    return false;
+                }*/
+
+                if (this.getAttribute("name") == "vvod_ruki") {
+
+                    let param = "reg_number=" + $("#reg_number_ruki").val() +
+                        "&reg_date=" + $("#reg_date_ruki").val() +
+                        //"&name=" + $("#name_ruki").val() +
+                        "&text_org=" + $("#text_org_ruki").val() +
+                        "&kol_vo=" + $("#kol_vo_ruki").val() +
+                        "&viddost=" + $("#name_id_ruki").val() +
+                        "&type=" + $("#type_ruki").val() +
+                        "&reg_pref=" + $("#reg_pref_ruki").val() +
+                        "&reg_postf=" + $("#reg_postf_ruki").val() +
+                        "&sum=" + $("#sum_ruki").val().replace(",",".");
+                    console.log("param=" + param);
+                    //var url = "/umik/main/deloproiz/add_ruki" + "?" + param;
+                    $("#tabledelo").load("/umik/main/deloproiz/add_ruki", param, function () {
+                        $('select').formSelect();//селект с конвертами
+                        $("#reg_number_ruki").val("");
+                        $("#reg_date_ruki").val("");
+                        //$("#name_ruki").val("");
+                        $("#text_org_ruki").val("");
+                        $("#kol_vo_ruki").val("");
+                        //$("#type_ruki").val("");
+                        $("#reg_pref_ruki").val("");
+                        $("#reg_postf_ruki").val("");
+                        $("#sum_ruki").val("");
+                        //скрыть добавленное
+                        //$("[name="+id+"]").remove();
                     });
                     return false;
                 }
@@ -66,7 +109,12 @@
 <div th:insert="fragment/menu :: menu"></div>
 
 
-    <div th:insert="fragment/deloproizfrag :: mf"></div>
+    <!--<div th:insert="fragment/deloproizfrag :: mf"></div>-->
+    <!--<div id="rukivvod"></div>-->
+
+    <div id="rukivvod">
+        <div th:insert="fragment/deloproizfrag :: rukivvod"></div>
+    </div>
 
     <div id="inf"></div>
 
@@ -74,5 +122,6 @@
 
 
     <script type="text/javascript" src="/webjars/materialize/1.0.0-rc.2/dist/js/materialize.min.js"></script>
+
 </body>
 </html>

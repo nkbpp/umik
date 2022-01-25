@@ -22,7 +22,7 @@ public class Prihod {
     private Integer kol_vo;
 
     @Column(name = "price")
-    private Float price;
+    private Double price;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_konv")
@@ -47,7 +47,7 @@ public class Prihod {
     public Prihod() {
     }
 
-    public Prihod(String prefix, String index, Integer kol_vo, Float price, Spravkonv spravkonv, Date date) {
+    public Prihod(String prefix, String index, Integer kol_vo, Double price, Spravkonv spravkonv, Date date) {
         this.prefix = prefix;
         this.index = index;
         this.kol_vo = kol_vo;
@@ -88,11 +88,11 @@ public class Prihod {
         this.kol_vo = kol_vo;
     }
 
-    public Float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

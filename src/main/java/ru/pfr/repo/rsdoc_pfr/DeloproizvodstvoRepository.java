@@ -1,3 +1,4 @@
+/*
 package ru.pfr.repo.rsdoc_pfr;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -40,3 +41,4 @@ public interface DeloproizvodstvoRepository extends JpaRepository<Deloproizvodst
 
     public List<Deloproizvodstvo> findAll();
 }
+*/

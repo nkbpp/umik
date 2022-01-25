@@ -164,7 +164,7 @@
                     var ot110x220 = [];
                     for (var i = 0; i < ot110x220id.length; i++) {
                         ot110x220.push(ot110x220id[i]+";"+(ot110x220r1[i]==""?"0":ot110x220r1[i]));
-                    }ot110x220
+                    }
 
                     var p110x220id = [];
                     $("#110x220ot [name^='p-']").each(function(indx, element){
@@ -233,7 +233,34 @@
                     for (var i = 0; i < pteid.length; i++) {
                         pte.push(pteid[i]+";"+(pter1[i]==""?"0":pter1[i]));
                     }
+
+
                     //--
+                    let ot110x220clearid = [];
+                    $("#110x220clearot [name^='ot-']").each(function(indx, element){
+                        ot110x220clearid.push(+$(element).attr("name").replace("ot-",""));
+                    });
+                    let ot110x220clearr1 = [];
+                    $("#110x220clearot [name^='ot-'] [name='reestr1']").each(function(indx, element){
+                        ot110x220clearr1.push($(element).val());
+                    });
+                    let ot110x220clear = [];
+                    for (let i = 0; i < ot110x220clearid.length; i++) {
+                        ot110x220clear.push(ot110x220clearid[i]+";"+(ot110x220clearr1[i]==""?"0":ot110x220clearr1[i]));
+                    }
+
+                    let p110x220clearotid = [];
+                    $("#110x220clearot [name^='p-']").each(function(indx, element){
+                        p110x220clearotid.push(+$(element).attr("name").replace("p-",""));
+                    });
+                    let p110x220clearotr1 = [];
+                    $("#110x220clearot [name^='p-'] [name='reestr1']").each(function(indx, element){
+                        p110x220clearotr1.push($(element).val());
+                    });
+                    let p110x220clear = [];
+                    for (let i = 0; i < p110x220clearotid.length; i++) {
+                        p110x220clear.push(p110x220clearotid[i]+";"+(p110x220clearotr1[i]==""?"0":p110x220clearotr1[i]));
+                    }
 
                     var delim="!";
                     var param =
@@ -247,7 +274,9 @@
                         "&otpk=" + otpk.join(delim) +
                         "&ppk=" + ppk.join(delim) +
                         "&otte=" + otte.join(delim) +
-                        "&pte=" + pte.join(delim);
+                        "&pte=" + pte.join(delim)+
+                        "&ot110x220clear=" + ot110x220clear.join(delim) +
+                        "&p110x220clear=" + p110x220clear.join(delim);
 
                     console.log(param);
 

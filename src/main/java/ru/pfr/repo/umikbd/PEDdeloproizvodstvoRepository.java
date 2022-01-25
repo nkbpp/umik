@@ -12,6 +12,8 @@ public interface PEDdeloproizvodstvoRepository extends JpaRepository<PEDdeloproi
 
     public Optional<PEDdeloproizvodstvo> findById(Long l);
 
+    public List<PEDdeloproizvodstvo> findByName(String name);
+
     public List<PEDdeloproizvodstvo> findAll();
 
     @Query(

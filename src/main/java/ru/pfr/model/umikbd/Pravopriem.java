@@ -20,37 +20,37 @@ public class Pravopriem {
     private Long konvert_d;
 
     @Column(name = "cena_sell")
-    private Float cena_sell; // тариф за пересылку 20г
+    private Double cena_sell; // тариф за пересылку 20г
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_prihod")
     private Prihod prihod;
 
     @Column(name = "marki_k_zak_pis")
-    private Float marki_k_zak_pis;
+    private Double marki_k_zak_pis;
 
     public String get_datestr() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         return dateFormat.format(this.date);
     }
 
-    public Float getPrice() {
+    public Double getPrice() {
         return this.prihod.getPrice();
     }
 
-    public Float get_sumk() {
+    public Double get_sumk() {
         return (this.cena_sell!=0 && this.cena_sell>0)?
                 (this.konvert_d * this.cena_sell):(this.konvert_d * this.prihod.getPrice());
     }
 
-    public Float get_sumob() {
+    public Double get_sumob() {
         return get_sumk()+this.marki_k_zak_pis;
     }
 
     public Pravopriem() {
     }
 
-    public Pravopriem(Date date, Long konvert_d, Prihod prihod, Float cena_sell, Float marki_k_zak_pis) {
+    public Pravopriem(Date date, Long konvert_d, Prihod prihod, Double cena_sell, Double marki_k_zak_pis) {
         this.date = date;
         this.konvert_d = konvert_d;
         this.prihod = prihod;
@@ -90,7 +90,7 @@ public class Pravopriem {
         this.prihod = prihod;
     }
 
-    public Float getMarki_k_zak_pis() {
+    public Double getMarki_k_zak_pis() {
         return marki_k_zak_pis;
     }
 
@@ -98,15 +98,15 @@ public class Pravopriem {
         return cena_sell!=null && cena_sell>0?cena_sell:marki_k_zak_pis;
     }*/
 
-    public Float getCena_sell() {
+    public Double getCena_sell() {
         return cena_sell;
     }
 
-    public void setCena_sell(Float cena_sell) {
+    public void setCena_sell(Double cena_sell) {
         this.cena_sell = cena_sell;
     }
 
-    public void setMarki_k_zak_pis(Float marki_k_zak_pis) {
+    public void setMarki_k_zak_pis(Double marki_k_zak_pis) {
         this.marki_k_zak_pis = marki_k_zak_pis;
     }
 }

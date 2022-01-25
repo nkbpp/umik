@@ -1,3 +1,4 @@
+/*
 package ru.pfr.service.rsdoc_pfr;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,11 @@ public class DeloproizvodstvoService {
         return deloproizvodstvoRepository.findById(id).get();
     }
 
+*/
 /*    public Deloproizvodstvo findByRegnumberAndRegdateBetween(String r, Date d1, Date d2) {
         return deloproizvodstvoRepository.findByRegnumberAndRegdateBetween(r, d1, d2).get();
-    }*/
+    }*//*
+
 
     public Deloproizvodstvo findByRegnumber(Integer r, Date d1, Date d2) {
         return deloproizvodstvoRepository.findByRegnumber(r, d1, d2).get();
@@ -31,15 +34,18 @@ public class DeloproizvodstvoService {
 
 
 
+*/
 /*    public Deloproizvodstvo findByRegnumber2(Integer r, Date d1, Date d2, String textorg) {
         return deloproizvodstvoRepository.findByRegnumber2(r, d1, d2, textorg).get(0);
-    }*/
+    }*//*
+
 
     public Deloproizvodstvo findByRegnumber4(Integer r, Date d1, Date d2, String textorg, String name) {
         List<Deloproizvodstvo> d = deloproizvodstvoRepository.findByRegnumber2(r, d1, d2, textorg, name);
 
 
-        return d.get(0);/*        Oblagraj oblagraj = null;
+        return d.get(0);*/
+/*        Oblagraj oblagraj = null;
         if (d.size() <= 1) {
             oblagraj = d.get(0);
         } else {
@@ -58,7 +64,8 @@ public class DeloproizvodstvoService {
                     oblagraj = o;
                 }
             }
-        }*/
+        }*//*
+
     }
 
     public List<Deloproizvodstvo> findByRegnumber3(Integer r, Integer r2, Date d1, Date d2) {
@@ -70,3 +77,4 @@ public class DeloproizvodstvoService {
     }
 
 }
+*/

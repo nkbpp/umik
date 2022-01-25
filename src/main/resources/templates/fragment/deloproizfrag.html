@@ -82,6 +82,80 @@
     </table>
 </div>
 
+<div th:fragment="rukivvod">
+    <div class="row">
+        <div class="col s3"></div>
+        <div class="col s6">
+            <table id="tableadd_ruki">
+                <tr>
+                    <td align="center">Префикс:</td>
+                    <td>
+                        <input type="text" id="reg_pref_ruki">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">Регистрационный номер:</td>
+                    <td>
+                        <input type="text" id="reg_number_ruki">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">Постфикс: </td>
+                    <td>
+                        <input type="text" id="reg_postf_ruki">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">Дата регистрации:</td>
+                    <td>
+                        <input type="date" id="reg_date_ruki">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">Адресат:</td>
+                    <td>
+                        <input type="text" id="text_org_ruki">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">Вид доставки:</td>
+                    <td>
+                        <select id="name_id_ruki">
+                            <option th:each="vd : ${viddost_ruki}"  th:text="${vd.name}" th:value="${vd.id}"></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">Тип конверта:</td>
+                    <td>
+                        <select id="type_ruki">
+                            <option th:each="sk : ${spravkonvs}"  th:text="${sk.type}" th:value="${sk.id}"></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">Количество конвертов:</td>
+                    <td>
+                        <input type="text" id="kol_vo_ruki">
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">Сумма марок:</td>
+                    <td>
+                        <input type="text" id="sum_ruki">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td align="center">
+                        <a name="vvod_ruki" class="waves-effect waves-light btn">Добавить</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
 <div  th:fragment="mf">
     <div class="row">
         <div class="col s4 row">
@@ -104,6 +178,11 @@
             <div class="col s3">
                 <a class="waves-effect waves-light btn" id="find">Найти</a>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <a class="waves-effect waves-light btn" id="ruki">Ручной ввод</a>
         </div>
     </div>
 </div>

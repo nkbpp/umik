@@ -42,7 +42,7 @@ public class PEDdeloproizvodstvo {
     private Spravkonv spravkonv;
 
     @Column(name = "sum")
-    private Float sum;
+    private Double sum;
 
     @Column(name = "kol_vo")
     private Integer kol_vo;
@@ -55,7 +55,7 @@ public class PEDdeloproizvodstvo {
     public PEDdeloproizvodstvo() {
     }
 
-    public PEDdeloproizvodstvo(Long iddeloproizvodstvo, String reg_pref, String reg_number, String reg_postf, Date reg_date, Long id_name, String name, String text_org, Spravkonv spravkonv, Float sum, Integer kol_vo) {
+    public PEDdeloproizvodstvo(Long iddeloproizvodstvo, String reg_pref, String reg_number, String reg_postf, Date reg_date, Long id_name, String name, String text_org, Spravkonv spravkonv, Double sum, Integer kol_vo) {
         this.iddeloproizvodstvo = iddeloproizvodstvo;
         this.reg_pref = reg_pref;
         this.reg_number = reg_number;
@@ -149,11 +149,11 @@ public class PEDdeloproizvodstvo {
         this.spravkonv = spravkonv;
     }
 
-    public Float getSum() {
+    public Double getSum() {
         return sum;
     }
 
-    public void setSum(Float sum) {
+    public void setSum(Double sum) {
         this.sum = sum;
     }
 

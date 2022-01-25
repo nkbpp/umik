@@ -28,6 +28,11 @@ public class PEDdeloproizvodstvoService {
         return peDdeloproizvodstvoRepository.findAll();
     }
 
+    public Long findNameId(String name) {
+        List<PEDdeloproizvodstvo> peDdeloproizvodstvos = peDdeloproizvodstvoRepository.findByName(name);
+        return peDdeloproizvodstvos.isEmpty() || peDdeloproizvodstvos.size()>0? peDdeloproizvodstvoRepository.findByName(name).get(0).getId_name():null;
+    }
+
     public List<PEDdeloproizvodstvo> findAllDate(Date d1, Date d2) {
         return peDdeloproizvodstvoRepository.findAllDate(d1, d2);
     }
@@ -36,7 +41,8 @@ public class PEDdeloproizvodstvoService {
         Date date1 = new Date(); //текущий месяц
         Date date2 = new Date();
         LocalDate first = LocalDate.now().withDayOfMonth(1);
-        LocalDate last = first.plusMonths(1).minusDays(1);
+        LocalDate last = first.plusMonths(1);
+        //LocalDate last = first.plusMonths(1).minusDays(1);
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         try {
             date1 = new SimpleDateFormat("dd.MM.yyyy").parse(first.format(formatter));

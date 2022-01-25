@@ -1,3 +1,4 @@
+/*
 package ru.pfr.service.rsdoc_pfr;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,3 +58,4 @@ public class OblagrajService {
     }
 
 }
+*/

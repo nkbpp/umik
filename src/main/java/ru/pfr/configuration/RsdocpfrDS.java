@@ -1,3 +1,4 @@
+/*
 package ru.pfr.configuration;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -54,3 +55,4 @@ public class RsdocpfrDS {
         return new JpaTransactionManager(rsdocpfrEntityManagerFactory);
     }
 }
+*/

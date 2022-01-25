@@ -32,7 +32,8 @@ public class InoeService {
         Date date1 = new Date(); //текущий месяц
         Date date2 = new Date();
         LocalDate first = LocalDate.now().withDayOfMonth(1);
-        LocalDate last = first.plusMonths(1).minusDays(1);
+        LocalDate last = first.plusMonths(1);
+        //LocalDate last = first.plusMonths(1).minusDays(1);
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         try {
             date1 = new SimpleDateFormat("dd.MM.yyyy").parse(first.format(formatter));

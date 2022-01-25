@@ -21,10 +21,10 @@ public class UserService {
     }
 
     public User findByLoginuser(String login) {
-        return userRepository.findByLogin(login).get();
+        return userRepository.findByLogin(login).orElse(null);
     }
 
     public User findById(Long id) {
-        return userRepository.findById(id).get();
+        return userRepository.findById(id).orElse(null);
     }
 }

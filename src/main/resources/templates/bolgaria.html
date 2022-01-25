@@ -62,9 +62,10 @@
 <div th:insert="fragment/menu :: menu"></div>
 
 <div class="row">
-
+    <div class="col s3"></div>
+    <div class="col s6">
     <div class="row">
-        <div class="col s6 row">
+        <div class="col s12 row">
             <div class="col s6">Введите Рег ном</div>
             <div class="col s6">
                 <input type="text" id="regnum">
@@ -73,7 +74,7 @@
     </div>
 
     <div class="row">
-        <div class="col s6 row">
+        <div class="col s12 row">
             <div class="col s6">Дата регистрации</div>
             <div class="col s6">
                 <input type="date" id="reg_date">
@@ -82,7 +83,7 @@
     </div>
 
     <div class="row">
-        <div class="col s6 row">
+        <div class="col s12 row">
             <div class="col s6">Адресат</div>
             <div class="col s6">
                 <input type="text" id="text_org">
@@ -91,14 +92,17 @@
     </div>
 
     <div class="row">
-        <div class="col s6 row">
+        <div class="col s12 row">
             <div class="col s6">Тип доставки</div>
             <div class="col s6">
 
                 <div class="input-field col s12">
-                    <select id="typest">
+                    <!--<select id="typest">
                         <option th:each="st : ${sendtypes}" th:text="${st.name}"
                                 th:value="${st.sendtypeid}"></option>
+                    </select>-->
+                    <select id="typest">
+                        <option th:each="vd : ${viddost_ruki}"  th:text="${vd.name}" th:value="${vd.id}"></option>
                     </select>
                     <label>Тип доставки</label>
                 </div>
@@ -108,7 +112,7 @@
 
 
     <div class="row">
-        <div class="col s6 row">
+        <div class="col s12 row">
             <div class="col s6">Конверт</div>
             <div class="col s6">
 
@@ -124,7 +128,7 @@
     </div>
 
     <div class="row">
-        <div class="col s6 row">
+        <div class="col s12 row">
             <div class="col s6">Количество конвертов</div>
             <div class="col s6">
                 <input type="text" id="kol_vo">
@@ -133,7 +137,7 @@
     </div>
 
     <div class="row">
-        <div class="col s6 row">
+        <div class="col s12 row">
             <div class="col s6">Сумма марок</div>
             <div class="col s6">
                 <input type="text" id="sum" value="0">
@@ -142,14 +146,14 @@
     </div>
 
     <div class="row">
-        <div class="col s6 row">
+        <div class="col s12 row">
             <div class="col s6"></div>
             <div class="col s6">
                 <a class="waves-effect waves-light btn" id="vvod">Добавить</a>
             </div>
         </div>
     </div>
-
+    </div>
 </div>
 
 <div id="tablebolgaria" th:insert="fragment/bolgariafrag :: tablebolgaria"></div>

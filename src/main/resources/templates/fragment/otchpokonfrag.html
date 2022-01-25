@@ -168,6 +168,36 @@
                     </div>
                 </div>
 
+                <!--110х220 чистый-->
+                <div class="col s12" id="110x220clearot">
+                    <div class="row">
+                        <div class="col s12" th:text="'110x220 чистый ' + ${reestr1i.id_konv22}"></div>
+                    </div>
+                    <div class="row" th:each="o : ${otchraschodkonv22}" th:name="'ot-' + ${o.id}">
+                        <div class="col s12 row" >
+                            <div class="col s3" th:text="'Реестр 1 ' + ${o.prihod.getFullName()}">
+                            </div>
+                            <div class="col s1" th:text="${o.ostatok}">
+                            </div>
+                            <div class="col s3">
+                                <input type="text" value="0" name="reestr1">
+                            </div>
+                        </div>
+                    </div>
+                    <!--Приход-->
+                    <div class="row" th:each="p : ${prihods22}" th:name="'p-' + ${p.id}"><!--${o.prihod.spravkonv.id=1}-->
+                        <div class="col s12 row" >
+                            <div class="col s3" th:text="'Реестр 1 ' + ${p.getFullName()}">
+                            </div>
+                            <div class="col s1" th:text="${p.kol_vo}">
+                            </div>
+                            <div class="col s3">
+                                <input type="text" value="0" name="reestr1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
