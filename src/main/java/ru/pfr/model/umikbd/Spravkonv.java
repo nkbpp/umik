@@ -55,4 +55,12 @@ public class Spravkonv {
     public boolean ispoly(){
         return this.id==6;
     }
+
+    public boolean is11(){
+        return this.id==11;
+    }
+
+    public boolean is14(){
+        return this.id==14;
+    }
 }

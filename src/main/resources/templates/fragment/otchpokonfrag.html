@@ -6,26 +6,325 @@
 <div th:fragment="form">
     <div class="row">
         <div class="col s12">
+
+            <!--A4-->
+
+            <table class="table table-secondary table-striped table-hover table-bordered table-sm
+                align-middle text-center" id="a4ot">
+                <caption class="caption-top">A4</caption>
+                <thead>
+                <tr>
+                    <th class="col-md-6">Наименование конверта А4</th>
+                    <th class="col-md-2">Не распределено</th>
+                    <th class="col-md-2">Распределить</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="o, iter : ${otchraschodkonv1}" th:name="'ot-' + ${o.id}">
+                    <td th:text="'Реестр 1 ' + ${o.prihod.getFullName()}"></td>
+                    <td class='table-active raspr'
+                        th:name="${reestr1i.id_konv1}"
+                        th:if="${iter.count==1}"
+                        th:rowspan="${otchraschodkonv1.size() + prihods1.size()}"
+                        th:text="${reestr1i.id_konv1}"></td>
+                    <td class="text-end">
+                        <input  class="form-control"
+                                type="number"
+                                value="0"
+                                th:id="'ot-input-'+${o.id}"
+                                name="reestr1"
+                                min="0" th:max="${o.ostatok}" step="1" data-bind="value:replyNumber"
+                                onkeypress="return (event.charCode >= 48 && event.charCode <= 57 && /^\d*$/.test(this.value));"
+                        />
+                        <label class="form-label m-0 p-0"
+                               th:for="'ot-input-'+${o.id}">
+                            Осталось:
+                            <a class="link-dark link-ostatok" href="#!" th:text="' ' + ${o.ostatok}"></a>
+                        </label>
+                    </td>
+                </tr>
+                <!--Приход-->
+                <tr  th:each="p, iter : ${prihods1}" th:name="'p-' + ${p.id}">
+                    <td th:text="'Реестр 1 ' + ${p.getFullName()}"></td>
+                    <td class="text-end">
+                        <input  class="form-control"
+                                type="number"
+                                value="0"
+                                th:id="'p-input-'+${p.id}"
+                                name="reestr1"
+                                min="0" th:max="${p.kol_vo}" step="1" data-bind="value:replyNumber"
+                                onkeypress="return (event.charCode >= 48 && event.charCode <= 57 && /^\d*$/.test(this.value));"
+                        />
+                        <label class="form-label m-0 p-0"
+                               th:for="'p-input-'+${p.id}">
+                            Осталось:
+                            <a class="link-dark link-ostatok" href="#!" th:text="' ' + ${p.kol_vo}"></a>
+                        </label>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!--C5-->
+
+            <table class="table table-secondary table-striped table-hover table-bordered table-sm
+                align-middle text-center" id="c5ot"><!--id-->
+                <caption class="caption-top">C5</caption><!--C5-->
+                <thead>
+                <tr>
+                    <th class="col-md-6">Наименование конверта C5</th><!--C5-->
+                    <th class="col-md-2">Не распределено</th>
+                    <th class="col-md-2">Распределить</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="o, iter : ${otchraschodkonv4}" th:name="'ot-' + ${o.id}"><!--each name-->
+                    <td th:text="'Реестр 1 ' + ${o.prihod.getFullName()}"></td>
+                    <td class='table-active raspr'
+                        th:name="${reestr1i.id_konv4}"
+                        th:if="${iter.count==1}"
+                        th:rowspan="${otchraschodkonv4.size() + prihods4.size()}"
+                        th:text="${reestr1i.id_konv4}"></td>
+                    <td class="text-end">
+                        <input  class="form-control"
+                                type="number"
+                                value="0"
+                                th:id="'ot-input-'+${o.id}"
+                                name="reestr1"
+                                min="0" th:max="${o.ostatok}" step="1" data-bind="value:replyNumber"
+                                onkeypress="return (event.charCode >= 48 && event.charCode <= 57 && /^\d*$/.test(this.value));"
+                        />
+                        <label class="form-label m-0 p-0"
+                               th:for="'ot-input-'+${o.id}">
+                            Осталось:
+                            <a class="link-dark link-ostatok" href="#!" th:text="' ' + ${o.ostatok}"></a>
+                        </label>
+                    </td>
+                </tr>
+                <!--Приход-->
+                <tr  th:each="p, iter : ${prihods4}" th:name="'p-' + ${p.id}">
+                    <td th:text="'Реестр 1 ' + ${p.getFullName()}"></td>
+                    <td class="text-end">
+                        <input  class="form-control"
+                                type="number"
+                                value="0"
+                                th:id="'p-input-'+${p.id}"
+                                name="reestr1"
+                                min="0" th:max="${p.kol_vo}" step="1" data-bind="value:replyNumber"
+                                onkeypress="return (event.charCode >= 48 && event.charCode <= 57 && /^\d*$/.test(this.value));"
+                        />
+                        <label class="form-label m-0 p-0"
+                               th:for="'p-input-'+${p.id}">
+                            Осталось:
+                            <a class="link-dark link-ostatok" href="#!" th:text="' ' + ${p.kol_vo}"></a>
+                        </label>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!--Полиэтиленовый конверт-->
+
+            <table class="table table-secondary table-striped table-hover table-bordered table-sm
+                align-middle text-center" id="pkot">
+                <caption class="caption-top">Полиэтиленовый конверт</caption>
+                <thead>
+                <tr>
+                    <th class="col-md-6">Наименование конверта</th>
+                    <th class="col-md-2">Не распределено</th>
+                    <th class="col-md-2">Распределить</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="o, iter : ${otchraschodkonv6}" th:name="'ot-' + ${o.id}">
+                    <td th:text="'Реестр 1 ' + ${o.prihod.getFullName()}"></td>
+                    <td class='table-active raspr'
+                        th:name="${reestr1i.id_konv6}"
+                        th:if="${iter.count==1}"
+                        th:rowspan="${otchraschodkonv6.size() + prihods6.size()}"
+                        th:text="${reestr1i.id_konv6}"></td>
+                    <td class="text-end">
+                        <input  class="form-control"
+                                type="number"
+                                value="0"
+                                th:id="'ot-input-'+${o.id}"
+                                name="reestr1"
+                                min="0" th:max="${o.ostatok}" step="1" data-bind="value:replyNumber"
+                                onkeypress="return (event.charCode >= 48 && event.charCode <= 57 && /^\d*$/.test(this.value));"
+                        />
+                        <label class="form-label m-0 p-0"
+                               th:for="'ot-input-'+${o.id}">
+                            Осталось:
+                            <a class="link-dark link-ostatok" href="#!" th:text="' ' + ${o.ostatok}"></a>
+                        </label>
+                    </td>
+                </tr>
+                <!--Приход-->
+                <tr  th:each="p, iter : ${prihods6}" th:name="'p-' + ${p.id}">
+                    <td th:text="'Реестр 1 ' + ${p.getFullName()}"></td>
+                    <td class="text-end">
+                        <input  class="form-control"
+                                type="number"
+                                value="0"
+                                th:id="'p-input-'+${p.id}"
+                                name="reestr1"
+                                min="0" th:max="${p.kol_vo}" step="1" data-bind="value:replyNumber"
+                                onkeypress="return (event.charCode >= 48 && event.charCode <= 57 && /^\d*$/.test(this.value));"
+                        />
+                        <label class="form-label m-0 p-0"
+                               th:for="'p-input-'+${p.id}">
+                            Осталось:
+                            <a class="link-dark link-ostatok" href="#!" th:text="' ' + ${p.kol_vo}"></a>
+                        </label>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!--Термо Эко-->
+
+            <table class="table table-secondary table-striped table-hover table-bordered table-sm
+                align-middle text-center" id="teot">
+                <caption class="caption-top">Этикетка ТермоЭко</caption>
+                <thead>
+                <tr>
+                    <th class="col-md-6">Наименование этикетки</th>
+                    <th class="col-md-2">Не распределено</th>
+                    <th class="col-md-2">Распределить</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="o, iter : ${otchraschodkonv7}" th:name="'ot-' + ${o.id}"><!--each name-->
+                    <td th:text="'Реестр 1 ' + ${o.prihod.getFullName()}"></td>
+                    <td class='table-active raspr'
+                        th:name="${reestr1i.id_konv7}"
+                        th:if="${iter.count==1}"
+                        th:rowspan="${otchraschodkonv7.size() + prihods7.size()}"
+                        th:text="${reestr1i.id_konv7}"></td>
+                    <td class="text-end">
+                        <input  class="form-control"
+                                type="number"
+                                value="0"
+                                th:id="'ot-input-'+${o.id}"
+                                name="reestr1"
+                                min="0" th:max="${o.ostatok}" step="1" data-bind="value:replyNumber"
+                                onkeypress="return (event.charCode >= 48 && event.charCode <= 57 && /^\d*$/.test(this.value));"
+                        />
+                        <label class="form-label m-0 p-0"
+                               th:for="'ot-input-'+${o.id}">
+                            Осталось:
+                            <a class="link-dark link-ostatok" href="#!" th:text="' ' + ${o.ostatok}"></a>
+                        </label>
+                    </td>
+                </tr>
+                <!--Приход-->
+                <tr  th:each="p, iter : ${prihods7}" th:name="'p-' + ${p.id}">
+                    <td th:text="'Реестр 1 ' + ${p.getFullName()}"></td>
+                    <td class="text-end">
+                        <input  class="form-control"
+                                type="number"
+                                value="0"
+                                th:id="'p-input-'+${p.id}"
+                                name="reestr1"
+                                min="0" th:max="${p.kol_vo}" step="1" data-bind="value:replyNumber"
+                                onkeypress="return (event.charCode >= 48 && event.charCode <= 57 && /^\d*$/.test(this.value));"
+                        />
+                        <label class="form-label m-0 p-0"
+                               th:for="'p-input-'+${p.id}">
+                            Осталось:
+                            <a class="link-dark link-ostatok" href="#!" th:text="' ' + ${p.kol_vo}"></a>
+                        </label>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!--110х220 чистый-->
+
+            <table class="table table-secondary table-striped table-hover table-bordered table-sm
+                align-middle text-center" id="110x220clearot">
+                <caption class="caption-top">110x220 чистый</caption>
+                <thead>
+                <tr>
+                    <th class="col-md-6">Наименование конверта</th>
+                    <th class="col-md-2">Не распределено</th>
+                    <th class="col-md-2">Распределить</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="o, iter : ${otchraschodkonv22}" th:name="'ot-' + ${o.id}"><!--each name-->
+                    <td th:text="'Реестр 1 ' + ${o.prihod.getFullName()}"></td>
+                    <td class='table-active raspr'
+                        th:name="${reestr1i.id_konv22}"
+                        th:if="${iter.count==1}"
+                        th:rowspan="${otchraschodkonv22.size() + prihods22.size()}"
+                        th:text="${reestr1i.id_konv22}"></td>
+                    <td class="text-end">
+                        <input  class="form-control"
+                                type="number"
+                                value="0"
+                                th:id="'ot-input-'+${o.id}"
+                                name="reestr1"
+                                min="0" th:max="${o.ostatok}" step="1" data-bind="value:replyNumber"
+                                onkeypress="return (event.charCode >= 48 && event.charCode <= 57 && /^\d*$/.test(this.value));"
+                        />
+                        <label class="form-label m-0 p-0"
+                               th:for="'ot-input-'+${o.id}">
+                            Осталось:
+                            <a class="link-dark link-ostatok" href="#!" th:text="' ' + ${o.ostatok}"></a>
+                        </label>
+                    </td>
+                </tr>
+                <!--Приход-->
+                <tr  th:each="p, iter : ${prihods22}" th:name="'p-' + ${p.id}">
+                    <td th:text="'Реестр 1 ' + ${p.getFullName()}"></td>
+                    <td class="text-end">
+                        <input  class="form-control"
+                                type="number"
+                                value="0"
+                                th:id="'p-input-'+${p.id}"
+                                name="reestr1"
+                                min="0" th:max="${p.kol_vo}" step="1" data-bind="value:replyNumber"
+                                onkeypress="return (event.charCode >= 48 && event.charCode <= 57 && /^\d*$/.test(this.value));"
+                        />
+                        <label class="form-label m-0 p-0"
+                               th:for="'p-input-'+${p.id}">
+                            Осталось:
+                            <a class="link-dark link-ostatok" href="#!" th:text="' ' + ${p.kol_vo}"></a>
+                        </label>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
             <div class="row">
                 <!--A4-->
-                <div class="col s12" id="a4ot">
+                <!--                <div class="col-12" id="a4ot">
                     <div class="row">
-                        <div class="col s12" th:text="'A4 ' + ${reestr1i.id_konv1}"></div>
+                        <div class="col-12">
+                            <h3 th:text="'A4 ' + ${reestr1i.id_konv1}"></h3>
+                        </div>
                     </div>
-                    <div class="row" th:each="o : ${otchraschodkonv1}" th:name="'ot-' + ${o.id}"><!--${o.prihod.spravkonv.id=1}-->
-                        <div class="col s12 row" >
-                            <div class="col s3" th:text="'Реестр 1 ' + ${o.prihod.getFullName()}">
+                    <div class="row" th:each="o : ${otchraschodkonv1}" th:name="'ot-' + ${o.id}">
+                        <div class="col-12 row" >
+                            <div class="col-8" th:text="'Реестр 1 ' + ${o.prihod.getFullName()}">
                             </div>
-                            <div class="col s1" th:text="${o.ostatok}">
+                            <div class="col-2" th:text="${o.ostatok}">
                             </div>
-                            <div class="col s3">
-                                <input type="text" value="0" name="reestr1">
+                            <div class="col-2">
+                                <input  class="form-control"
+                                        type="number"
+                                        value="0" name="reestr1"
+                                        min="0" step="1" data-bind="value:replyNumber"
+                                        onkeypress="return (event.charCode >= 48 && event.charCode <= 57 && /^\d*$/.test(this.value));"
+                                />
+                                &lt;!&ndash;<input type="text" value="0" name="reestr1">&ndash;&gt;
                             </div>
                         </div>
 
                     </div>
-                    <!--Приход-->
-                    <div class="row" th:each="p : ${prihods1}" th:name="'p-' + ${p.id}"><!--${o.prihod.spravkonv.id=1}-->
+                    &lt;!&ndash;Приход&ndash;&gt;
+                    <div class="row" th:each="p : ${prihods1}" th:name="'p-' + ${p.id}">&lt;!&ndash;${o.prihod.spravkonv.id=1}&ndash;&gt;
                         <div class="col s12 row" >
                             <div class="col s3" th:text="'Реестр 1 ' + ${p.getFullName()}">
                             </div>
@@ -36,9 +335,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
                 <!--C5-->
-                <div class="col s12" id="c5ot">
+                <!--<div class="col s12" id="c5ot">
                     <div class="row">
                         <div class="col s12" th:text="'C5 ' + ${reestr1i.id_konv4}"></div>
                     </div>
@@ -54,8 +353,8 @@
                         </div>
 
                     </div>
-                    <!--Приход-->
-                    <div class="row" th:each="p : ${prihods4}" th:name="'p-' + ${p.id}"><!--${o.prihod.spravkonv.id=1}-->
+                    &lt;!&ndash;Приход&ndash;&gt;
+                        <div class="row" th:each="p : ${prihods4}" th:name="'p-' + ${p.id}">&lt;!&ndash;${o.prihod.spravkonv.id=1}&ndash;&gt;
                         <div class="col s12 row" >
                             <div class="col s3" th:text="'Реестр 1 ' + ${p.getFullName()}">
                             </div>
@@ -67,8 +366,8 @@
                         </div>
 
                     </div>
-                </div>
-                <!--110x220-->
+                </div>-->
+                <!--110x220--> <!--вроде не нужно-->
 <!--                <div class="col s12" id="110x220ot">
                     <div class="row">
                         <div class="col s12" th:text="'110x220 ' + ${reestr1i.id_konv5}"></div>
@@ -100,11 +399,11 @@
                     </div>
                 </div>-->
                 <!--Полиэтиленовый конверт-->
-                <div class="col s12" id="pkot">
+                <!--<div class="col s12" id="pkot">
                     <div class="row">
                         <div class="col s12" th:text="'Полиэтиленовый конверт ' + ${reestr1i.id_konv6}"></div>
                     </div>
-                    <div class="row" th:each="o : ${otchraschodkonv6}" th:name="'ot-' + ${o.id}"><!--${o.prihod.spravkonv.id=1}-->
+                    <div class="row" th:each="o : ${otchraschodkonv6}" th:name="'ot-' + ${o.id}">&lt;!&ndash;${o.prihod.spravkonv.id=1}&ndash;&gt;
                         <div class="col s12 row" >
                             <div class="col s3" th:text="'Реестр 1 ' + ${o.prihod.getFullName()}">
                             </div>
@@ -115,8 +414,8 @@
                             </div>
                         </div>
                     </div>
-                    <!--Приход-->
-                    <div class="row" th:each="p : ${prihods6}" th:name="'p-' + ${p.id}"><!--${o.prihod.spravkonv.id=1}-->
+                    &lt;!&ndash;Приход&ndash;&gt;
+                    <div class="row" th:each="p : ${prihods6}" th:name="'p-' + ${p.id}">&lt;!&ndash;${o.prihod.spravkonv.id=1}&ndash;&gt;
                         <div class="col s12 row" >
                             <div class="col s3" th:text="'Реестр 1 ' + ${p.getFullName()}">
                             </div>
@@ -126,20 +425,11 @@
                                 <input type="text" value="0" name="reestr1">
                             </div>
                         </div>
-<!--                        <div class="col s12 row" >
-                            <div class="col s3" th:text="'Реестр 2 ' + ${p.getFullName()}">
-                            </div>
-                            <div class="col s1">
-                            </div>
-                            <div class="col s3">
-                                <input type="text" value="0" name="reestr2">
-                            </div>
-                        </div>-->
                     </div>
-                </div>
+                </div>-->
 
                 <!--Термо Эко-->
-                <div class="col s12" id="teot">
+<!--                <div class="col s12" id="teot">
                     <div class="row">
                         <div class="col s12" th:text="'Этикетка ТермоЭко ' + ${reestr1i.id_konv7}"></div>
                     </div>
@@ -154,8 +444,8 @@
                             </div>
                         </div>
                     </div>
-                    <!--Приход-->
-                    <div class="row" th:each="p : ${prihods7}" th:name="'p-' + ${p.id}"><!--${o.prihod.spravkonv.id=1}-->
+                    &lt;!&ndash;Приход&ndash;&gt;
+                    <div class="row" th:each="p : ${prihods7}" th:name="'p-' + ${p.id}">&lt;!&ndash;${o.prihod.spravkonv.id=1}&ndash;&gt;
                         <div class="col s12 row" >
                             <div class="col s3" th:text="'Реестр 1 ' + ${p.getFullName()}">
                             </div>
@@ -166,10 +456,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
 
                 <!--110х220 чистый-->
-                <div class="col s12" id="110x220clearot">
+<!--                <div class="col s12" id="110x220clearot">
                     <div class="row">
                         <div class="col s12" th:text="'110x220 чистый ' + ${reestr1i.id_konv22}"></div>
                     </div>
@@ -184,8 +474,8 @@
                             </div>
                         </div>
                     </div>
-                    <!--Приход-->
-                    <div class="row" th:each="p : ${prihods22}" th:name="'p-' + ${p.id}"><!--${o.prihod.spravkonv.id=1}-->
+                    &lt;!&ndash;Приход&ndash;&gt;
+                    <div class="row" th:each="p : ${prihods22}" th:name="'p-' + ${p.id}">&lt;!&ndash;${o.prihod.spravkonv.id=1}&ndash;&gt;
                         <div class="col s12 row" >
                             <div class="col s3" th:text="'Реестр 1 ' + ${p.getFullName()}">
                             </div>
@@ -196,20 +486,20 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
 
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col s12">
-            <a class="waves-effect waves-light btn" id="vvod">Добавить</a>
+        <div class="col-12">
+            <a class="btn btn-dark" id="vvod">Добавить</a>
         </div>
     </div>
 </div>
 
 <div th:fragment="link">
-    <a id="docx" th:href="@{/umik/main/otchpokon/pechatdocx(date1=${date1},date2=${date2})}" download>
+    <a class="link-dark" id="docx" th:href="@{/umik/main/otchpokon/pechatdocx(date1=${date1},date2=${date2})}" download>
         Скачать в формате Docx
     </a>
 </div>

@@ -28,6 +28,4 @@ public class Reestr1VievService {
         return reestr1VievRepository.findAllI(d1, d2).get(0);
     }
 
-
-
 }

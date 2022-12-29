@@ -2,26 +2,23 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Обращение граждан</title>
+    <title>Учёт марок и конвертов</title>
     <script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.js"></script>
-    <link type="text/css" rel="stylesheet" href="/webjars/materialize/1.0.0-rc.2/dist/css/materialize.min.css"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/dist/css/bootstrap.min.css}"/>
     <script type="text/javascript">
         $(document).ready(function () {
-            $(".dropdown-trigger").dropdown(); //чтобы меню хренячило
-            $('select').formSelect();//селект с конвертами
 
             //устанавливаю текущий год
-            var date = new Date();
+            let date = new Date();
             $("#god").val(date.getFullYear());
 
             $("body").on('click', 'a', function () {
                 if ($(this).attr('id') == "find") {
-                    var param = "regnum=" + $("#regnum").val() +
+                    let param = "regnum=" + $("#regnum").val() +
                         "&regnumpo=" + $("#regnumpo").val() +
                         "&god=" + $("#god").val();
 
                     $("#inf").load("/umik/main/obragraj/find", param, function () {
-                        $('select').formSelect(); //селект с конвертами
                     });
                     return false;
                 }
@@ -41,7 +38,6 @@
                         "&sum=" + $("#sum_ruki").val().replace(",",".");
                     //console.log("param=" + param);
                     $("#tabledelo").load("/umik/main/obragraj/add_ruki", param, function () {
-                        $('select').formSelect();//селект с конвертами
                         $("#reg_number_ruki").val("");
                         $("#reg_date_ruki").val("");
                         $("#text_org_ruki").val("");
@@ -52,14 +48,15 @@
                         $("#addr_list").val("");
                         $("#text_fio").val("");
                         //скрыть добавленное
+
                     });
                     return false;
                 }
 
                 if (this.getAttribute("name") == "vvod") {
-                    var id = $(this).attr('id');
+                    let id = $(this).attr('id');
 
-                    var param =
+                    let param =
                         "reg_number=" + $("tr[name=" + id + "] [name=reg_number]").text() +
                         "&reg_date=" + $("tr[name=" + id + "] [name=reg_date]").text() +
                         "&name=" + $("tr[name=" + id + "] [name=name]").text() +
@@ -70,10 +67,8 @@
                         "&type=" + $("tr[name=" + id + "] [name=type]").val() +
                         "&sum=" + $("tr[name=" + id + "] [name=sum]").val().replace(",",".");
 
-                    console.log("param= " + param);
 
                     $("#tabledelo").load("/umik/main/obragraj/add", param, function () {
-                        $('select').formSelect();//селект с конвертами
                         //скрыть добавленное
                         $("[name="+id+"]").remove();
                     });
@@ -81,11 +76,11 @@
                 }
 
                 if (this.getAttribute("name") == "delDeloproizvodstvo") {
-                    var id = $(this).attr('id');
-                    var param = "id=" + id;
+                    let id = $(this).attr('id');
+                    let param = "id=" + id;
                     if (confirm("Точно удалить заявление с id " +
                         id + "?")) {
-                        var url = "/umik/main/obragraj/del" + "?" + param;
+                        let url = "/umik/main/obragraj/del" + "?" + param;
                         location.href = url;
                     }
                 }
@@ -95,100 +90,128 @@
     </script>
 </head>
 <body>
-<div th:insert="fragment/logout :: logout(${user})"></div>
+<!--<div th:insert="fragment/logout :: logout(${user})"></div>-->
 <div th:insert="fragment/menu :: menu"></div>
 
+<div class="row mx-2 d-flex justify-content-center">
 
-<div class="row">
-    <div class="col s3"></div>
-    <div class="col s6">
-        <table id="tableadd_ruki" width="30%">
-            <tr>
-                <td align="center">Префикс:</td>
-                <td>
-                    <input type="text" id="reg_pref_ruki">
-                </td>
-            </tr>
-            <tr>
-                <td align="center">Регистрационный номер:</td>
-                <td>
-                    <input type="text" id="reg_number_ruki">
-                </td>
-            </tr>
-            <tr>
-                <td align="center">Постфикс: </td>
-                <td>
-                    <input type="text" id="reg_postf_ruki">
-                </td>
-            </tr>
-            <tr>
-                <td align="center">Дата регистрации:</td>
-                <td>
-                    <input type="date" id="reg_date_ruki">
-                </td>
-            </tr>
-            <tr>
-                <td align="center">Адресат:</td>
-                <td>
-                    <input type="text" id="text_org_ruki">
-                </td>
-            </tr>
+    <div class="col-6">
 
-            <tr>
-                <td align="center">ФИО:</td>
-                <td>
-                    <input type="text" id="text_fio">
-                </td>
-            </tr>
-            <tr>
-                <td align="center">addr_list:</td>
-                <td>
-                    <input type="text" id="addr_list">
-                </td>
-            </tr>
+        <div class="row mx-1 my-2" >
+            <div class="col d-flex justify-content-center">
+                <h1>Обращение граждан</h1>
+            </div>
+        </div>
 
-            <tr>
-                <td align="center">Вид доставки:</td>
-                <td>
-                    <select id="name_id_ruki">
-                        <option th:each="vd : ${viddost_ruki}"  th:text="${vd.name}" th:value="${vd.id}"></option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td align="center">Тип конверта:</td>
-                <td>
-                    <select id="type_ruki">
-                        <option th:each="sk : ${spravkonvs}"  th:text="${sk.type}" th:value="${sk.id}"></option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td align="center">Количество конвертов:</td>
-                <td>
-                    <input type="text" id="kol_vo_ruki">
-                </td>
-            </tr>
-            <tr>
-                <td align="center">Сумма марок:</td>
-                <td>
-                    <input type="text" id="sum_ruki">
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td align="center">
-                    <a name="vvod_ruki" class="waves-effect waves-light btn">Добавить</a>
-                </td>
-            </tr>
-        </table>
+        <div class="row mx-1 my-2">
+            <div class="col-4 align-self-center">Префикс:</div>
+            <div class="col-8">
+                <input class="form-control" type="text" id="reg_pref_ruki">
+            </div>
+        </div>
+
+        <div class="row mx-1 my-2">
+            <div class="col-4 align-self-center">Регистрационный номер:</div>
+            <div class="col-8">
+                <textarea rows="1" class="form-control" type="text" id="reg_number_ruki"></textarea>
+            </div>
+        </div>
+
+        <div class="row mx-1 my-2">
+            <div class="col-4 align-self-center">Постфикс:</div>
+            <div class="col-8">
+                <input class="form-control" type="text" id="reg_postf_ruki">
+            </div>
+        </div>
+
+        <div class="row mx-1 my-2">
+            <div class="col-4 align-self-center">Дата регистрации:</div>
+            <div class="col-8">
+                <input class="form-control" type="date" id="reg_date_ruki">
+            </div>
+        </div>
+
+        <div class="row mx-1 my-2">
+            <div class="col-4 align-self-center">Адресат:</div>
+            <div class="col-8">
+                <textarea class="form-control" rows="1" id="text_org_ruki"></textarea>
+            </div>
+        </div>
+
+        <div class="row mx-1 my-2">
+            <div class="col-4 align-self-center">ФИО:</div>
+            <div class="col-8">
+                <textarea class="form-control" rows="1" id="text_fio"></textarea>
+            </div>
+        </div>
+
+        <div class="row mx-1 my-2">
+            <div class="col-4 align-self-center">addr_list:</div>
+            <div class="col-8">
+                <input class="form-control" type="text" id="addr_list">
+            </div>
+        </div>
+
+        <div class="row mx-1 my-2">
+            <div class="col-4 align-self-center">Вид доставки:</div>
+            <div class="col-8">
+                <select class="form-select" id="name_id_ruki">
+                    <option th:each="vd : ${viddost_ruki}" th:text="${vd.name}" th:value="${vd.id}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mx-1 my-2">
+            <div class="col-4 align-self-center">Тип конверта:</div>
+            <div class="col-8">
+                <select class="form-select" id="type_ruki">
+                    <option th:each="sk : ${spravkonvs}" th:text="${sk.type}" th:value="${sk.id}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mx-1 my-2">
+            <div class="col-4 align-self-center">Количество конвертов:</div>
+            <div class="col-8">
+                <input  class="form-control"
+                        type="number"
+                        id="kol_vo_ruki"
+                        min="0" step="1" data-bind="value:replyNumber"
+                        onkeypress="return (event.charCode >= 48 && event.charCode <= 57 && /^\d*$/.test(this.value));"
+                />
+            </div>
+        </div>
+
+        <div class="row mx-1 my-2">
+            <div class="col-4 align-self-center">Сумма марок:</div>
+            <div class="col-8">
+                <input  class="form-control"
+                        type="number"
+                        id="sum_ruki"
+                        min="0" step="1" data-bind="value:replyNumber"
+                        onkeypress="return ((event.charCode != 45 && event.charCode != 44 && event.charCode != 101) && /^\d*\.{0,1}\d*$/.test(this.value));"
+                />
+            </div>
+        </div>
+
+        <div class="row mx-1 my-2">
+            <div class="col-4 align-self-center"></div>
+            <div class="col-8 d-flex justify-content-end">
+                <a name="vvod_ruki" class="btn btn-dark">Добавить</a>
+            </div>
+        </div>
+
     </div>
+
+        <!--<table id="tableadd_ruki" width="30%">
+        </table>-->
+
 </div>
 
 <div id="inf"></div>
 
 <div id="tabledelo" th:insert="fragment/oblagrajfrag :: tabledelo"></div>
 
-<script type="text/javascript" src="/webjars/materialize/1.0.0-rc.2/dist/js/materialize.min.js"></script>
+<script type="text/javascript" src="/webjars/bootstrap/5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

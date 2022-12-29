@@ -3,21 +3,23 @@
 
 <body>
 
-<div  th:fragment="tablebolgaria">
-    <table id="tab">
+<div th:fragment="tablebolgaria">
+    <table id="tab" class="table table-block table-secondary table-striped table-hover
+        table-bordered text-center caption-top table-sm">
         <thead>
         <tr>
-            <td align="center">ID</td>
-            <td align="center">Рег номер</td>
-            <td align="center">Дата регистрации</td>
-            <td align="center">Адресат</td>
-            <td align="center">Вид доставки</td>
-            <td align="center">Тип конверта</td>
-            <td align="center">Количество конвертов</td>
-            <td align="center">Сумма марок</td>
-            <td align="center">Удалить</td>
+            <th>ID</th>
+            <th>Рег номер</th>
+            <th>Дата регистрации</th>
+            <th>Адресат</th>
+            <th>Вид доставки</th>
+            <th>Тип конверта</th>
+            <th>Количество конвертов</th>
+            <th>Сумма марок</th>
+            <th>Удалить</th>
         </tr>
         </thead>
+        <tbody>
         <tr th:each="b : ${bolgarias}">
             <td th:text="${b.id}"></td>
             <td th:text="${b.getReg_datestr()}"></td>
@@ -29,9 +31,10 @@
             <td th:text="${b.sum}"></td>
             <td>
                 <a name="delBolgaria" th:id="${b.id}"
-                   class="red waves-effect waves-light btn">X</a>
+                   class="btn btn-danger">X</a>
             </td>
         </tr>
+        </tbody>
     </table>
 </div>
 

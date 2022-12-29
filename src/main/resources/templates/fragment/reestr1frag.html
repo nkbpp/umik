@@ -4,19 +4,23 @@
 <body>
 
 <div th:fragment="tablereestr1">
-    <table>
+    <table class="table table-block table-secondary table-striped table-hover
+        table-bordered text-center caption-top table-sm">
+        <thead>
         <tr>
-            <td align="center">Рег номер</td>
-            <td align="center">Дата регистрации</td>
-            <td align="center">Адресат</td>
-            <td align="center">Вид доставки</td>
-            <td align="center">Конверт А4</td>
-            <td align="center">Конверт С5</td>
-            <td align="center">Конверт 110x220</td>
-            <td align="center">Полиэтиленовый конверт</td>
-            <td align="center">Марки</td>
-            <td align="center">Удалить</td>
+            <th>Рег номер</th>
+            <th>Дата регистрации</th>
+            <th>Адресат</th>
+            <th>Вид доставки</th>
+            <th>Конверт А4</th>
+            <th>Конверт С5</th>
+            <th>Конверт 110x220</th>
+            <th>Полиэтиленовый конверт</th>
+            <th>Марки</th>
+            <th>Удалить</th>
         </tr>
+        </thead>
+        <tbody>
         <tr th:each="r : ${reestr1s}">
             <td  th:text="${r.reg_number}">
             </td>
@@ -38,34 +42,37 @@
             <td  th:text="${r.sum}">
             </td>
             <td>
-                <a name="del" th:id="${r.getId()}"
-                   class="red waves-effect waves-light btn">X</a>
+                <a id="del" th:id="${r.getId()}"
+                   class="btn btn-danger">X</a>
             </td>
         </tr>
 
         <!--Для общей суммы-->
         <tr>
-            <td align="center"></td>
-            <td align="center"></td>
-            <td align="center"></td>
-            <td align="center"></td>
-            <td align="center" th:text="${reestr1i.id_konv1}"></td>
-            <td align="center" th:text="${reestr1i.id_konv4}"></td>
-            <td align="center" th:text="${reestr1i.id_konv5}"></td>
-            <td align="center" th:text="${reestr1i.id_konv6}"></td>
-            <td align="center" th:text="${reestr1i.sum}"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td th:text="${reestr1i.id_konv1}"></td>
+            <td th:text="${reestr1i.id_konv4}"></td>
+            <td th:text="${reestr1i.id_konv5}"></td>
+            <td th:text="${reestr1i.id_konv6}"></td>
+            <td th:text="${reestr1i.sum}"></td>
+            <td></td>
         </tr>
         <tr>
-            <td align="center"></td>
-            <td align="center"></td>
-            <td align="center"></td>
-            <td align="center"></td>
-            <td align="center">Конверт А4</td>
-            <td align="center">Конверт С5</td>
-            <td align="center">Конверт 110x220</td>
-            <td align="center">Полиэтиленовый конверт</td>
-            <td align="center">Марки</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Конверт А4</td>
+            <td>Конверт С5</td>
+            <td>Конверт 110x220</td>
+            <td>Полиэтиленовый конверт</td>
+            <td>Марки</td>
+            <td></td>
         </tr>
+        </tbody>
     </table>
 </div>
 

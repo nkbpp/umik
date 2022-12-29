@@ -4,17 +4,21 @@
 <body>
 
 <div th:fragment="tablereestr2">
-    <table>
+    <table class="table table-block table-secondary table-striped table-hover
+        table-bordered text-center caption-top table-sm">
+        <thead>
         <tr>
-            <td align="center">№ п/п</td>
-            <td align="center">Дата</td>
-            <td align="center">Сумма по чеку </td>
-            <td align="center">Марки</td>
-            <td align="center">Количество конвертов</td>
+            <th>№ п/п</th>
+            <th>Дата</th>
+            <th>Сумма по чеку </th>
+            <th>Марки</th>
+            <th>Количество конвертов</th>
             <!--<td align="center">Название конверта</td>-->
-            <td align="center">Марки к заказным письмам</td>
-            <td align="center">Удалить</td>
+            <th>Марки к заказным письмам</th>
+            <th>Удалить</th>
         </tr>
+        </thead>
+        <tbody>
         <tr th:each="r,iterStat : ${pravopriems}">
             <td  th:text="${iterStat.count}">
             </td>
@@ -27,18 +31,20 @@
             <!--<td th:text="${r.prihod.getFullName()}"></td>-->
             <td  th:text="${r.getMarki_k_zak_pis()}">
             </td>
-            <td><a name="del" th:id="${r.getId()}"
-                class="red waves-effect waves-light btn">X</a>
+            <td><a  th:id="${r.getId()}"
+                class="btn btn-danger del">X</a>
             </td>
         </tr>
         <tr>
-            <td align="center"></td>
-            <td align="center">ИТОГО</td>
-            <td align="center" th:text="${so}"></td>
-            <td align="center" th:text="${m}"></td>
-            <td align="center" th:text="${k}"></td>
-            <td align="center" th:text="${mzp}"></td>
+            <td></td>
+            <td>ИТОГО</td>
+            <td th:text="${so}"></td>
+            <td th:text="${m}"></td>
+            <td th:text="${k}"></td>
+            <td th:text="${mzp}"></td>
+
         </tr>
+        </tbody>
     </table>
 </div>
 

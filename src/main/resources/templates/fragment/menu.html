@@ -1,91 +1,117 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <body>
 
-<div id="ttt" th:fragment="menu">
-    <ul id="dropdown1" class="dropdown-content">
-        <li><a th:href="@{/umik/main/deloproiz}">Делопроизводство</a></li>
-        <li class="divider"></li>
-        <li><a th:href="@{/umik/main/obragraj}">Обращение граждан</a></li>
-    </ul>
 
-    <ul id="dropdown2" class="dropdown-content">
-        <li><a th:href="@{/umik/main/bolgaria}">Болгария</a></li>
-        <li class="divider"></li>
-        <li><a th:href="@{/umik/main/pravopriem}">Правопреемники</a></li>
-        <li class="divider"></li>
-        <li><a th:href="@{/umik/main/inoe}">Иное</a></li>
-    </ul>
+<nav id="ttt" th:fragment="menu" class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/umik/main}">Главная</a>
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-    <ul id="dropdown3" class="dropdown-content">
-        <li><a th:href="@{/umik/main/reestr1}">Реестр №1</a></li>
-        <li class="divider"></li>
-        <li><a th:href="@{/umik/main/reestr2}">Реестр №2</a></li>
-        <li class="divider"></li>
-        <li><a th:href="@{/umik/main/otchpokon}">Отчет по конвертам</a></li>
-        <li class="divider"></li>
-        <li><a th:href="@{/umik/main/otchmarkandkonv}">Отчет марки и конверты</a></li>
-        <li class="divider"></li>
-        <li><a th:href="@{/umik/main/avans}">Авансовый отчет</a></li>
-    </ul>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-    <ul id="dropdown4" class="dropdown-content">
-        <li><a th:href="@{/umik/main/spravkonv}">Справочник конвертов</a></li>
-        <li class="divider"></li>
-        <li><a th:href="@{/umik/main/vidanykonv}">Выданы конверты</a></li>
-        <li class="divider"></li>
-        <li><a th:href="@{/umik/main/prihod}">Приход конверты</a></li>
-        <li class="divider"></li>
-        <li><a th:href="@{/umik/main/prihodmarki}">Приход марки</a></li>
-        <li class="divider"></li>
-    </ul>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Письма ПЭД
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown1">
+                        <li><a class="dropdown-item" th:href="@{/umik/main/deloproiz}">Делопроизводство</a></li>
+                        <li><a class="dropdown-item" th:href="@{/umik/main/obragraj}">Обращение граждан</a></li>
+                    </ul>
+                </li>
 
-    <ul id="dropdown5" class="dropdown-content">
-        <li><a th:href="@{/umik/main/history}">История отчетов</a></li>
-        <li class="divider"></li>
-    </ul>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Письма не ПЭД
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown2">
+                        <li><a class="dropdown-item" th:href="@{/umik/main/bolgaria}">Болгария</a></li>
+                        <li><a class="dropdown-item" th:href="@{/umik/main/pravopriem}">Правопреемники</a></li>
+                        <li><a class="dropdown-item" th:href="@{/umik/main/inoe}">Иное</a></li>
+                    </ul>
+                </li>
 
-    <nav>
-        <div class="nav-wrapper row">
-            <ul class="left hide-on-med-and-down col s12 row">
-                <li class="col s1 center center-align">
-                    <a th:href="@{/umik/main}">
-                    Главная</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Реестры и отчеты
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown3">
+                        <li><a class="dropdown-item" th:href="@{/umik/main/reestr1}">Реестр №1</a></li>
+                        <li><a class="dropdown-item" th:href="@{/umik/main/reestr2}">Реестр №2</a></li>
+                        <li><a class="dropdown-item" th:href="@{/umik/main/otchpokon}">Отчет по конвертам</a></li>
+                        <li><a class="dropdown-item" th:href="@{/umik/main/otchmarkandkonv}">Отчет марки и конверты</a></li>
+                        <li><a class="dropdown-item" th:href="@{/umik/main/avans}">Авансовый отчет</a></li>
+                    </ul>
                 </li>
-                <li class="col s2 center center-align">
-                    <a class="dropdown-trigger" href="#!" data-target="dropdown1">
-                    Письма ПЭД</a>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown4"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Справочная информация
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown4">
+                        <li><a class="dropdown-item" th:href="@{/umik/main/spravkonv}">Справочник конвертов</a></li>
+                        <li><a class="dropdown-item" th:href="@{/umik/main/vidanykonv}">Выданы конверты</a></li>
+                        <li><a class="dropdown-item" th:href="@{/umik/main/prihod}">Приход конверты</a></li>
+                        <li><a class="dropdown-item" th:href="@{/umik/main/prihodmarki}">Приход марки</a></li>
+                    </ul>
                 </li>
-                <li class="col s2 center center-align">
-                    <a class="dropdown-trigger" href="#!" data-target="dropdown2">
-                    Письма не ПЭД</a>
+
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" th:href="@{/umik/main/history}">История отчетов</a>
                 </li>
-                <li class="col s2 center center-align">
-                    <a class="dropdown-trigger" href="#!" data-target="dropdown3">
-                    Реестры и отчеты</a>
+
+
+                <!--<li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
+                    <a class="nav-link" th:href="@{/contract/admin/admin}">Админка</a>
                 </li>
-                <li class="col s3 center center-align">
-                    <a class="dropdown-trigger" href="#!" data-target="dropdown4">
-                    Справочная информация</a>
-                </li>
-                <li class="col s2 center center-align">
-                    <a class="dropdown-trigger" href="#!" data-target="dropdown5">
-                    История</a>
-                </li>
+                <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
+                    <a class="nav-link" th:href="@{/contract/admin/juraudit}">Журнал аудита</a>
+                </li>-->
+
             </ul>
+            <form
+                    class="d-flex"
+                    id="logout"
+                    name="logout"
+                    th:action="@{/logout}"
+                    method="post"
+            >
+                <div class="text-center text-success align-self-center mx-2">Пользователь:
+                    <span sec:authorize="isAuthenticated()"  sec:authentication="principal.login"></span>
+                </div>
+                <button class="btn btn-outline-success" type="submit">Выйти</button>
+            </form>
         </div>
-    </nav>
-</div>
+    </div>
+
+</nav>
 
 
-<div class="row" th:fragment="dat">
+<div class="row m-2" th:fragment="dat">
     <div class="row">
-        <div class="col s12 row">
-            <div class="col s3"><p>Выбор месяца</p></div>
-            <div class="col s4">
-                <div class="input-field col s6">
-                    <select id="mounth">
+        <div class="col-12 row">
+            <div class="col-3 align-self-center"><p>Выбор месяца</p></div>
+            <div class="col-4 row">
+                <div class="col-6">
+                    <label for="mounth" class="form-label">Месяц</label>
+                    <select class="form-select" id="mounth">
                         <option text="Январь" value="1">Январь</option>
                         <option text="Февраль" value="2">Февраль</option>
                         <option text="Март" value="3">Март</option>
@@ -99,30 +125,22 @@
                         <option text="Ноябрь" value="11">Ноябрь</option>
                         <option text="Декабрь" value="12">Декабрь</option>
                     </select>
-                    <label>Месяц</label>
+
                 </div>
-                <div class="input-field col s6">
-                    <select id="year">
-                        <option text="2019" value="2019">2019</option>
-                        <option text="2020" value="2020">2020</option>
-                        <option text="2021" value="2021">2021</option>
-                        <option text="2022" value="2022">2022</option>
-                        <option text="2023" value="2023">2023</option>
-                        <option text="2024" value="2024">2024</option>
-                        <option text="2025" value="2025">2025</option>
-                        <option text="2026" value="2026">2026</option>
-                        <option text="2027" value="2027">2027</option>
+                <div class="col-6">
+                    <label for="year" class="form-label">Год</label>
+                    <select class="form-select" id="year">
                     </select>
-                    <label>Год</label>
+
                 </div>
             </div>
-            <div class="col s4">
-                <a class="waves-effect waves-light btn" id="go">Выбрать</a>
+            <div class="col-4 align-self-end">
+                <a class="btn btn-secondary" id="go">Выбрать</a>
             </div>
         </div>
     </div>
 
-    <div class="row hide">
+    <div class="row d-none">
             <input id="dat1" type="date" th:value="${date1}">
             <input id="dat2" type="date" th:value="${date2}">
     </div>

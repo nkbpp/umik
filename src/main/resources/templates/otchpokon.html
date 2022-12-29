@@ -2,28 +2,95 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Отчет по конвертам</title>
+    <title>Учёт марок и конвертов</title>
     <script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.js"></script>
-    <link type="text/css" rel="stylesheet" href="/webjars/materialize/1.0.0-rc.2/dist/css/materialize.min.css"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/dist/css/bootstrap.min.css}"/>
     <script type="text/javascript">
+
+        let OLD_VAL_INPUT = 0;
+
+        function changeZnach(input, link, tdRaspr, inputNewVal) {
+
+                let inputMax = +input.attr('max');
+                let raspr = +tdRaspr.attr('name');
+
+                let inputVsegoOld = raspr;
+                input.closest('table').find('input').each(function (index, el) {
+                    if($(this).attr('id')!==input.attr('id')){
+                        inputVsegoOld -= +$(this).val()
+                    }
+                })
+
+                inputNewVal = +(inputNewVal>=inputMax?inputMax:inputNewVal);
+                inputNewVal = +(inputNewVal>=inputVsegoOld?inputVsegoOld:inputNewVal);
+
+                input.val(inputNewVal);
+                link.text(' ' + (+inputMax - +inputNewVal));
+
+                tdRaspr.text(inputVsegoOld-inputNewVal);
+
+        }
+
         $(document).ready(function () {
-            $(".dropdown-trigger").dropdown(); //чтобы меню хренячило
-            var date = new Date();
+
+            let fullYear = new Date().getFullYear();
+            let html = "";
+            for (let i = fullYear - 3; i < fullYear + 4; i++) {
+                html+=`<option text="${i}" value="${i}">${i}</option>`;
+            }
+            $("#year").html(html);
+
+            let date = new Date();
             $("#mounth").val(+date.getMonth()+1);
             $("#year").val(+date.getFullYear());
-            $('select').formSelect();//селекты
+
+            $("body").on('keyup', 'input', function () {
+
+                if ($(this).attr('type')==='number') {
+
+                    let input = $(this);
+                    let link = $(this).closest('td').find('a');
+                    let tdRaspr = $(this).closest('table').find('td.raspr');
+
+                    changeZnach(input, link, tdRaspr, $(this).val());
+
+                }
+            });
+
+            $("body").on('keydown', 'input', function () {
+                if ($(this).attr('type')==='number') {
+                    OLD_VAL_INPUT = +$(this).val();
+                    //console.log('keypress ', OLD_VAL_INPUT);
+                }
+            });
+
 
             $("body").on('click', 'a', function () {
+
+                if ($(this).hasClass('link-ostatok')) {
+
+                    let input = $(this).closest('td').find('input');
+                    let link = $(this);
+                    let tdRaspr = $(this).closest('table').find('td.raspr');
+
+                    let inputMax = input.attr('max');
+                    let raspr = tdRaspr.text();
+
+                    OLD_VAL_INPUT = +input.val();
+                    changeZnach(input, link, tdRaspr, link.text().replace(/[^0-9]/,""))
+
+                }
+
                 if ($(this).attr('id') == "go") {
 
                     //Последнее число этого месяца
 
-                    var mounth = +$("#mounth").val();
-                    var year = $("#year").val();
-                    var day = 1;
-                    var now;
-                    var now1;
-                    var BeginDate;
+                    let mounth = +$("#mounth").val();
+                    let year = $("#year").val();
+                    let day = 1;
+                    let now;
+                    let now1;
+                    let BeginDate;
 
                     if(mounth==12){
                         BeginDate=year+"-12-01";
@@ -34,7 +101,7 @@
                             ((+now1.getDate())<10? "0"+(+now1.getDate()):(+now1.getDate()));
                     }
 
-                    BeginDate;
+                    //BeginDate;
 
                     if(mounth==12){
                         mounth=0;
@@ -48,16 +115,15 @@
                         now.setDate(0);
                     }
 
-                    var EndDate = now.getFullYear() + "-" +
+                    let EndDate = now.getFullYear() + "-" +
                         ((+now.getMonth()+1)<10? "0"+(+now.getMonth()+1):(+now.getMonth()+1))
                         + "-" + now.getDate();
 
-                    var param =
+                    let param =
                         "date1=" + BeginDate +
                         "&date2=" + EndDate;
 
                     $("#form").load("/umik/main/otchpokon/form", param, function () {
-                        $('select').formSelect();//селект с конвертами
                         $("#mounth").add("disabled", "disabled");//не работают вроде
                         $("#year").add("class", "disabled");
                     });
@@ -67,12 +133,12 @@
 
                 if ($(this).attr('id') == "vvod") {
 
-                    var mounth = +$("#mounth").val();
-                    var year = $("#year").val();
-                    var day = 13;
-                    var now;
-                    var now1;
-                    var BeginDate;
+                    let mounth = +$("#mounth").val();
+                    let year = $("#year").val();
+                    let day = 13;
+                    let now;
+                    let now1;
+                    let BeginDate;
 
                     if(mounth==12){
                         BeginDate=year+"-12-13";
@@ -83,7 +149,7 @@
                             ((+now1.getDate())<10? "0"+(+now1.getDate()):(+now1.getDate()));
                     }
 
-                    BeginDate;
+                    //BeginDate;
 
 /*                    var mounth = +$("#mounth").val();
                     var year = $("#year").val();
@@ -100,137 +166,137 @@
 
                     BeginDate;*/
 
-                    var ota4id = [];
+                    let ota4id = [];
                     $("#a4ot [name^='ot-']").each(function(indx, element){
                         ota4id.push(+$(element).attr("name").replace("ot-",""));
                     });
-                    var ota4r1 = [];
+                    let ota4r1 = [];
                     $("#a4ot [name^='ot-'] [name='reestr1']").each(function(indx, element){
                         ota4r1.push($(element).val());
                     });
 
-                    var ota4 = [];
-                    for (var i = 0; i < ota4id.length; i++) {
+                    let ota4 = [];
+                    for (let i = 0; i < ota4id.length; i++) {
                         ota4.push(ota4id[i]+";"+(ota4r1[i]==""?"0":ota4r1[i]));
                     }
 
-                    var pa4id = [];
+                    let pa4id = [];
                     $("#a4ot [name^='p-']").each(function(indx, element){
                         pa4id.push(+$(element).attr("name").replace("p-",""));
                     });
-                    var pa4r1 = [];
+                    let pa4r1 = [];
                     $("#a4ot [name^='p-'] [name='reestr1']").each(function(indx, element){
                         pa4r1.push($(element).val());
                     });
-                    var pa4 = [];
-                    for (var i = 0; i < pa4id.length; i++) {
+                    let pa4 = [];
+                    for (let i = 0; i < pa4id.length; i++) {
                         pa4.push(pa4id[i]+";"+(pa4r1[i]==""?"0":pa4r1[i]));
                     }
 
-                    var otc5id = [];
+                    let otc5id = [];
                     $("#c5ot [name^='ot-']").each(function(indx, element){
                         otc5id.push(+$(element).attr("name").replace("ot-",""));
                     });
-                    var otc5r1 = [];
+                    let otc5r1 = [];
                     $("#c5ot [name^='ot-'] [name='reestr1']").each(function(indx, element){
                         otc5r1.push($(element).val());
                     });
-                    var otc5 = [];
-                    for (var i = 0; i < otc5id.length; i++) {
+                    let otc5 = [];
+                    for (let i = 0; i < otc5id.length; i++) {
                         otc5.push(otc5id[i]+";"+(otc5r1[i]==""?"0":otc5r1[i]));
                     }
 
-                    var pc5id = [];
+                    let pc5id = [];
                     $("#c5ot [name^='p-']").each(function(indx, element){
                         pc5id.push(+$(element).attr("name").replace("p-",""));
                     });
-                    var pc5r1 = [];
+                    let pc5r1 = [];
                     $("#c5ot [name^='p-'] [name='reestr1']").each(function(indx, element){
                         pc5r1.push($(element).val());
                     });
-                    var pc5 = [];
-                    for (var i = 0; i < pc5id.length; i++) {
+                    let pc5 = [];
+                    for (let i = 0; i < pc5id.length; i++) {
                         pc5.push(pc5id[i]+";"+(pc5r1[i]==""?"0":pc5r1[i]));
                     }
 
-                    var ot110x220id = [];
+                    let ot110x220id = [];
                     $("#110x220ot [name^='ot-']").each(function(indx, element){
                         ot110x220id.push(+$(element).attr("name").replace("ot-",""));
                     });
-                    var ot110x220r1 = [];
+                    let ot110x220r1 = [];
                     $("#110x220ot [name^='ot-'] [name='reestr1']").each(function(indx, element){
                         ot110x220r1.push($(element).val());
                     });
-                    var ot110x220 = [];
-                    for (var i = 0; i < ot110x220id.length; i++) {
+                    let ot110x220 = [];
+                    for (let i = 0; i < ot110x220id.length; i++) {
                         ot110x220.push(ot110x220id[i]+";"+(ot110x220r1[i]==""?"0":ot110x220r1[i]));
                     }
 
-                    var p110x220id = [];
+                    let p110x220id = [];
                     $("#110x220ot [name^='p-']").each(function(indx, element){
                         p110x220id.push(+$(element).attr("name").replace("p-",""));
                     });
-                    var p110x220r1 = [];
+                    let p110x220r1 = [];
                     $("#110x220ot [name^='p-'] [name='reestr1']").each(function(indx, element){
                         p110x220r1.push($(element).val());
                     });
-                    var p110x220 = [];
+                    let p110x220 = [];
                     for (var i = 0; i < p110x220id.length; i++) {
                         p110x220.push(p110x220id[i]+";"+(p110x220r1[i]==""?"0":p110x220r1[i]));
                     }
 
-                    var otpkid = [];
+                    let otpkid = [];
                     $("#pkot [name^='ot-']").each(function(indx, element){
                         otpkid.push(+$(element).attr("name").replace("ot-",""));
                     });
-                    var otpkr1 = [];
+                    let otpkr1 = [];
                     $("#pkot [name^='ot-'] [name='reestr1']").each(function(indx, element){
                         otpkr1.push($(element).val());
                     });
 
-                    var otpk = [];
-                    for (var i = 0; i < otpkid.length; i++) {
+                    let otpk = [];
+                    for (let i = 0; i < otpkid.length; i++) {
                         otpk.push(otpkid[i]+";"+(otpkr1[i]==""?"0":otpkr1[i]));
                     }
 
-                    var ppkid = [];
+                    let ppkid = [];
                     $("#pkot [name^='p-']").each(function(indx, element){
                         ppkid.push(+$(element).attr("name").replace("p-",""));
                     });
-                    var ppkr1 = [];
+                    let ppkr1 = [];
                     $("#pkot [name^='p-'] [name='reestr1']").each(function(indx, element){
                         ppkr1.push($(element).val());
                     });
-                    var ppk = [];
-                    for (var i = 0; i < ppkid.length; i++) {
+                    let ppk = [];
+                    for (let i = 0; i < ppkid.length; i++) {
                         ppk.push(ppkid[i]+";"+(ppkr1[i]==""?"0":ppkr1[i]));
                     }
 
                     //---
-                    var otteid = [];
+                    let otteid = [];
                     $("#teot [name^='ot-']").each(function(indx, element){
                         otteid.push(+$(element).attr("name").replace("ot-",""));
                     });
-                    var otter1 = [];
+                    let otter1 = [];
                     $("#teot [name^='ot-'] [name='reestr1']").each(function(indx, element){
                         otter1.push($(element).val());
                     });
 
-                    var otte = [];
-                    for (var i = 0; i < otteid.length; i++) {
+                    let otte = [];
+                    for (let i = 0; i < otteid.length; i++) {
                         otte.push(otteid[i]+";"+(otter1[i]==""?"0":otter1[i]));
                     }
 
-                    var pteid = [];
+                    let pteid = [];
                     $("#teot [name^='p-']").each(function(indx, element){
                         pteid.push(+$(element).attr("name").replace("p-",""));
                     });
-                    var pter1 = [];
+                    let pter1 = [];
                     $("#teot [name^='p-'] [name='reestr1']").each(function(indx, element){
                         pter1.push($(element).val());
                     });
-                    var pte = [];
-                    for (var i = 0; i < pteid.length; i++) {
+                    let pte = [];
+                    for (let i = 0; i < pteid.length; i++) {
                         pte.push(pteid[i]+";"+(pter1[i]==""?"0":pter1[i]));
                     }
 
@@ -262,8 +328,8 @@
                         p110x220clear.push(p110x220clearotid[i]+";"+(p110x220clearotr1[i]==""?"0":p110x220clearotr1[i]));
                     }
 
-                    var delim="!";
-                    var param =
+                    let delim="!";
+                    let param =
                         "date=" + BeginDate +
                         "&ota4=" + ota4.join(delim) +
                         "&pa4=" + pa4.join(delim) +
@@ -294,9 +360,16 @@
     </script>
 </head>
 <body>
-<div th:insert="fragment/logout :: logout(${user})"></div>
+
+<!--<div th:insert="fragment/logout :: logout(${user})"></div>-->
 
 <div th:insert="fragment/menu :: menu"></div>
+
+<div class="row mx-1 my-2" >
+    <div class="col d-flex justify-content-center">
+        <h1>Отчёт по конвертам</h1>
+    </div>
+</div>
 
 <div th:insert="fragment/menu :: dat"></div>
 
@@ -304,6 +377,6 @@
 
 <div id="form"></div>
 
-<script type="text/javascript" src="/webjars/materialize/1.0.0-rc.2/dist/js/materialize.min.js"></script>
+<script type="text/javascript" src="/webjars/bootstrap/5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

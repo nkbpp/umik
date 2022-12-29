@@ -2,29 +2,92 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Отчет марки и конверты</title>
+    <title>Учёт марок и конвертов</title>
     <script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.js"></script>
-    <link type="text/css" rel="stylesheet" href="/webjars/materialize/1.0.0-rc.2/dist/css/materialize.min.css"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/dist/css/bootstrap.min.css}"/>
     <script type="text/javascript">
+
+        let OLD_VAL_INPUT = 0;
+
+        function changeZnach(input, link, tdRaspr, inputNewVal) {
+
+            let inputMax = +input.attr('max');
+            let raspr = +tdRaspr.attr('name');
+
+            let inputVsegoOld = raspr;
+
+            input.closest('table').find('input').each(function (index, el) {
+                if($(this).attr('id')!==input.attr('id')){
+                    inputVsegoOld -= +$(this).val()
+                }
+            })
+
+            inputNewVal = +(inputNewVal>=inputMax?inputMax:inputNewVal);
+            inputNewVal = +(inputNewVal>=inputVsegoOld?inputVsegoOld:inputNewVal);
+
+            input.val(inputNewVal);
+            link.text(' ' + (+inputMax - +inputNewVal));
+
+            tdRaspr.text(+inputVsegoOld-+inputNewVal);
+
+        }
+
         $(document).ready(function () {
-            $(".dropdown-trigger").dropdown(); //чтобы меню хренячило
 
-            var date = new Date();
+            let fullYear = new Date().getFullYear();
+            let html = "";
+            for (let i = fullYear - 3; i < fullYear + 4; i++) {
+                html+=`<option text="${i}" value="${i}">${i}</option>`;
+            }
+            $("#year").html(html);
+
+            let date = new Date();
             $("#mounth").val(+date.getMonth()+1);
-            $("#year").val(+date.getFullYear());
-            $('select').formSelect();//селекты
+            $("#year").val(fullYear);
 
+            $("body").on('keyup', 'input', function () {
+
+                if ($(this).attr('type')==='number' && !$(this).hasClass('marki')) {
+                    console.log(!$(this).hasClass('marki'))
+                    let input = $(this);
+                    let link = $(this).closest('td').find('a');
+                    let tdRaspr = $(this).closest('table').find('td.raspr');
+
+                    changeZnach(input, link, tdRaspr, $(this).val());
+
+                }
+            });
+
+            $("body").on('keydown', 'input', function () {
+                if ($(this).attr('type')==='number' && !$(this).hasClass('marki')) {
+                    OLD_VAL_INPUT = +$(this).val();
+                }
+            });
 
             $("body").on('click', 'a', function () {
 
+                if ($(this).hasClass('link-ostatok')) {
+
+                    let input = $(this).closest('td').find('input');
+                    let link = $(this);
+                    let tdRaspr = $(this).closest('table').find('td.raspr');
+
+                    let inputMax = input.attr('max');
+                    let raspr = tdRaspr.text();
+
+                    OLD_VAL_INPUT = +input.val();
+                    changeZnach(input, link, tdRaspr, link.text().replace(/[^0-9]/,""))
+
+                }
+
                 if ($(this).attr('id') == "go") {
                     //Последнее число этого месяца
-                    var mounth = +$("#mounth").val();
-                    var year = $("#year").val();
-                    var day = 1;
-                    var now;
-                    var now1;
-                    var BeginDate;
+                    let mounth = +$("#mounth").val();
+                    let year = $("#year").val();
+                    let day = 1;
+                    let now;
+                    let now1;
+                    let BeginDate;
 
                     if(mounth==12){
                         BeginDate=year+"-12-01";
@@ -35,7 +98,7 @@
                             ((+now1.getDate())<10? "0"+(+now1.getDate()):(+now1.getDate()));
                     }
 
-                    BeginDate;
+                    //BeginDate;
 
                     if(mounth==12){
                         mounth=0;
@@ -49,16 +112,15 @@
                         now.setDate(0);
                     }
 
-                    var EndDate = now.getFullYear() + "-" +
+                    let EndDate = now.getFullYear() + "-" +
                         ((+now.getMonth()+1)<10? "0"+(+now.getMonth()+1):(+now.getMonth()+1))
                         + "-" + now.getDate();
 
-                    var param =
+                    let param =
                         "date1=" + BeginDate +
                         "&date2=" + EndDate;
 
                     $("#form").load("/umik/main/otchmarkandkonv/form", param, function () {
-                        $('select').formSelect();//селект с конвертами
                         $("#mounth").add("disabled", "disabled");//не работают вроде
                         $("#year").add("class", "disabled");
                     });
@@ -67,12 +129,12 @@
 
                 if ($(this).attr('id') == "vvod") {
 
-                    var mounth = +$("#mounth").val();
-                    var year = $("#year").val();
-                    var day = 13;
-                    var now;
-                    var now1;
-                    var BeginDate;
+                    let mounth = +$("#mounth").val();
+                    let year = $("#year").val();
+                    let day = 13;
+                    let now;
+                    let now1;
+                    let BeginDate;
 
                     if(mounth==12){
                         BeginDate=year+"-12-13";
@@ -83,78 +145,60 @@
                             ((+now1.getDate())<10? "0"+(+now1.getDate()):(+now1.getDate()));
                     }
 
-                    BeginDate;
-
-/*                    var mounth = +$("#mounth").val();
-                    var year = $("#year").val();
-                    var now1;
-
-                    if(mounth==12){
-                        BeginDate=year+"-12-13";
-                    } else {
-                        now1 = new Date(year, +mounth-1, 13);
-                        BeginDate = now1.getFullYear() + "-" +
-                            ((+now1.getMonth())<10? "0"+(+now1.getMonth()):(+now1.getMonth())) + "-" +
-                            ((+now1.getDate())<10? "0"+(+now1.getDate()):(+now1.getDate()));
-                    }
-
-                    BeginDate;*/
-
-
-                    var otDid = [];
+                    let otDid = [];
                     $("#Dot [name^='ot-']").each(function(indx, element){
                         otDid.push(+$(element).attr("name").replace("ot-",""));
                     });
-                    var otDr1 = [];
+                    let otDr1 = [];
                     $("#Dot [name^='ot-'] [name='reestr1']").each(function(indx, element){
                         otDr1.push($(element).val());
                     });
-                    var otD = [];
-                    for (var i = 0; i < otDid.length; i++) {
+                    let otD = [];
+                    for (let i = 0; i < otDid.length; i++) {
                         otD.push(otDid[i]+";"+(otDr1[i]==""?"0":otDr1[i]));
                     }
 
-                    var pDid = [];
+                    let pDid = [];
                     $("#Dot [name^='p-']").each(function(indx, element){
                         pDid.push(+$(element).attr("name").replace("p-",""));
                     });
-                    var pDr1 = [];
+                    let pDr1 = [];
                     $("#Dot [name^='p-'] [name='reestr1']").each(function(indx, element){
                         pDr1.push($(element).val());
                     });
-                    var pD = [];
-                    for (var i = 0; i < pDid.length; i++) {
+                    let pD = [];
+                    for (let i = 0; i < pDid.length; i++) {
                         pD.push(pDid[i]+";"+(pDr1[i]==""?"0":pDr1[i]));
                     }
 
-                    var ot110x220id = [];
+                    let ot110x220id = [];
                     $("#110x220ot [name^='ot-']").each(function(indx, element){
                         ot110x220id.push(+$(element).attr("name").replace("ot-",""));
                     });
-                    var ot110x220r1 = [];
+                    let ot110x220r1 = [];
                     $("#110x220ot [name^='ot-'] [name='reestr1']").each(function(indx, element){
                         ot110x220r1.push($(element).val());
                     });
-                    var ot110x220 = [];
-                    for (var i = 0; i < ot110x220id.length; i++) {
+                    let ot110x220 = [];
+                    for (let i = 0; i < ot110x220id.length; i++) {
                         ot110x220.push(ot110x220id[i]+";"+(ot110x220r1[i]==""?"0":ot110x220r1[i]));
-                    }ot110x220
+                    }
 
-                    var p110x220id = [];
+                    let p110x220id = [];
                     $("#110x220ot [name^='p-']").each(function(indx, element){
                         p110x220id.push(+$(element).attr("name").replace("p-",""));
                     });
-                    var p110x220r1 = [];
+                    let p110x220r1 = [];
                     $("#110x220ot [name^='p-'] [name='reestr1']").each(function(indx, element){
                         p110x220r1.push($(element).val());
                     });
-                    var p110x220 = [];
-                    for (var i = 0; i < p110x220id.length; i++) {
+                    let p110x220 = [];
+                    for (let i = 0; i < p110x220id.length; i++) {
                         p110x220.push(p110x220id[i]+";"+(p110x220r1[i]==""?"0":p110x220r1[i]));
                     }
 
-                    var delim="!";
-                    var param =
+                    let delim="!";
+                    let param =
                         "date=" + BeginDate +
                         "&otD=" + otD.join(delim) +
                         "&pD=" + pD.join(delim) +
@@ -180,8 +224,15 @@
     </script>
 </head>
 <body>
-<div th:insert="fragment/logout :: logout(${user})"></div>
+
+<!--<div th:insert="fragment/logout :: logout(${user})"></div>-->
 <div th:insert="fragment/menu :: menu"></div>
+
+<div class="row mx-1 my-2" >
+    <div class="col d-flex justify-content-center">
+        <h1>Отчёт марки и конверты</h1>
+    </div>
+</div>
 
 <div th:insert="fragment/menu :: dat"></div>
 
@@ -189,6 +240,6 @@
 
 <div id="form"></div>
 
-<script type="text/javascript" src="/webjars/materialize/1.0.0-rc.2/dist/js/materialize.min.js"></script>
+<script type="text/javascript" src="/webjars/bootstrap/5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

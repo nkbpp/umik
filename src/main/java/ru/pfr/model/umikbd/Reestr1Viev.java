@@ -57,6 +57,12 @@ public class Reestr1Viev {
     @Column(name = "id_konv22")
     private Integer id_konv22;
 
+    @Column(name = "id_konv11")
+    private Integer id_konv11;
+
+    @Column(name = "id_konv14")
+    private Integer id_konv14;
+
     @Column(name = "sum")
     private String sum;
 
@@ -78,7 +84,7 @@ public class Reestr1Viev {
     public Reestr1Viev(Long id, Date reg_date, String reg_number, String text_org,
                        String text_fio, String name, Spravkonv spravkonv, Integer id_konv1,
                        Integer id_konv4, Integer id_konv5, Integer id_konv6, Integer id_konv7,
-                       Integer id_konv22,
+                       Integer id_konv22, Integer id_konv11, Integer id_konv14,
                        String sum, Integer kol_vo) {
         this.id = id;
         this.reg_date = reg_date;
@@ -93,6 +99,8 @@ public class Reestr1Viev {
         this.id_konv6 = id_konv6;
         this.id_konv7 = id_konv7;
         this.id_konv22 = id_konv22;
+        this.id_konv11 = id_konv11;
+        this.id_konv14 = id_konv14;
         this.sum = sum;
         this.kol_vo = kol_vo;
     }
@@ -215,5 +223,22 @@ public class Reestr1Viev {
 
     public void setId_konv22(Integer id_konv22) {
         this.id_konv22 = id_konv22;
+    }
+
+
+    public Integer getId_konv11() {
+        return id_konv11;
+    }
+
+    public void setId_konv11(Integer id_konv7) {
+        this.id_konv11 = id_konv11;
+    }
+
+    public Integer getId_konv14() {
+        return id_konv14;
+    }
+
+    public void setId_konv14(Integer id_konv14) {
+        this.id_konv14 = id_konv14;
     }
 }

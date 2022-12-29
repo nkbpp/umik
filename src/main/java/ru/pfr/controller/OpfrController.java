@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import ru.pfr.global.MyNumbers;
 import ru.pfr.model.rsdoc_pfr.Deloproizvodstvo;
 import ru.pfr.model.rsdoc_pfr.Oblagraj;
 import ru.pfr.model.rsdoc_pfr.Sendtype;
@@ -35,7 +36,9 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -207,130 +210,6 @@ public class OpfrController {
         return "fragment/deloproizfrag :: tabledelo";
     }
 
-/*    @GetMapping("/deloproiz/find")
-    public String deloproizfind(
-            @RequestParam String regnum,
-            @RequestParam(value = "regnumpo", defaultValue = "0") String regnumpo,
-            @RequestParam String god,
-            @AuthenticationPrincipal User user,
-            Model model) {
-
-        logiService.save(new Logi(new Date(), user.getLogin(), "deloproizfind param=" +
-                " regnum = " + regnum +
-                " regnumpo = " + regnumpo +
-                " god = " + god
-        ));
-
-        if (regnumpo.equals("0")) {
-            regnumpo = regnum;
-        }
-
-        try {
-
-            Date date1 = dateddMMyyyy("01.01." + god);
-            Date date2 = dateddMMyyyy("01.01." + (Integer.valueOf(god) + 1));
-
-            List<Deloproizvodstvo> deloproizvodstvos = deloproizvodstvoService.findByRegnumber3(
-                    Integer.valueOf(regnum), Integer.valueOf(regnumpo), date1, date2
-            );
-            List<PEDdeloproizvodstvo> peDdeloproizvodstvos = peDdeloproizvodstvoService.findAllDate(date1, date2);
-
-            for (int i = 0; i < peDdeloproizvodstvos.size(); i++) {
-                PEDdeloproizvodstvo ped = peDdeloproizvodstvos.get(i);
-                int jj = -1;
-                for (int j = 0; j < deloproizvodstvos.size(); j++) {
-                    Deloproizvodstvo d = deloproizvodstvos.get(j);
-                    if (ped.getReg_number().equals(d.getRegnumber()) &&
-                            ped.getReg_datestr().equals(d.getReg_datestr()) &&
-                            ped.getText_org().equals(d.getText_org())) {
-                        jj = j;
-                        break;
-                    }
-                }
-                if (jj != -1) deloproizvodstvos.remove(jj);
-            }
-
-            model.addAttribute("deloproizvodstvos", deloproizvodstvos);
-            List<Spravkonv> spravkonvs = spravkonvService.findAll();
-            model.addAttribute("spravkonvs", spravkonvs);
-
-        } catch (DataAccessResourceFailureException e) {
-            model.addAttribute("user", user);
-            model.addAttribute("errtext", "Отсутствует соединение с базой!");
-            model.addAttribute("err", e);
-            return "fragment/err :: error";
-        } catch (Exception e) {
-            model.addAttribute("user", user);
-            model.addAttribute("errtext", "Непредвиденная ошибка!");
-            model.addAttribute("err", e);
-            return "fragment/err :: error";
-        }
-        model.addAttribute("user", user);
-        return "fragment/deloproizfrag :: find";
-    }*/
-
-    /*@GetMapping("/deloproiz/add")
-    public String deloproizadd(
-            @RequestParam Integer reg_number,
-            @RequestParam String reg_date,
-            @RequestParam String name,
-            @RequestParam String text_org,
-            @RequestParam Long type,
-            @RequestParam String sum,
-            @RequestParam Integer kol_vo,
-            @AuthenticationPrincipal User user,
-            Model model) {
-
-        logiService.save(new Logi(new Date(), user.getLogin(), "deloproizadd param=" +
-                " reg_number = " + reg_number +
-                " reg_date = " + reg_date +
-                " name = " + name +
-                " text_org = " + text_org +
-                " type = " + type +
-                " sum = " + sum +
-                " kol_vo = " + kol_vo
-        ));
-
-        try {
-            Spravkonv spravkonv = spravkonvService.findById(type);
-
-            Date date = dateddMMyyyy(reg_date);
-            Date date2 = date;
-
-            LocalDate first = new java.sql.Date(date.getTime()).toLocalDate();
-            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
-            date2 = dateddMMyyyy(first.plusDays(1).format(formatter));// прибавляет один день к текущему
-
-            Deloproizvodstvo deloproizvodstvo = deloproizvodstvoService.findByRegnumber4(
-                    reg_number, date, date2, text_org.trim(), name
-            );
-
-            PEDdeloproizvodstvo peDdeloproizvodstvo = new PEDdeloproizvodstvo(
-                    deloproizvodstvo.getId(), deloproizvodstvo.getReg_pref(), deloproizvodstvo.getRegnumber(),
-                    deloproizvodstvo.getReg_postf(), date, deloproizvodstvo.getId_type_send(),
-                    name, text_org, spravkonv, Double.valueOf(sum), kol_vo
-            );
-            peDdeloproizvodstvoService.save(peDdeloproizvodstvo);
-        } catch (DataAccessResourceFailureException e) {
-            model.addAttribute("user", user);
-            model.addAttribute("errtext", "Отсутствует соединение с базой!");
-            model.addAttribute("err", e);
-            return "fragment/err :: error";
-        } catch (Exception e) {
-            model.addAttribute("user", user);
-            model.addAttribute("errtext", "Не смог добавить(, возможно вы не все ввели или ключевые поля в базе отсутствуют");
-            model.addAttribute("err", e);
-            return "fragment/err :: error";
-        }
-
-        List<PEDdeloproizvodstvo> peDobragrajs = peDdeloproizvodstvoService.findAllTekMounth();
-        model.addAttribute("peDdeloproizvodstvos", peDobragrajs);
-        model.addAttribute("user", user);
-        return "fragment/deloproizfrag :: tabledelo";
-    }*/
-
-
     @GetMapping("/deloproiz/del")
     public String deloproizdel(
             @RequestParam Long id,
@@ -428,135 +307,8 @@ public class OpfrController {
         List<PEDdeloproizvodstvo> peDobragrajs = peDdeloproizvodstvoService.findAllTekMounth();
         model.addAttribute("peDdeloproizvodstvos", peDobragrajs);
         model.addAttribute("user", user);
-        return "fragment/deloproizfrag :: tabledelo";
-    }
-
-/*    @GetMapping("/obragraj/add")
-    public String obragrajadd(
-            @RequestParam Integer reg_number,
-            @RequestParam String reg_date,
-            @RequestParam String name,
-            @RequestParam String text_org,
-            @RequestParam String text_fio,
-            @RequestParam Long type,
-            @RequestParam String sum,
-            @RequestParam Integer kol_vo,
-            @RequestParam String addr_list,
-            @AuthenticationPrincipal User user,
-            Model model) {
-
-        logiService.save(new Logi(new Date(), user.getLogin(), "obragraj param=" +
-                " reg_number = " + reg_number +
-                " reg_date = " + reg_date +
-                " name = " + name +
-                " text_org = " + text_org +
-                " text_fio = " + text_fio +
-                " type = " + type +
-                " sum = " + sum +
-                " addr_list = " + addr_list +
-                " kol_vo = " + kol_vo
-        ));
-
-        try {
-            Spravkonv spravkonv = spravkonvService.findById(type);
-
-            Date date = new SimpleDateFormat("dd.MM.yyyy").parse(reg_date);
-            Date date2 = date;
-
-            LocalDate first = new java.sql.Date(date.getTime()).toLocalDate();
-            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
-            date2 = new SimpleDateFormat("dd.MM.yyyy").parse(first.plusDays(1).format(formatter));
-
-            Oblagraj deloproizvodstvo = oblagrajService.findByRegnumber2(
-                    reg_number, date, date2, text_org.trim(), text_fio
-            );
-
-            PEDobragraj peDdeloproizvodstvo = new PEDobragraj(
-                    deloproizvodstvo.getId(), deloproizvodstvo.getReg_pref(), deloproizvodstvo.getRegnumber(),
-                    deloproizvodstvo.getReg_postf(), date, deloproizvodstvo.getId_type_send(),
-                    name, text_org, text_fio, addr_list, spravkonv, Double.valueOf(sum), kol_vo
-            );
-            peDobragrajService.save(peDdeloproizvodstvo);
-        } catch (DataAccessResourceFailureException e) {
-            model.addAttribute("user", user);
-            model.addAttribute("errtext", "Отсутствует соединение с базой!");
-            model.addAttribute("err", e);
-            return "fragment/err :: error";
-        } catch (Exception e) {
-            model.addAttribute("user", user);
-            model.addAttribute("errtext", "Не смог добавить(, возможно вы не все ввели или ключевые поля в базе отсутствуют");
-            model.addAttribute("err", e);
-            return "fragment/err :: error";
-        }
-
-        List<PEDobragraj> peDobragrajs = peDobragrajService.findAllTekMounth();
-        model.addAttribute("peDdeloproizvodstvos", peDobragrajs);
-        model.addAttribute("user", user);
         return "fragment/oblagrajfrag :: tabledelo";
-    }*/
-
-    /*@GetMapping("/obragraj/find")
-    public String obragrajfind(
-            @RequestParam String regnum,
-            @RequestParam(value = "regnumpo", defaultValue = "0") String regnumpo,
-            @RequestParam String god,
-            @AuthenticationPrincipal User user,
-            Model model) {
-
-        logiService.save(new Logi(new Date(), user.getLogin(), "obragrajfind param=" +
-                " regnum = " + regnum +
-                " regnumpo = " + regnumpo +
-                " god = " + god
-        ));
-
-        if (regnumpo.equals("0")) {
-            regnumpo = regnum;
-        }
-
-        try {
-            String s1 = "01.01." + god;
-            String s2 = "01.01." + (Integer.valueOf(god) + 1);
-
-            Date date1 = new SimpleDateFormat("dd.MM.yyyy").parse(s1);
-            Date date2 = new SimpleDateFormat("dd.MM.yyyy").parse(s2);
-
-            List<Oblagraj> deloproizvodstvos = oblagrajService.findByRegnumber3(
-                    Integer.valueOf(regnum), Integer.valueOf(regnumpo), date1, date2
-            );
-            List<PEDobragraj> peDdeloproizvodstvos = peDobragrajService.findAllDate(date1, date2);
-
-            for (int i = 0; i < peDdeloproizvodstvos.size(); i++) {
-                PEDobragraj ped = peDdeloproizvodstvos.get(i);
-                int jj = -1;
-                for (int j = 0; j < deloproizvodstvos.size(); j++) {
-                    Oblagraj d = deloproizvodstvos.get(j);
-                    if (ped.getReg_number().equals(d.getRegnumber()) &&
-                            ped.getReg_datestr().equals(d.getReg_datestr()) &&
-                            ped.getText_org().equals(d.getText_org())) {
-                        jj = j;
-                        break;
-                    }
-                }
-                if (jj != -1) deloproizvodstvos.remove(jj);
-            }
-
-            model.addAttribute("deloproizvodstvos", deloproizvodstvos);
-            List<Spravkonv> spravkonvs = spravkonvService.findAll();
-            model.addAttribute("spravkonvs", spravkonvs);
-        } catch (DataAccessResourceFailureException e) {
-            model.addAttribute("user", user);
-            model.addAttribute("errtext", "Отсутствует соединение с базой!");
-            model.addAttribute("err", e);
-            return "fragment/err :: error";
-        } catch (Exception e) {
-            model.addAttribute("user", user);
-            model.addAttribute("err", e);
-            return "fragment/err :: error";
-        }
-        model.addAttribute("user", user);
-        return "fragment/oblagrajfrag :: find";
-    }*/
+    }
 
     @GetMapping("/obragraj/del")
     public String obragrajdel(
@@ -697,23 +449,25 @@ public class OpfrController {
         Date date1minusMonths = new Date();
         Date date2minusMonths = new Date();
         try {
-            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(firstDay);
-            date2 = new SimpleDateFormat("yyyy-MM-dd").parse(endDay);
+            //date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date1);
+            //date2 = new SimpleDateFormat("yyyy-MM-dd").parse(date1);
 
-            //минус месяц
-            //что осталось с прошлого месяца
-            String[] subStr;
-            String[] subStr2;
-            String delimeter = "-"; // Разделитель
-            subStr = firstDay.split(delimeter);
-            subStr2 = endDay.split(delimeter);
-            LocalDate first = LocalDate.of(Integer.valueOf(subStr[0]), Integer.valueOf(subStr[1]), Integer.valueOf(subStr[2])).minusMonths(1);
-            LocalDate end = LocalDate.of(Integer.valueOf(subStr2[0]), Integer.valueOf(subStr2[1]), Integer.valueOf(subStr2[2])).minusMonths(1);
+            LocalDateTime first = date1.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime().minusMonths(1);
+            LocalDateTime end = first.plusMonths(1);
 
             date1minusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(first.toString());
             date2minusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(end.toString());
+
+            Long datenow = date2minusMonths.getTime() - 60000l; //23часа 59минут
+            date2minusMonths = new Date(datenow);
         } catch (Exception e) {
         }
+
+        //todo поработать с датами?
+        Long datenow = date2.getTime() + 86340000l; //23часа 59минут
+        date2 = new Date(datenow);
 
         List<Otchmarkandkonv> otchmarkandkonvD = otchmarkandkonvService.findAllDatOnlyTypeD(date1minusMonths, date2minusMonths);
         List<Prihod> prihodsD = new ArrayList<>();
@@ -727,15 +481,6 @@ public class OpfrController {
 
 
         model.addAttribute("prihodsD", prihodsD);
-
-/*        String test = "";
-        for (Otchmarkandkonv o:
-        otchmarkandkonvD) {
-            test+=o.toString();
-        }
-        test += (" dat1 " + date1minusMonths + " dat2 " + date2minusMonths);
-        model.addAttribute("test", test);*/
-        //model.addAttribute("test", otchmarkandkonvService.findAllDatOnlyTypeD(date1minusMonths, date2minusMonths).size());
 
         model.addAttribute("user", user);
 
@@ -938,14 +683,17 @@ public class OpfrController {
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             date1 = dateyyyyMMdd(dat1);
             date2 = dateyyyyMMdd(dat2);
+            Long datenow = date2.getTime() + 86340000l; //23часа 59минут
+            date2 = new Date(datenow);
         } else {
-            LocalDate first = LocalDate.now().withDayOfMonth(1);
-            //LocalDate last = first.plusMonths(1).minusDays(1);
-            LocalDate last = first.plusMonths(1);
+            LocalDateTime first = LocalDateTime.now().withDayOfMonth(1);
+            LocalDateTime last = first.plusMonths(1);
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             try {
                 date1 = new SimpleDateFormat("dd.MM.yyyy").parse(first.format(formatter));
                 date2 = new SimpleDateFormat("dd.MM.yyyy").parse(last.format(formatter));
+                Long datenow = date2.getTime() - 60000l; //23часа 59минут
+                date2 = new Date(datenow);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -953,7 +701,7 @@ public class OpfrController {
 
         List<Pravopriem> pravopriems = pravopriemService.findAllD(date1, date2);
 
-        int so = 0, m = 0, k = 0, mzp = 0;
+        double so = 0, m = 0, k = 0, mzp = 0;
 
         for (int i = 0; i < pravopriems.size(); i++) {
             Pravopriem r = pravopriems.get(i);
@@ -995,21 +743,24 @@ public class OpfrController {
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             date1 = dateyyyyMMdd(dat1);
             date2 = dateyyyyMMdd(dat2);
+            Long datenow = date2.getTime() + 86340000l; //23часа 59минут
+            date2 = new Date(datenow);
         } else {
-            LocalDate first = LocalDate.now().withDayOfMonth(1);
-            //LocalDate last = first.plusMonths(1).minusDays(1);
-            LocalDate last = first.plusMonths(1);
+            LocalDateTime first = LocalDateTime.now().withDayOfMonth(1);
+            LocalDateTime last = first.plusMonths(1);
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             try {
                 date1 = new SimpleDateFormat("dd.MM.yyyy").parse(first.format(formatter));
                 date2 = new SimpleDateFormat("dd.MM.yyyy").parse(last.format(formatter));
+                Long datenow = date2.getTime() - 60000l; //23часа 59минут
+                date2 = new Date(datenow);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
         List<Pravopriem> pravopriems = pravopriemService.findAllD(date1, date2);
 
-        int so = 0, m = 0, k = 0, mzp = 0;
+        double so = 0, m = 0, k = 0, mzp = 0;
 
         for (int i = 0; i < pravopriems.size(); i++) {
             Pravopriem r = pravopriems.get(i);
@@ -1173,14 +924,17 @@ public class OpfrController {
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             date1 = dateyyyyMMdd(dat1);
             date2 = dateyyyyMMdd(dat2);
+            Long datenow = date2.getTime() + 86340000l; //23часа 59минут
+            date2 = new Date(datenow);
         } else {
-            LocalDate first = LocalDate.now().withDayOfMonth(1);
-            LocalDate last = first.plusMonths(1);
-            //LocalDate last = first.plusMonths(1).minusDays(1);
+            LocalDateTime first = LocalDateTime.now().withDayOfMonth(1);
+            LocalDateTime last = first.plusMonths(1);
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             try {
                 date1 = new SimpleDateFormat("dd.MM.yyyy").parse(first.format(formatter));
                 date2 = new SimpleDateFormat("dd.MM.yyyy").parse(last.format(formatter));
+                Long datenow = date2.getTime() - 60000l; //23часа 59минут
+                date2 = new Date(datenow);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -1219,14 +973,17 @@ public class OpfrController {
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             date1 = dateyyyyMMdd(dat1);
             date2 = dateyyyyMMdd(dat2);
+            Long datenow = date2.getTime() + 86340000l; //23часа 59минут
+            date2 = new Date(datenow);
         } else {
-            LocalDate first = LocalDate.now().withDayOfMonth(1);
-            LocalDate last = first.plusMonths(1);
-            //LocalDate last = first.plusMonths(1).minusDays(1);
+            LocalDateTime first = LocalDateTime.now().withDayOfMonth(1);
+            LocalDateTime last = first.plusMonths(1);
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             try {
                 date1 = new SimpleDateFormat("dd.MM.yyyy").parse(first.format(formatter));
                 date2 = new SimpleDateFormat("dd.MM.yyyy").parse(last.format(formatter));
+                Long datenow = date2.getTime() - 60000l; //23часа 59минут
+                date2 = new Date(datenow);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -1276,7 +1033,7 @@ public class OpfrController {
             for (Reestr1Viev reestr1Viev : reestr1s) {
                 XWPFTableRow tableRowTwo = T.createRow();
 
-                for (int i = 0; i < 9; i++) {
+                for (int i = 0; i < 11; i++) { // i < 9
                     paragraph = document.createParagraph();
                     paragraph.setAlignment(ParagraphAlignment.CENTER);
                     run = paragraph.createRun();
@@ -1308,6 +1065,16 @@ public class OpfrController {
                         case 7:
                             st = reestr1Viev.getSpravkonv().ispoly() ? reestr1Viev.getKol_vo().toString() : "";
                             break;
+
+                            //
+                        case 8:
+                            st = reestr1Viev.getSpravkonv().is11() ? reestr1Viev.getKol_vo().toString() : "";
+                            break;
+                        case 9:
+                            st = reestr1Viev.getSpravkonv().is14() ? reestr1Viev.getKol_vo().toString() : "";
+                            break;
+                            //
+
                         default:
                             st = reestr1Viev.getSum();
                             break;
@@ -1328,7 +1095,7 @@ public class OpfrController {
 
             Reestr1Viev reestr1i = reestr1VievService.findAllI(date1, date2);
 
-            for (int i = 3; i < 9; i++) {
+            for (int i = 3; i < 11; i++) { // i < 9
                 paragraph = document.createParagraph();
                 paragraph.setAlignment(ParagraphAlignment.CENTER);
                 run = paragraph.createRun();
@@ -1351,6 +1118,16 @@ public class OpfrController {
                     case 7:
                         st = String.valueOf(reestr1i.getId_konv6());
                         break;
+
+                        //
+                    case 8:
+                        st = String.valueOf(reestr1i.getId_konv11());
+                        break;
+                    case 9:
+                        st = String.valueOf(reestr1i.getId_konv14());
+                        break;
+                        //
+
                     default:
                         st = String.valueOf(reestr1i.getSum());
                         break;
@@ -1368,7 +1145,7 @@ public class OpfrController {
                 tableRowTwo.getCell(i).setParagraph(paragraph);
             }
 
-            for (int i = 4; i < 9; i++) {
+            for (int i = 4; i < 11; i++) { //i < 9
                 paragraph = document.createParagraph();
                 paragraph.setAlignment(ParagraphAlignment.CENTER);
                 run = paragraph.createRun();
@@ -1388,6 +1165,16 @@ public class OpfrController {
                     case 7:
                         st = "Полиэтиленовый конверт";
                         break;
+
+                        //
+                    case 8:
+                        st = "Конверт 110*220 лит А";
+                        break;
+                    case 9:
+                        st = "Конверт с литер. Д";
+                        break;
+                        //
+
                     default:
                         st = "Марки";
                         break;
@@ -1444,21 +1231,21 @@ public class OpfrController {
             date1 = new SimpleDateFormat("yyyy-MM-dd").parse(dat1);
             date2 = new SimpleDateFormat("yyyy-MM-dd").parse(dat2);
 
-            //минус месяц
-            //что осталось с прошлого месяца
-            String[] subStr;
-            String[] subStr2;
-            String delimeter = "-"; // Разделитель
-            subStr = dat1.split(delimeter);
-            subStr2 = dat2.split(delimeter);
-            LocalDate first = LocalDate.of(Integer.valueOf(subStr[0]), Integer.valueOf(subStr[1]), Integer.valueOf(subStr[2])).minusMonths(1);
-            LocalDate end = LocalDate.of(Integer.valueOf(subStr2[0]), Integer.valueOf(subStr2[1]), Integer.valueOf(subStr2[2])).minusMonths(1);
+            LocalDateTime first = date1.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime().minusMonths(1);
+            LocalDateTime end = first.plusMonths(1);
 
             date1minusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(first.toString());
             date2minusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(end.toString());
+
+            Long datenow = date2minusMonths.getTime() - 60000l; //23часа 59минут
+            date2minusMonths = new Date(datenow);
         } catch (Exception e) {
         }
 
+        Long datenow = date2.getTime() + 86340000l; //23часа 59минут
+        date2 = new Date(datenow);
 
         List<Reestr1Viev> reestr1s = reestr1VievService.findAllD(date1, date2);
         model.addAttribute("reestr1s", reestr1s);
@@ -1484,8 +1271,8 @@ public class OpfrController {
             if (o.getPrihod().getSpravkonv().getId() == 4 && o.getOstatok() != 0) {
                 otchraschodkonv4.add(o);
             }
-/*            if (o.getPrihod().getSpravkonv().getId() == 5 && o.getOstatok() != 0) {
-                otchraschodkonv5.add(o);
+            /*if (o.getPrihod().getSpravkonv().getId() == 6) {
+                otchraschodkonv6.add(o);
             }*/
             if (o.getPrihod().getSpravkonv().getId() == 6 && o.getOstatok() != 0) {
                 otchraschodkonv6.add(o);
@@ -1537,6 +1324,7 @@ public class OpfrController {
                 prihods22.add(p);
             }
         }
+
         model.addAttribute("prihods1", prihods1);
         model.addAttribute("prihods4", prihods4);
 //        model.addAttribute("prihods5", prihods5);
@@ -1603,6 +1391,10 @@ public class OpfrController {
             date2End = new SimpleDateFormat("yyyy-MM-dd").parse(end.toString());
         } catch (Exception e) {
         }
+
+        //todo поработать с датами
+        //Long datenow = date2.getTime() + 86340000l; //23часа 59минут
+        //date2 = new Date(datenow);
 
         //Удаляем старое
         otchraschodkonvService.Del(date1Begin, date2End);
@@ -1838,6 +1630,10 @@ public class OpfrController {
 
         date1 = dateyyyyMMdd(dat1);
         date2 = dateyyyyMMdd(dat2);
+
+        //todo поработать с датами
+        //Long datenow = date2.getTime() + 86340000l; //23часа 59минут
+        //date2 = new Date(datenow);
 
         List<Otchraschodkonv> otchraschodkonvs = otchraschodkonvService.findAllD(date1, date2);
 
@@ -2090,24 +1886,22 @@ public class OpfrController {
             date1 = new SimpleDateFormat("yyyy-MM-dd").parse(dat1);
             date2 = new SimpleDateFormat("yyyy-MM-dd").parse(dat2);
 
-            //минус месяц
-            //что осталось с прошлого месяца
-            String[] subStr;
-            String[] subStr2;
-            String delimeter = "-"; // Разделитель
-            subStr = dat1.split(delimeter);
-            subStr2 = dat2.split(delimeter);
-            LocalDate first = LocalDate.of(Integer.valueOf(subStr[0]), Integer.valueOf(subStr[1]), Integer.valueOf(subStr[2])).minusMonths(1);
-            LocalDate end = LocalDate.of(Integer.valueOf(subStr2[0]), Integer.valueOf(subStr2[1]), Integer.valueOf(subStr2[2])).minusMonths(1);
+            LocalDateTime first = date1.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime().minusMonths(1);
+            LocalDateTime end = first.plusMonths(1);
 
             date1minusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(first.toString());
             date2minusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(end.toString());
+
+            Long datenow = date2minusMonths.getTime() - 60000l; //23часа 59минут
+            date2minusMonths = new Date(datenow);
         } catch (Exception e) {
         }
 
-
-/*        List<Reestr1Viev> reestr1s = reestr1VievService.findAllD(date1, date2);
-        model.addAttribute("reestr1s", reestr1s);*/
+        //поработать с датами
+        Long datenow = date2.getTime() + 86340000l; //23часа 59минут
+        date2 = new Date(datenow);
 
         //здесь суммы конвертов за месяц 110x120
         Reestr1Viev reestr1i = reestr1VievService.findAllI(date1, date2);
@@ -2126,15 +1920,16 @@ public class OpfrController {
         model.addAttribute("pravopriems", pravopriems);
 /*        model.addAttribute("so", so);
         model.addAttribute("m", m);*/
-        model.addAttribute("k", k);
-        model.addAttribute("r2", mzp);
-        model.addAttribute("r1", reestr1i.getSum());
+        model.addAttribute("k", Double.valueOf(k));
+        model.addAttribute("r2", Double.valueOf(mzp));
+        model.addAttribute("r1", Double.valueOf(reestr1i.getSum()));
+        model.addAttribute("ob", MyNumbers.okrug(Double.valueOf(mzp) + Double.valueOf(reestr1i.getSum())));
 
         List<Prihodmarki> prihodmarkis = prihodmarkiService.findAllDat(date1, date2);
         List<Otchmark> otchmark = otchmarkService.findAllD(date1minusMonths, date2minusMonths);
 
-        model.addAttribute("ostat", otchmark.size() != 0 ? otchmark.get(0).getOstatok() : 0);
-        model.addAttribute("prihodm", prihodmarkis.size() != 0 ? prihodmarkis.get(0).getPrice() : 0);
+        model.addAttribute("ostat", MyNumbers.okrug(otchmark.size() != 0 ? Double.valueOf(otchmark.get(0).getOstatok()) : 0));
+        model.addAttribute("prihodm", MyNumbers.okrug(prihodmarkis.size() != 0 ? prihodmarkis.get(0).getPrice() : 0));
 
         List<Otchmarkandkonv> otchmarkandkonvD = otchmarkandkonvService.findAllDatOnlyTypeD(date1minusMonths, date2minusMonths);
         List<Otchmarkandkonv> otchmarkandkonv110x120 = otchmarkandkonvService.findAllDatOnlyType110x120(date1minusMonths, date2minusMonths);
@@ -2208,6 +2003,10 @@ public class OpfrController {
             date2EndMinusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(end.minusMonths(1).toString());
         } catch (Exception e) {
         }
+
+        //todo поработать с датами
+        //Long datenow = date2.getTime() + 86340000l; //23часа 59минут
+        //date2 = new Date(datenow);
 
         otchmarkandkonvService.Del(date1Begin, date2End);//Удаляем старое
         otchmarkService.Del(date1Begin, date2End);//Удаляем старое
@@ -2327,6 +2126,9 @@ public class OpfrController {
         date1 = dateyyyyMMdd(dat1);
         date2 = dateyyyyMMdd(dat2);
 
+        //todo поработать с датами
+        //Long datenow = date2.getTime() + 86340000l; //23часа 59минут
+        //date2 = new Date(datenow);
 
         List<Otchmarkandkonv> otchmarkandkonvs = otchmarkandkonvService.findAllD(date1, date2);
 
@@ -2999,6 +2801,9 @@ public class OpfrController {
         date1 = dateyyyyMMdd(dat1);
         date2 = dateyyyyMMdd(dat2);
 
+        //todo поработать с датами
+        //Long datenow = date2.getTime() + 86340000l; //23часа 59минут
+        //date2 = new Date(datenow);
 
         SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
         model.addAttribute("date1", dateFormat1.format(date1));
@@ -3026,6 +2831,10 @@ public class OpfrController {
                 " date1 = " + dat1 +
                 " date2 = " + dat2
         ));
+
+        //todo поработать с датами
+        //Long datenow = date2.getTime() + 86340000l; //23часа 59минут
+        //date2 = new Date(datenow);
 
         Date date1 = new Date();
         Date date2 = new Date();
@@ -3203,14 +3012,17 @@ public class OpfrController {
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             date1 = dateyyyyMMdd(dat1);
             date2 = dateyyyyMMdd(dat2);
+            Long datenow = date2.getTime() + 86340000l; //23часа 59минут
+            date2 = new Date(datenow);
         } else {
-            LocalDate first = LocalDate.now().withDayOfMonth(1);
-            //LocalDate last = first.plusMonths(1).minusDays(1);
-            LocalDate last = first.plusMonths(1);
+            LocalDateTime first = LocalDateTime.now().withDayOfMonth(1);
+            LocalDateTime last = first.plusMonths(1);
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             try {
                 date1 = new SimpleDateFormat("dd.MM.yyyy").parse(first.format(formatter));
                 date2 = new SimpleDateFormat("dd.MM.yyyy").parse(last.format(formatter));
+                Long datenow = date2.getTime() - 60000l; //23часа 59минут
+                date2 = new Date(datenow);
             } catch (ParseException e) {
                 e.printStackTrace();
             }

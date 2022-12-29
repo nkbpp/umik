@@ -2,41 +2,28 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Делопроизводство</title>
+    <title>Учёт марок и конвертов</title>
     <script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.js"></script>
-    <link type="text/css" rel="stylesheet" href="/webjars/materialize/1.0.0-rc.2/dist/css/materialize.min.css"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/dist/css/bootstrap.min.css}"/>
     <script type="text/javascript">
         $(document).ready(function () {
-            $(".dropdown-trigger").dropdown(); //чтобы меню хренячило
-            $('select').formSelect();//селект с конвертами
 
             //устанавливаю текущий год
-            var date = new Date();
+            let date = new Date();
             $("#god").val(date.getFullYear());
 
             $("body").on('click', 'a', function () {
 
                 if ($(this).attr('id') == "find") {
-                    var param = "regnum=" + $("#regnum").val() +
+                    let param = "regnum=" + $("#regnum").val() +
                         "&regnumpo=" + $("#regnumpo").val() +
                         "&god=" + $("#god").val();
 
                     $("#inf").load("/umik/main/deloproiz/find", param, function () {
-                        $('select').formSelect();//селект с конвертами
                     });
                     return false;
                 }
 
-/*                if ($(this).attr('id') == "ruki") {
-                    var param = "regnum=" + $("#regnum").val() +
-                        "&regnumpo=" + $("#regnumpo").val() +
-                        "&god=" + $("#god").val();
-
-                    $("#inf").load("/umik/main/deloproiz/ruki", param, function () {
-                        $('select').formSelect();//селект с конвертами
-                    });
-                    return false;
-                }*/
 
                 if (this.getAttribute("name") == "vvod_ruki") {
 
@@ -50,10 +37,8 @@
                         "&reg_pref=" + $("#reg_pref_ruki").val() +
                         "&reg_postf=" + $("#reg_postf_ruki").val() +
                         "&sum=" + $("#sum_ruki").val().replace(",",".");
-                    console.log("param=" + param);
-                    //var url = "/umik/main/deloproiz/add_ruki" + "?" + param;
+
                     $("#tabledelo").load("/umik/main/deloproiz/add_ruki", param, function () {
-                        $('select').formSelect();//селект с конвертами
                         $("#reg_number_ruki").val("");
                         $("#reg_date_ruki").val("");
                         //$("#name_ruki").val("");
@@ -70,19 +55,18 @@
                 }
 
                 if (this.getAttribute("name") == "vvod") {
-                    var id = $(this).attr('id');
+                    let id = $(this).attr('id');
 
-                    var param = "reg_number=" + $("tr[name=" + id + "] [name=reg_number]").text() +
+                    let param = "reg_number=" + $("tr[name=" + id + "] [name=reg_number]").text() +
                         "&reg_date=" + $("tr[name=" + id + "] [name=reg_date]").text()+
                         "&name=" + $("tr[name=" + id + "] [name=name]").text()+
                         "&text_org=" + $("tr[name=" + id + "] [name=text_org]").text()+
                         "&kol_vo=" + $("tr[name=" + id + "] [name=kol_vo]").val()+
                         "&type=" + $("tr[name=" + id + "] [name=type]").val()+
                         "&sum=" + $("tr[name=" + id + "] [name=sum]").val().replace(",",".");
-                    console.log("param=" + param);
-                    var url = "/umik/main/deloproiz/add" + "?" + param;
+
+                    let url = "/umik/main/deloproiz/add" + "?" + param;
                     $("#tabledelo").load("/umik/main/deloproiz/add", param, function () {
-                        $('select').formSelect();//селект с конвертами
                         //скрыть добавленное
                         $("[name="+id+"]").remove();
                     });
@@ -90,12 +74,12 @@
                 }
 
                 if (this.getAttribute("name") == "delDeloproizvodstvo") {
-                    var id = $(this).attr('id');
+                    let id = $(this).attr('id');
 
-                    var param = "id=" + id;
+                    let param = "id=" + id;
                     if (confirm("Точно удалить заявление с id " +
                         id + "?")) {
-                        var url = "/umik/main/deloproiz/del" + "?" + param;
+                        let url = "/umik/main/deloproiz/del" + "?" + param;
                         location.href = url;
                     }
                 }
@@ -105,9 +89,8 @@
     </script>
 </head>
 <body>
-<div th:insert="fragment/logout :: logout(${user})"></div>
-<div th:insert="fragment/menu :: menu"></div>
-
+<!--<div th:insert="fragment/logout :: logout(${user})"></div>-->
+    <div th:insert="fragment/menu :: menu"></div>
 
     <!--<div th:insert="fragment/deloproizfrag :: mf"></div>-->
     <!--<div id="rukivvod"></div>-->
@@ -121,7 +104,7 @@
     <div id="tabledelo" th:insert="fragment/deloproizfrag :: tabledelo"></div>
 
 
-    <script type="text/javascript" src="/webjars/materialize/1.0.0-rc.2/dist/js/materialize.min.js"></script>
+<script type="text/javascript" src="/webjars/bootstrap/5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
