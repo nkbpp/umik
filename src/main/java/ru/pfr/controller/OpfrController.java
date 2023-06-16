@@ -1033,55 +1033,62 @@ public class OpfrController {
             for (Reestr1Viev reestr1Viev : reestr1s) {
                 XWPFTableRow tableRowTwo = T.createRow();
 
-                for (int i = 0; i < 11; i++) { // i < 9
-                    paragraph = document.createParagraph();
-                    paragraph.setAlignment(ParagraphAlignment.CENTER);
-                    run = paragraph.createRun();
-                    run.setFontSize(fontSize);
-                    run.setBold(false);
-                    String st;
-                    switch (i) {
-                        case 0:
-                            st = reestr1Viev.getReg_datestr();
-                            break;
-                        case 1:
-                            st = reestr1Viev.getReg_number();
-                            break;
-                        case 2:
-                            st = reestr1Viev.getAddr();
-                            break;
-                        case 3:
-                            st = reestr1Viev.getName();
-                            break;
-                        case 4:
-                            st = reestr1Viev.getSpravkonv().isA4() ? reestr1Viev.getKol_vo().toString() : "";
-                            break;
-                        case 5:
-                            st = reestr1Viev.getSpravkonv().isC5() ? reestr1Viev.getKol_vo().toString() : "";
-                            break;
-                        case 6:
-                            st = reestr1Viev.getSpravkonv().is110x220() ? reestr1Viev.getKol_vo().toString() : "";
-                            break;
-                        case 7:
-                            st = reestr1Viev.getSpravkonv().ispoly() ? reestr1Viev.getKol_vo().toString() : "";
-                            break;
+                String st;
+                try {
+                    for (int i = 0; i < 11; i++) { // i < 9
+                        paragraph = document.createParagraph();
+                        paragraph.setAlignment(ParagraphAlignment.CENTER);
+                        run = paragraph.createRun();
+                        run.setFontSize(fontSize);
+                        run.setBold(false);
+
+                        switch (i) {
+                            case 0:
+                                st = reestr1Viev.getReg_datestr();
+                                break;
+                            case 1:
+                                st = reestr1Viev.getReg_number();
+                                break;
+                            case 2:
+                                st = reestr1Viev.getAddr();
+                                break;
+                            case 3:
+                                st = reestr1Viev.getName();
+                                break;
+                            case 4:
+                                st = reestr1Viev.getSpravkonv().isA4() ? reestr1Viev.getKol_vo().toString() : "";
+                                break;
+                            case 5:
+                                st = reestr1Viev.getSpravkonv().isC5() ? reestr1Viev.getKol_vo().toString() : "";
+                                break;
+                            case 6:
+                                st = reestr1Viev.getSpravkonv().is110x220() ? reestr1Viev.getKol_vo().toString() : "";
+                                break;
+                            case 7:
+                                st = reestr1Viev.getSpravkonv().ispoly() ? reestr1Viev.getKol_vo().toString() : "";
+                                break;
 
                             //
-                        case 8:
-                            st = reestr1Viev.getSpravkonv().is11() ? reestr1Viev.getKol_vo().toString() : "";
-                            break;
-                        case 9:
-                            st = reestr1Viev.getSpravkonv().is14() ? reestr1Viev.getKol_vo().toString() : "";
-                            break;
+                            case 8:
+                                st = reestr1Viev.getSpravkonv().is11() ? reestr1Viev.getKol_vo().toString() : "";
+                                break;
+                            case 9:
+                                st = reestr1Viev.getSpravkonv().is14() ? reestr1Viev.getKol_vo().toString() : "";
+                                break;
                             //
 
-                        default:
-                            st = reestr1Viev.getSum();
-                            break;
+                            default:
+                                st = reestr1Viev.getSum();
+                                break;
+                        }
+                        run.setText(st);
+                        tableRowTwo.getCell(i).setParagraph(paragraph);
                     }
-                    run.setText(st);
-                    tableRowTwo.getCell(i).setParagraph(paragraph);
+                } catch (Exception e){
+                    System.out.println(e);
                 }
+
+
             }
 
             XWPFTableRow tableRowTwo = T.createRow();
@@ -1195,6 +1202,7 @@ public class OpfrController {
 
             in = new ByteArrayInputStream(b.toByteArray());
         } catch (Exception e) {
+            System.out.println(e);
         }
 
         return IOUtils.toByteArray(in);
