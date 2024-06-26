@@ -1,8 +1,9 @@
 package ru.pfr.model.umikbd;
 
+import ru.pfr.global.DateUtils;
+
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "bolgaria")
@@ -17,7 +18,7 @@ public class Bolgaria {
     private String reg_number;
 
     @Column(name = "reg_date")
-    private Date reg_date;
+    private LocalDateTime reg_date;
 
     @Column(name = "id_name")
     private Long id_name;
@@ -39,14 +40,13 @@ public class Bolgaria {
     private Integer kol_vo;
 
     public String getReg_datestr() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        return dateFormat.format(this.reg_date);
+        return DateUtils.formatToString(this.reg_date);
     }
 
     public Bolgaria() {
     }
 
-    public Bolgaria(String reg_number, Date reg_date, Long id_name, String name, String text_org, Spravkonv spravkonv, Double sum, Integer kol_vo) {
+    public Bolgaria(String reg_number, LocalDateTime reg_date, Long id_name, String name, String text_org, Spravkonv spravkonv, Double sum, Integer kol_vo) {
         this.reg_number = reg_number;
         this.reg_date = reg_date;
         this.id_name = id_name;
@@ -73,11 +73,11 @@ public class Bolgaria {
         this.reg_number = reg_number;
     }
 
-    public Date getReg_date() {
+    public LocalDateTime getReg_date() {
         return reg_date;
     }
 
-    public void setReg_date(Date reg_date) {
+    public void setReg_date(LocalDateTime reg_date) {
         this.reg_date = reg_date;
     }
 

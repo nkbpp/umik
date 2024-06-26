@@ -1,0 +1,24 @@
+server:
+  port: 8094
+spring:
+  config:
+    import: classpath:myconfig.yml
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 45MB
+  jpa:
+    show-sql: true
+  thymeleaf:
+    cache: false
+umikbd:
+  spring:
+    datasource:
+      jdbcUrl: ${db.umik.url}
+      username: ${db.umik.username}
+      password: ${db.umik.password}
+    jpa:
+      generate-ddl: true
+
+
+

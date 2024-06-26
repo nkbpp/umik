@@ -15,15 +15,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import ru.pfr.global.DateUtils;
 import ru.pfr.global.MyNumbers;
-import ru.pfr.model.rsdoc_pfr.Deloproizvodstvo;
-import ru.pfr.model.rsdoc_pfr.Oblagraj;
-import ru.pfr.model.rsdoc_pfr.Sendtype;
 import ru.pfr.model.umikbd.*;
 import ru.pfr.service.bdumik.*;
-/*import ru.pfr.service.rsdoc_pfr.DeloproizvodstvoService;
-import ru.pfr.service.rsdoc_pfr.OblagrajService;
-import ru.pfr.service.rsdoc_pfr.SendtypeService;*/
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
@@ -31,84 +26,72 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.YearMonth;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Controller
 @RequestMapping("/umik/main")
 public class OpfrController {
 
+
+    @Autowired
+    private PEDdeloproizvodstvoService peDdeloproizvodstvoService;
+
+    @Autowired
+    private PEDobragrajService peDobragrajService;
+
+    @Autowired
+    private SpravkonvService spravkonvService;
+
+    @Autowired
+    private BolgariaService bolgariaService;
+
+    @Autowired
+    private Reestr1VievService reestr1VievService;
+
+    @Autowired
+    private PravopriemService pravopriemService;
+
+    @Autowired
+    private ShablonService shablonService;
+
+    @Autowired
+    private VidanykonvService vidanykonvService;
+
+    @Autowired
+    private InoeService inoeService;
+
+    @Autowired
+    private PrihodService prihodService;
+
+    @Autowired
+    private OtchraschodkonvService otchraschodkonvService;
+
+    @Autowired
+    private OtchmarkandkonvService otchmarkandkonvService;
+
+    @Autowired
+    private PrihodmarkiService prihodmarkiService;
+
+    @Autowired
+    private OtchmarkService otchmarkService;
+
+    @Autowired
+    private LogiService logiService;
+
 /*    @Autowired
-    DeloproizvodstvoService deloproizvodstvoService;
-    @Autowired
-    SendtypeService sendtypeService;
-    @Autowired
-    OblagrajService oblagrajService;*/
-
-    @Autowired
-    PEDdeloproizvodstvoService peDdeloproizvodstvoService;
-
-    @Autowired
-    PEDobragrajService peDobragrajService;
-
-    @Autowired
-    SpravkonvService spravkonvService;
-
-    @Autowired
-    BolgariaService bolgariaService;
-
-    @Autowired
-    Reestr1VievService reestr1VievService;
-
-    @Autowired
-    PravopriemService pravopriemService;
-
-    @Autowired
-    ShablonService shablonService;
-
-    @Autowired
-    VidanykonvService vidanykonvService;
-
-    @Autowired
-    InoeService inoeService;
-
-    @Autowired
-    PrihodService prihodService;
-
-    @Autowired
-    OtchraschodkonvService otchraschodkonvService;
-
-    @Autowired
-    OtchmarkandkonvService otchmarkandkonvService;
-
-    @Autowired
-    PrihodmarkiService prihodmarkiService;
-
-    @Autowired
-    OtchmarkService otchmarkService;
-
-    @Autowired
-    LogiService logiService;
-
-    @Autowired
-    VidDostService vidDostService;
+    VidDostService vidDostService;*/
 
     @GetMapping()
     public String startupfr(
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "Главная страница startupfr"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Главная страница startupfr"));
 
         //List<PEDdeloproizvodstvo> peDdeloproizvodstvos = peDdeloproizvodstvoService.;
 
@@ -120,12 +103,12 @@ public class OpfrController {
     public String deloproiz(
             @AuthenticationPrincipal User user,
             Model model) {
-        List<VidDost> vidDosts = vidDostService.findAll();
-        model.addAttribute("viddost_ruki", vidDosts);
+//        List<VidDost> vidDosts = vidDostService.findAll();
+//        model.addAttribute("viddost_ruki", vidDosts);
         List<Spravkonv> spravkonvs = spravkonvService.findAll();
         model.addAttribute("spravkonvs", spravkonvs);
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "deloproiz"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "deloproiz"));
 
         List<PEDdeloproizvodstvo> peDdeloproizvodstvos = peDdeloproizvodstvoService.findAllTekMounth();
         model.addAttribute("peDdeloproizvodstvos", peDdeloproizvodstvos);
@@ -140,8 +123,8 @@ public class OpfrController {
             Model model) {
 
         try {
-            List<VidDost> vidDosts = vidDostService.findAll();
-            model.addAttribute("viddost_ruki", vidDosts);
+//            List<VidDost> vidDosts = vidDostService.findAll();
+//            model.addAttribute("viddost_ruki", vidDosts);
             List<Spravkonv> spravkonvs = spravkonvService.findAll();
             model.addAttribute("spravkonvs", spravkonvs);
         } catch (DataAccessResourceFailureException e) {
@@ -158,7 +141,6 @@ public class OpfrController {
             @RequestParam String reg_date,
             @RequestParam String reg_pref,
             @RequestParam String reg_postf,
-            //@RequestParam String name,
             @RequestParam Long viddost,
             @RequestParam String text_org,
             @RequestParam Long type,
@@ -167,7 +149,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "deloproizadd param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "deloproizadd param=" +
                 " reg_pref = " + reg_pref +
                 " reg_number = " + reg_number +
                 " reg_postf = " + reg_postf +
@@ -182,18 +164,20 @@ public class OpfrController {
         try {
             Spravkonv spravkonv = spravkonvService.findById(type);
 
-            VidDost vidDost = vidDostService.findById(viddost);
+//            VidDost vidDost = vidDostService.findById(viddost);
 
-            Date date = dateddMMyyyy(reg_date);
-
-            LocalDate first = new java.sql.Date(date.getTime()).toLocalDate();
-            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
+            LocalDateTime date = DateUtils.parseToDate(reg_date);
 
             PEDdeloproizvodstvo peDdeloproizvodstvo = new PEDdeloproizvodstvo(
-                    null, reg_pref, reg_number.toString(),
-                    reg_postf, date, vidDost.getId(),/*peDdeloproizvodstvoService.findNameId(name),*/
-                    vidDost.getName(), text_org, spravkonv, Double.valueOf(sum), kol_vo
+                    null,
+                    reg_pref,
+                    reg_number.toString(),
+                    reg_postf,
+                    date,
+                    null,//vidDost.getId(),/*peDdeloproizvodstvoService.findNameId(name),*/
+                    null,//vidDost.getName(),
+                    text_org, spravkonv,
+                    Double.valueOf(sum), kol_vo
             );
             System.out.println("");
             peDdeloproizvodstvoService.save(peDdeloproizvodstvo);
@@ -216,7 +200,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "deloproizdel param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "deloproizdel param=" +
                 " id = " + id
         ));
 
@@ -240,11 +224,11 @@ public class OpfrController {
     public String obragraj(
             @AuthenticationPrincipal User user,
             Model model) {
-        List<VidDost> vidDosts = vidDostService.findAll();
-        model.addAttribute("viddost_ruki", vidDosts);
+        //List<VidDost> vidDosts = vidDostService.findAll();
+        //model.addAttribute("viddost_ruki", vidDosts);
         List<Spravkonv> spravkonvs = spravkonvService.findAll();
         model.addAttribute("spravkonvs", spravkonvs);
-        logiService.save(new Logi(new Date(), user.getLogin(), "obragraj"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "obragraj"));
 
         List<PEDobragraj> peDobragrajs = peDobragrajService.findAllTekMounth();
         model.addAttribute("peDdeloproizvodstvos", peDobragrajs);
@@ -269,7 +253,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "obragraj param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "obragraj param=" +
                 " reg_pref = " + reg_pref +
                 " reg_number = " + reg_number +
                 " reg_postf = " + reg_postf +
@@ -284,18 +268,24 @@ public class OpfrController {
         try {
             Spravkonv spravkonv = spravkonvService.findById(type);
 
-            VidDost vidDost = vidDostService.findById(viddost);
+            //VidDost vidDost = vidDostService.findById(viddost);
 
-            Date date = dateddMMyyyy(reg_date);
+            LocalDateTime date = DateUtils.parseToDate(reg_date);
 
             PEDobragraj peDobragraj = new PEDobragraj(
-                    null, reg_pref, reg_number.toString(),
-                    reg_postf, date, vidDost.getId(),/*peDdeloproizvodstvoService.findNameId(name),*/
-                    vidDost.getName(), text_org,
-                    text_fio, addr_list,
-                    spravkonv, Double.valueOf(sum), kol_vo
+                    null,
+                    reg_pref,
+                    reg_number.toString(),
+                    reg_postf,
+                    date,
+                    null,//vidDost.getId(),/*peDdeloproizvodstvoService.findNameId(name),*/
+                    null,//vidDost.getName(),
+                    text_org,
+                    text_fio,
+                    addr_list,
+                    spravkonv,
+                    Double.valueOf(sum), kol_vo
             );
-            System.out.println("");
             peDobragrajService.save(peDobragraj);
         } catch (Exception e) {
             model.addAttribute("user", user);
@@ -316,7 +306,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "obragrajdel param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "obragrajdel param=" +
                 " id = " + id
         ));
 
@@ -342,7 +332,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "inoe"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "inoe"));
 
         List<Vidanykonv> vidanykonvs = vidanykonvService.findAll();
         model.addAttribute("vidanykonvs", vidanykonvs);
@@ -350,7 +340,7 @@ public class OpfrController {
         List<Spravkonv> spravkonvs = spravkonvService.findAll();
         model.addAttribute("spravkonvs", spravkonvs);
 
-        List<Inoe> inoes = inoeService.findAllTekMounth();
+        List<Inoe> inoes = inoeService.getAllRecordsForCurrentMonth();
         model.addAttribute("inoes", inoes);
 
         model.addAttribute("user", user);
@@ -366,7 +356,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "inoeadd param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "inoeadd param=" +
                 " reg_date = " + reg_date +
                 " typevk = " + typevk +
                 " type = " + type +
@@ -379,10 +369,11 @@ public class OpfrController {
 
             Vidanykonv vidanykonv = vidanykonvService.findById(typevk);
 
-            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(reg_date);
-
             Inoe inoe = new Inoe(
-                    date, vidanykonv, spravkonv, kol_vo
+                    DateUtils.parseIsoToDate(reg_date),
+                    vidanykonv,
+                    spravkonv,
+                    kol_vo
             );
             inoeService.save(inoe);
 
@@ -408,7 +399,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "inoedel param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "inoedel param=" +
                 " id = " + id
         ));
 
@@ -434,51 +425,28 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "pravopriem"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "pravopriem"));
 
         List<Pravopriem> pravopriems = pravopriemService.findAllTekMounth();
         model.addAttribute("pravopriems", pravopriems);
-//
 
-        YearMonth month = YearMonth.now();
-        String firstDay = month.atDay(1).toString(),
-        endDay = month.atEndOfMonth().toString();
+        // Получаем текущую дату и время
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        // Получаем дату и время прошлого месяца
+        LocalDateTime lastMonth = currentDateTime.minusMonths(1);
+        // Получаем первый день прошлого месяца
+        LocalDateTime firstDayOfLastMonth = lastMonth.withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        // Получаем последний день прошлого месяца
+        LocalDateTime lastDayOfLastMonth = lastMonth.withDayOfMonth(lastMonth.toLocalDate().lengthOfMonth()).withHour(23).withMinute(59).withSecond(59);
 
-        Date date1 = new Date();
-        Date date2 = new Date();
-        Date date1minusMonths = new Date();
-        Date date2minusMonths = new Date();
-        try {
-            //date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date1);
-            //date2 = new SimpleDateFormat("yyyy-MM-dd").parse(date1);
-
-            LocalDateTime first = date1.toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime().minusMonths(1);
-            LocalDateTime end = first.plusMonths(1);
-
-            date1minusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(first.toString());
-            date2minusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(end.toString());
-
-            Long datenow = date2minusMonths.getTime() - 60000l; //23часа 59минут
-            date2minusMonths = new Date(datenow);
-        } catch (Exception e) {
-        }
-
-        //todo поработать с датами?
-        Long datenow = date2.getTime() + 86340000l; //23часа 59минут
-        date2 = new Date(datenow);
-
-        List<Otchmarkandkonv> otchmarkandkonvD = otchmarkandkonvService.findAllDatOnlyTypeD(date1minusMonths, date2minusMonths);
+        List<Otchmarkandkonv> otchmarkandkonvD = otchmarkandkonvService.findAllDatOnlyTypeD(firstDayOfLastMonth, lastDayOfLastMonth);
         List<Prihod> prihodsD = new ArrayList<>();
         otchmarkandkonvD.forEach(otchmarkandkonv -> {
             prihodsD.add(otchmarkandkonv.getPrihod());
         });
-        if(otchmarkandkonvD.size()==0){
+        if (otchmarkandkonvD.size() == 0) {
             prihodsD.add(prihodService.findTypeDLast());
         }
-
-
 
         model.addAttribute("prihodsD", prihodsD);
 
@@ -499,7 +467,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "pravopriemadd param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "pravopriemadd param=" +
                 " date = " + date +
                 " kol_d = " + kol_d +
                 " id_prihod = " + id_prihod +
@@ -508,13 +476,14 @@ public class OpfrController {
         ));
 
         try {
-
-            Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-
             Prihod p = prihodService.findById(Long.valueOf(id_prihod));
 
             Pravopriem pravopriem = new Pravopriem(
-                    date1, kol_d, p, Double.valueOf(cena_sell), Double.valueOf(sum_mark)
+                    DateUtils.parseIsoToDate(date),
+                    kol_d,
+                    p,
+                    Double.valueOf(cena_sell),
+                    Double.valueOf(sum_mark)
             );
             pravopriemService.save(pravopriem);
 
@@ -540,7 +509,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "pravopriemdel param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "pravopriemdel param=" +
                 " id = " + id
         ));
 
@@ -567,18 +536,18 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "bolgaria"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "bolgaria"));
 
         //List<Sendtype> sendtypes = sendtypeService.findAllS();
         //model.addAttribute("sendtypes", sendtypes);
 
-        List<VidDost> vidDosts = vidDostService.findAll();
-        model.addAttribute("viddost_ruki", vidDosts);
+        //List<VidDost> vidDosts = vidDostService.findAll();
+        //model.addAttribute("viddost_ruki", vidDosts);
 
         List<Spravkonv> spravkonvs = spravkonvService.findAll();
         model.addAttribute("spravkonvs", spravkonvs);
 
-        List<Bolgaria> bolgarias = bolgariaService.findAllTekMounth();
+        List<Bolgaria> bolgarias = bolgariaService.getAllRecordsForCurrentMonth();
         model.addAttribute("bolgarias", bolgarias);
 
         model.addAttribute("user", user);
@@ -598,7 +567,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "bolgariaadd param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "bolgariaadd param=" +
                 " reg_number = " + reg_number +
                 " reg_date = " + reg_date +
                 " text_org = " + text_org +
@@ -610,14 +579,17 @@ public class OpfrController {
         ));
 
         try {
-
             Spravkonv spravkonv = spravkonvService.findById(type);
 
-            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(reg_date);
-
             Bolgaria bolgaria = new Bolgaria(
-                    reg_number, date,
-                    id_name, name, text_org, spravkonv, Double.valueOf(sum), kol_vo
+                    reg_number,
+                    DateUtils.parseIsoToDate(reg_date),
+                    id_name,
+                    name,
+                    text_org,
+                    spravkonv,
+                    Double.valueOf(sum),
+                    kol_vo
             );
             System.out.println("");
             bolgariaService.save(bolgaria);
@@ -644,7 +616,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "bolgariadel param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "bolgariadel param=" +
                 " id = " + id
         ));
 
@@ -672,31 +644,24 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "reestr2 param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "reestr2 param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2
         ));
 
-        Date date1 = new Date();
-        Date date2 = new Date();
+        LocalDateTime date1;
+        LocalDateTime date2;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
         if (!(dat1.equals("") && dat2.equals(""))) {
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            date1 = dateyyyyMMdd(dat1);
-            date2 = dateyyyyMMdd(dat2);
-            Long datenow = date2.getTime() + 86340000l; //23часа 59минут
-            date2 = new Date(datenow);
+            // Если входные даты не пустые, преобразуем их в LocalDateTime
+            date1 = LocalDate.parse(dat1, formatter).atStartOfDay();
+            date2 = LocalDate.parse(dat2, formatter).atTime(23, 59, 59);
         } else {
-            LocalDateTime first = LocalDateTime.now().withDayOfMonth(1);
-            LocalDateTime last = first.plusMonths(1);
-            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-            try {
-                date1 = new SimpleDateFormat("dd.MM.yyyy").parse(first.format(formatter));
-                date2 = new SimpleDateFormat("dd.MM.yyyy").parse(last.format(formatter));
-                Long datenow = date2.getTime() - 60000l; //23часа 59минут
-                date2 = new Date(datenow);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            // Если входные даты пустые, используем текущий месяц
+            date1 = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+            date2 = date1.plusMonths(1).minusSeconds(1);
         }
 
         List<Pravopriem> pravopriems = pravopriemService.findAllD(date1, date2);
@@ -716,9 +681,8 @@ public class OpfrController {
         model.addAttribute("m", m);
         model.addAttribute("k", k);
         model.addAttribute("mzp", mzp);
-        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
-        model.addAttribute("date1", dateFormat1.format(date1));
-        model.addAttribute("date2", dateFormat1.format(date2));
+        model.addAttribute("date1", DateUtils.formatIsoToString(date1));
+        model.addAttribute("date2", DateUtils.formatIsoToString(date2));
         model.addAttribute("user", user);
         return "reestr2";
     }
@@ -732,32 +696,26 @@ public class OpfrController {
             HttpServletResponse resp,
             Model model) throws IOException {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "reestr2pechatdocx param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "reestr2pechatdocx param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2
         ));
 
-        Date date1 = new Date();
-        Date date2 = new Date();
+        LocalDateTime date1;
+        LocalDateTime date2;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
         if (!(dat1.equals("") && dat2.equals(""))) {
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            date1 = dateyyyyMMdd(dat1);
-            date2 = dateyyyyMMdd(dat2);
-            Long datenow = date2.getTime() + 86340000l; //23часа 59минут
-            date2 = new Date(datenow);
+            // Если входные даты не пустые, преобразуем их в LocalDateTime
+            date1 = LocalDate.parse(dat1, formatter).atStartOfDay();
+            date2 = LocalDate.parse(dat2, formatter).atTime(23, 59, 59);
         } else {
-            LocalDateTime first = LocalDateTime.now().withDayOfMonth(1);
-            LocalDateTime last = first.plusMonths(1);
-            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-            try {
-                date1 = new SimpleDateFormat("dd.MM.yyyy").parse(first.format(formatter));
-                date2 = new SimpleDateFormat("dd.MM.yyyy").parse(last.format(formatter));
-                Long datenow = date2.getTime() - 60000l; //23часа 59минут
-                date2 = new Date(datenow);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            // Если входные даты пустые, используем текущий месяц
+            date1 = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+            date2 = date1.plusMonths(1).minusSeconds(1);
         }
+
         List<Pravopriem> pravopriems = pravopriemService.findAllD(date1, date2);
 
         double so = 0, m = 0, k = 0, mzp = 0;
@@ -780,15 +738,15 @@ public class OpfrController {
             docxFile = new XWPFDocument(inputStream);
             // открываем файл и считываем его содержимое в объект XWPFDocument
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
             for (XWPFParagraph p : docxFile.getParagraphs()) {
                 List<XWPFRun> runs = p.getRuns();
                 if (runs != null) {
                     for (XWPFRun r : runs) {
                         String text = r.getText(0);
                         if (text != null && text.contains("$")) {
-                            text = text.replace("$1", dateFormat.format(date1));
-                            text = text.replace("$2", dateFormat.format(date2));
+
+                            text = text.replace("$1", DateUtils.formatToString(date1));
+                            text = text.replace("$2", DateUtils.formatToString(date2));
                             r.setText(text, 0);
                         }
                     }
@@ -913,31 +871,24 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "reestr1 param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "reestr1 param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2
         ));
 
-        Date date1 = new Date();
-        Date date2 = new Date();
+        LocalDateTime date1;
+        LocalDateTime date2;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
         if (!(dat1.equals("") && dat2.equals(""))) {
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            date1 = dateyyyyMMdd(dat1);
-            date2 = dateyyyyMMdd(dat2);
-            Long datenow = date2.getTime() + 86340000l; //23часа 59минут
-            date2 = new Date(datenow);
+            // Если входные даты не пустые, преобразуем их в LocalDateTime
+            date1 = LocalDate.parse(dat1, formatter).atStartOfDay();
+            date2 = LocalDate.parse(dat2, formatter).atTime(23, 59, 59);
         } else {
-            LocalDateTime first = LocalDateTime.now().withDayOfMonth(1);
-            LocalDateTime last = first.plusMonths(1);
-            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-            try {
-                date1 = new SimpleDateFormat("dd.MM.yyyy").parse(first.format(formatter));
-                date2 = new SimpleDateFormat("dd.MM.yyyy").parse(last.format(formatter));
-                Long datenow = date2.getTime() - 60000l; //23часа 59минут
-                date2 = new Date(datenow);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            // Если входные даты пустые, используем текущий месяц
+            date1 = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+            date2 = date1.plusMonths(1).minusSeconds(1);
         }
 
         List<Reestr1Viev> reestr1s = reestr1VievService.findAllD(date1, date2);
@@ -946,9 +897,9 @@ public class OpfrController {
         Reestr1Viev reestr1i = reestr1VievService.findAllI(date1, date2);
 
         model.addAttribute("reestr1i", reestr1i);
-        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
-        model.addAttribute("date1", dateFormat1.format(date1));
-        model.addAttribute("date2", dateFormat1.format(date2));
+
+        model.addAttribute("date1", DateUtils.formatIsoToString(date1));
+        model.addAttribute("date2", DateUtils.formatIsoToString(date2));
         model.addAttribute("user", user);
         return "reestr1";
     }
@@ -962,31 +913,23 @@ public class OpfrController {
             HttpServletResponse resp,
             Model model) throws IOException {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "reestr1pechatdocx param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "reestr1pechatdocx param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2
         ));
 
-        Date date1 = new Date();
-        Date date2 = new Date();
+        LocalDateTime date1;
+        LocalDateTime date2;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
         if (!(dat1.equals("") && dat2.equals(""))) {
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            date1 = dateyyyyMMdd(dat1);
-            date2 = dateyyyyMMdd(dat2);
-            Long datenow = date2.getTime() + 86340000l; //23часа 59минут
-            date2 = new Date(datenow);
+            // Если входные даты не пустые, преобразуем их в LocalDateTime
+            date1 = LocalDate.parse(dat1, formatter).atStartOfDay();
+            date2 = LocalDate.parse(dat2, formatter).atTime(23, 59, 59);
         } else {
-            LocalDateTime first = LocalDateTime.now().withDayOfMonth(1);
-            LocalDateTime last = first.plusMonths(1);
-            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-            try {
-                date1 = new SimpleDateFormat("dd.MM.yyyy").parse(first.format(formatter));
-                date2 = new SimpleDateFormat("dd.MM.yyyy").parse(last.format(formatter));
-                Long datenow = date2.getTime() - 60000l; //23часа 59минут
-                date2 = new Date(datenow);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            // Если входные даты пустые, используем текущий месяц
+            date1 = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+            date2 = date1.plusMonths(1).minusSeconds(1);
         }
 
         List<Reestr1Viev> reestr1s = reestr1VievService.findAllD(date1, date2);
@@ -1001,15 +944,14 @@ public class OpfrController {
             docxFile = new XWPFDocument(inputStream);
             // открываем файл и считываем его содержимое в объект XWPFDocument
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
             for (XWPFParagraph p : docxFile.getParagraphs()) {
                 List<XWPFRun> runs = p.getRuns();
                 if (runs != null) {
                     for (XWPFRun r : runs) {
                         String text = r.getText(0);
                         if (text != null && text.contains("$")) {
-                            text = text.replace("$1", dateFormat.format(date1));
-                            text = text.replace("$2", dateFormat.format(date2));
+                            text = text.replace("$1", DateUtils.formatToString(date1));
+                            text = text.replace("$2", DateUtils.formatToString(date2));
                             r.setText(text, 0);
                         }
                     }
@@ -1084,7 +1026,7 @@ public class OpfrController {
                         run.setText(st);
                         tableRowTwo.getCell(i).setParagraph(paragraph);
                     }
-                } catch (Exception e){
+                } catch (Exception e) {
                     System.out.println(e);
                 }
 
@@ -1126,14 +1068,14 @@ public class OpfrController {
                         st = String.valueOf(reestr1i.getId_konv6());
                         break;
 
-                        //
+                    //
                     case 8:
                         st = String.valueOf(reestr1i.getId_konv11());
                         break;
                     case 9:
                         st = String.valueOf(reestr1i.getId_konv14());
                         break;
-                        //
+                    //
 
                     default:
                         st = String.valueOf(reestr1i.getSum());
@@ -1173,14 +1115,14 @@ public class OpfrController {
                         st = "Полиэтиленовый конверт";
                         break;
 
-                        //
+                    //
                     case 8:
                         st = "Конверт 110*220 лит А";
                         break;
                     case 9:
                         st = "Конверт с литер. Д";
                         break;
-                        //
+                    //
 
                     default:
                         st = "Марки";
@@ -1213,7 +1155,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "otchpokon"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "otchpokon"));
 
         model.addAttribute("user", user);
         return "otchpokon";
@@ -1226,34 +1168,30 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "otchpokonform param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "otchpokonform param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2
         ));
 
-        Date date1 = new Date();
-        Date date2 = new Date();
-        Date date1minusMonths = new Date();
-        Date date2minusMonths = new Date();
+        LocalDateTime date1 = null;
+        LocalDateTime date2 = null;
+        LocalDateTime date1minusMonths = null;
+        LocalDateTime date2minusMonths = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
         try {
-            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(dat1);
-            date2 = new SimpleDateFormat("yyyy-MM-dd").parse(dat2);
+            date1 = LocalDate.parse(dat1, formatter).atStartOfDay();
+            date2 = LocalDate.parse(dat2, formatter).atTime(23, 59, 59);
 
-            LocalDateTime first = date1.toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime().minusMonths(1);
-            LocalDateTime end = first.plusMonths(1);
+            // Вычисление дат за прошлый месяц
+            LocalDateTime first = date1.minusMonths(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+            LocalDateTime end = first.plusMonths(1).minusSeconds(1);
 
-            date1minusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(first.toString());
-            date2minusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(end.toString());
-
-            Long datenow = date2minusMonths.getTime() - 60000l; //23часа 59минут
-            date2minusMonths = new Date(datenow);
+            date1minusMonths = first;
+            date2minusMonths = end;
         } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        Long datenow = date2.getTime() + 86340000l; //23часа 59минут
-        date2 = new Date(datenow);
 
         List<Reestr1Viev> reestr1s = reestr1VievService.findAllD(date1, date2);
         model.addAttribute("reestr1s", reestr1s);
@@ -1366,7 +1304,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "otchpokonlink param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "otchpokonlink param=" +
                 " date = " + date +
                 " ota4 = " + ota4 +
                 " pa4 " + pa4 +
@@ -1382,23 +1320,12 @@ public class OpfrController {
                 " p110x220clear = " + p110x220clear
         ));
 
-        Date date1 = new Date();
-
-        Date date1Begin = new Date();
-        Date date2End = new Date();
-        try {
-            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-            String[] subStr;
-            String delimeter = "-"; // Разделитель
-            subStr = date.split(delimeter);
-            LocalDate first = LocalDate.of(Integer.valueOf(subStr[0]), Integer.valueOf(subStr[1]), 1);
-            LocalDate end = first.plusMonths(1);
-            //LocalDate end = first.plusMonths(1).minusDays(1);
-
-            date1Begin = new SimpleDateFormat("yyyy-MM-dd").parse(first.toString());
-            date2End = new SimpleDateFormat("yyyy-MM-dd").parse(end.toString());
-        } catch (Exception e) {
-        }
+        // Получаем текущую дату и время
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        // Получаем первый день прошлого месяца
+        LocalDateTime date1Begin = currentDateTime.withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        // Получаем последний день текущего месяца
+        LocalDateTime date2End = currentDateTime.withDayOfMonth(currentDateTime.getMonth().maxLength()).withHour(23).withMinute(59).withSecond(59);
 
         //todo поработать с датами
         //Long datenow = date2.getTime() + 86340000l; //23часа 59минут
@@ -1426,7 +1353,6 @@ public class OpfrController {
         String[] p110x220clear1 = p110x220clear.split(delimeter1);
 
 
-
         if (otpk1.length > 0 && !otpk1[0].equals("")) {
             for (String ot :
                     otpk1) {
@@ -1434,7 +1360,7 @@ public class OpfrController {
                 Otchraschodkonv otchraschodkonv = otchraschodkonvService.findById(Long.valueOf(sm[0]));
                 Otchraschodkonv otchraschodkonvNEW = new Otchraschodkonv(
                         otchraschodkonv.getPrihod(),
-                        date1,
+                        currentDateTime,
                         Integer.valueOf(sm[1]),
 
                         otchraschodkonv.getOstatok() - Integer.valueOf(sm[1])
@@ -1450,7 +1376,7 @@ public class OpfrController {
                 Prihod prihod = prihodService.findById(Long.valueOf(sm[0]));
                 Otchraschodkonv otchraschodkonvNEW = new Otchraschodkonv(
                         prihod,
-                        date1,
+                        currentDateTime,
                         Integer.valueOf(sm[1]),
                         prihod.getKol_vo() - Integer.valueOf(sm[1])
                 );
@@ -1495,7 +1421,7 @@ public class OpfrController {
                 Otchraschodkonv otchraschodkonv = otchraschodkonvService.findById(Long.valueOf(sm[0]));
                 Otchraschodkonv otchraschodkonvNEW = new Otchraschodkonv(
                         otchraschodkonv.getPrihod(),
-                        date1,
+                        currentDateTime,
                         Integer.valueOf(sm[1]),
                         otchraschodkonv.getOstatok() - Integer.valueOf(sm[1])
                 );
@@ -1510,7 +1436,7 @@ public class OpfrController {
                 Prihod prihod = prihodService.findById(Long.valueOf(sm[0]));
                 Otchraschodkonv otchraschodkonvNEW = new Otchraschodkonv(
                         prihod,
-                        date1,
+                        currentDateTime,
                         Integer.valueOf(sm[1]),
                         prihod.getKol_vo() - Integer.valueOf(sm[1])
                 );
@@ -1525,7 +1451,7 @@ public class OpfrController {
                 Otchraschodkonv otchraschodkonv = otchraschodkonvService.findById(Long.valueOf(sm[0]));
                 Otchraschodkonv otchraschodkonvNEW = new Otchraschodkonv(
                         otchraschodkonv.getPrihod(),
-                        date1,
+                        currentDateTime,
                         Integer.valueOf(sm[1]),
                         otchraschodkonv.getOstatok() - Integer.valueOf(sm[1])
                 );
@@ -1540,7 +1466,7 @@ public class OpfrController {
                 Prihod prihod = prihodService.findById(Long.valueOf(sm[0]));
                 Otchraschodkonv otchraschodkonvNEW = new Otchraschodkonv(
                         prihod,
-                        date1,
+                        currentDateTime,
                         Integer.valueOf(sm[1]),
                         prihod.getKol_vo() - Integer.valueOf(sm[1])
                 );
@@ -1556,7 +1482,7 @@ public class OpfrController {
                 Otchraschodkonv otchraschodkonv = otchraschodkonvService.findById(Long.valueOf(sm[0]));
                 Otchraschodkonv otchraschodkonvNEW = new Otchraschodkonv(
                         otchraschodkonv.getPrihod(),
-                        date1,
+                        currentDateTime,
                         Integer.valueOf(sm[1]),
 
                         otchraschodkonv.getOstatok() - Integer.valueOf(sm[1])
@@ -1572,7 +1498,7 @@ public class OpfrController {
                 Prihod prihod = prihodService.findById(Long.valueOf(sm[0]));
                 Otchraschodkonv otchraschodkonvNEW = new Otchraschodkonv(
                         prihod,
-                        date1,
+                        currentDateTime,
                         Integer.valueOf(sm[1]),
                         prihod.getKol_vo() - Integer.valueOf(sm[1])
                 );
@@ -1588,7 +1514,7 @@ public class OpfrController {
                 Otchraschodkonv otchraschodkonv = otchraschodkonvService.findById(Long.valueOf(sm[0]));
                 Otchraschodkonv otchraschodkonvNEW = new Otchraschodkonv(
                         otchraschodkonv.getPrihod(),
-                        date1,
+                        currentDateTime,
                         Integer.valueOf(sm[1]),
                         otchraschodkonv.getOstatok() - Integer.valueOf(sm[1])
                 );
@@ -1603,7 +1529,7 @@ public class OpfrController {
                 Prihod prihod = prihodService.findById(Long.valueOf(sm[0]));
                 Otchraschodkonv otchraschodkonvNEW = new Otchraschodkonv(
                         prihod,
-                        date1,
+                        currentDateTime,
                         Integer.valueOf(sm[1]),
                         prihod.getKol_vo() - Integer.valueOf(sm[1])
                 );
@@ -1611,9 +1537,8 @@ public class OpfrController {
             }
         }
 
-        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
-        model.addAttribute("date1", dateFormat1.format(date1Begin));
-        model.addAttribute("date2", dateFormat1.format(date2End));
+        model.addAttribute("date1", DateUtils.formatIsoToString(date1Begin));
+        model.addAttribute("date2", DateUtils.formatIsoToString(date2End));
 
         model.addAttribute("user", user);
         return "fragment/otchpokonfrag :: link"; //TODO дошли до сюда
@@ -1628,16 +1553,13 @@ public class OpfrController {
             HttpServletResponse resp,
             Model model) throws IOException {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "otchpokonpechatdocx param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "otchpokonpechatdocx param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2
         ));
 
-        Date date1 = new Date();
-        Date date2 = new Date();
-
-        date1 = dateyyyyMMdd(dat1);
-        date2 = dateyyyyMMdd(dat2);
+        LocalDateTime date1 = DateUtils.parseIsoToDate(dat1);
+        LocalDateTime date2 = DateUtils.parseIsoToDate(dat2);
 
         //todo поработать с датами
         //Long datenow = date2.getTime() + 86340000l; //23часа 59минут
@@ -1655,15 +1577,15 @@ public class OpfrController {
             docxFile = new XWPFDocument(inputStream);
             // открываем файл и считываем его содержимое в объект XWPFDocument
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+            //todo SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
             for (XWPFParagraph p : docxFile.getParagraphs()) {
                 List<XWPFRun> runs = p.getRuns();
                 if (runs != null) {
                     for (XWPFRun r : runs) {
                         String text = r.getText(0);
                         if (text != null && text.contains("$")) {
-                            text = text.replace("$1", dateFormat.format(date1));
-                            text = text.replace("$2", dateFormat.format(date2));
+                            text = text.replace("$1", DateUtils.formatToString(date1));
+                            text = text.replace("$2", DateUtils.formatToString(date2));
                             r.setText(text, 0);
                         }
                     }
@@ -1854,7 +1776,7 @@ public class OpfrController {
 
             in = new ByteArrayInputStream(b.toByteArray());
         } catch (Exception e) {
-            logiService.save(new Logi(new Date(), user.getLogin(), "ERROR otchpokonpechatdocx param=" +
+            logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "ERROR otchpokonpechatdocx param=" +
                     " date1 = " + dat1 +
                     " date2 = " + dat2
             ));
@@ -1868,7 +1790,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "otchmarkandkonv"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "otchmarkandkonv"));
 
         model.addAttribute("user", user);
         return "otchmarkandkonv";
@@ -1881,35 +1803,17 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "otchmarkandkonvform param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "otchmarkandkonvform param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2
         ));
 
-        Date date1 = new Date();
-        Date date2 = new Date();
-        Date date1minusMonths = new Date();
-        Date date2minusMonths = new Date();
-        try {
-            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(dat1);
-            date2 = new SimpleDateFormat("yyyy-MM-dd").parse(dat2);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-            LocalDateTime first = date1.toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime().minusMonths(1);
-            LocalDateTime end = first.plusMonths(1);
-
-            date1minusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(first.toString());
-            date2minusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(end.toString());
-
-            Long datenow = date2minusMonths.getTime() - 60000l; //23часа 59минут
-            date2minusMonths = new Date(datenow);
-        } catch (Exception e) {
-        }
-
-        //поработать с датами
-        Long datenow = date2.getTime() + 86340000l; //23часа 59минут
-        date2 = new Date(datenow);
+        LocalDateTime date1 = LocalDate.parse(dat1, formatter).atStartOfDay();
+        LocalDateTime date2 = LocalDate.parse(dat2, formatter).atStartOfDay().plusHours(23).plusMinutes(59).plusSeconds(59);
+        LocalDateTime date1minusMonths = date1.minusMonths(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime date2minusMonths = date1minusMonths.plusMonths(1).minusSeconds(1);
 
         //здесь суммы конвертов за месяц 110x120
         Reestr1Viev reestr1i = reestr1VievService.findAllI(date1, date2);
@@ -1926,8 +1830,6 @@ public class OpfrController {
         }
 
         model.addAttribute("pravopriems", pravopriems);
-/*        model.addAttribute("so", so);
-        model.addAttribute("m", m);*/
         model.addAttribute("k", Double.valueOf(k));
         model.addAttribute("r2", Double.valueOf(mzp));
         model.addAttribute("r1", Double.valueOf(reestr1i.getSum()));
@@ -1978,7 +1880,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "otchmarkandkonvlink param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "otchmarkandkonvlink param=" +
                 " date = " + date +
                 " otD = " + otD +
                 " pD " + pD +
@@ -1988,7 +1890,16 @@ public class OpfrController {
                 " reestr2m = " + reestr2m
         ));
 
-        Date date1 = new Date();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        LocalDateTime date1 = DateUtils.parseIsoToDate(date);
+
+        LocalDateTime date1Begin = date1.withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime date2End = date1Begin.plusMonths(1).minusSeconds(1);
+        LocalDateTime date1BeginMinusMonths = date1Begin.minusMonths(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime date2EndMinusMonths = date1BeginMinusMonths.plusMonths(1).minusSeconds(1);
+
+/*        Date date1 = new Date();
 
         Date date1Begin = new Date();
         Date date2End = new Date();
@@ -2002,7 +1913,6 @@ public class OpfrController {
             subStr = date.split(delimeter);
             LocalDate first = LocalDate.of(Integer.valueOf(subStr[0]), Integer.valueOf(subStr[1]), 1);
             LocalDate end = first.plusMonths(1);
-            //LocalDate end = first.plusMonths(1).minusDays(1);
 
             date1Begin = new SimpleDateFormat("yyyy-MM-dd").parse(first.toString());
             date2End = new SimpleDateFormat("yyyy-MM-dd").parse(end.toString());
@@ -2010,11 +1920,8 @@ public class OpfrController {
             date1BeginMinusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(first.minusMonths(1).toString());
             date2EndMinusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(end.minusMonths(1).toString());
         } catch (Exception e) {
-        }
+        }*/
 
-        //todo поработать с датами
-        //Long datenow = date2.getTime() + 86340000l; //23часа 59минут
-        //date2 = new Date(datenow);
 
         otchmarkandkonvService.Del(date1Begin, date2End);//Удаляем старое
         otchmarkService.Del(date1Begin, date2End);//Удаляем старое
@@ -2106,9 +2013,8 @@ public class OpfrController {
             }
         }
 
-        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
-        model.addAttribute("date1", dateFormat1.format(date1Begin));
-        model.addAttribute("date2", dateFormat1.format(date2End));
+        model.addAttribute("date1", DateUtils.formatIsoToString(date1Begin));
+        model.addAttribute("date2", DateUtils.formatIsoToString(date2End));
 
         model.addAttribute("user", user);
         return "fragment/otchmarkandkonvfrag :: link";
@@ -2123,20 +2029,13 @@ public class OpfrController {
             HttpServletResponse resp,
             Model model) throws IOException {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "otchmarkandkonvpechatdocx param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "otchmarkandkonvpechatdocx param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2
         ));
 
-        Date date1 = new Date();
-        Date date2 = new Date();
-
-        date1 = dateyyyyMMdd(dat1);
-        date2 = dateyyyyMMdd(dat2);
-
-        //todo поработать с датами
-        //Long datenow = date2.getTime() + 86340000l; //23часа 59минут
-        //date2 = new Date(datenow);
+        LocalDateTime date1 = DateUtils.parseIsoToDate(dat1);
+        LocalDateTime date2 = DateUtils.parseIsoToDate(dat2);
 
         List<Otchmarkandkonv> otchmarkandkonvs = otchmarkandkonvService.findAllD(date1, date2);
 
@@ -2150,15 +2049,14 @@ public class OpfrController {
             docxFile = new XWPFDocument(inputStream);
             // открываем файл и считываем его содержимое в объект XWPFDocument
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
             for (XWPFParagraph p : docxFile.getParagraphs()) {
                 List<XWPFRun> runs = p.getRuns();
                 if (runs != null) {
                     for (XWPFRun r : runs) {
                         String text = r.getText(0);
                         if (text != null && text.contains("$")) {
-                            text = text.replace("$1", dateFormat.format(date1));
-                            text = text.replace("$2", dateFormat.format(date2));
+                            text = text.replace("$1", DateUtils.formatToString(date1));
+                            text = text.replace("$2", DateUtils.formatToString(date2));
                             r.setText(text, 0);
                         }
                     }
@@ -2256,9 +2154,9 @@ public class OpfrController {
                             break;
                         default:
 
-                                st = okrug(
-                                        (bilo - otchmarkandkonv.getReestr1()) * otchmarkandkonv.getPrihod().getPrice());
-                                s4 += (bilo - otchmarkandkonv.getReestr1()) * otchmarkandkonv.getPrihod().getPrice();
+                            st = okrug(
+                                    (bilo - otchmarkandkonv.getReestr1()) * otchmarkandkonv.getPrihod().getPrice());
+                            s4 += (bilo - otchmarkandkonv.getReestr1()) * otchmarkandkonv.getPrihod().getPrice();
 
                             break;
                     }
@@ -2458,7 +2356,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "Вход в авансовый отчет avansotch"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Вход в авансовый отчет avansotch"));
 
         model.addAttribute("user", user);
         return "avansotch";
@@ -2470,7 +2368,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "spravkonv"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "spravkonv"));
 
         List<Spravkonv> spravkonvs = spravkonvService.findAll();
 
@@ -2485,7 +2383,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "spravkonvadd param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "spravkonvadd param=" +
                 " typekonv = " + typekonv
         ));
 
@@ -2517,7 +2415,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "spravkonvdel param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "spravkonvdel param=" +
                 " id = " + id
         ));
 
@@ -2543,7 +2441,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "vidanykonv"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "vidanykonv"));
 
         List<Vidanykonv> vidanykonvs = vidanykonvService.findAll();
 
@@ -2558,7 +2456,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "vidanykonvadd param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "vidanykonvadd param=" +
                 " vidanykonv = " + vidanykonv
         ));
 
@@ -2590,7 +2488,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "vidanykonvdel param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "vidanykonvdel param=" +
                 " id = " + id
         ));
 
@@ -2616,7 +2514,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "prihod"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "prihod"));
 
         List<Prihod> prihods = prihodService.findAll();
         List<Spravkonv> spravkonvs = spravkonvService.findAll();
@@ -2637,7 +2535,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "prihodadd param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "prihodadd param=" +
                 " prefix = " + prefix +
                 " index = " + index +
                 " price " + price +
@@ -2647,9 +2545,10 @@ public class OpfrController {
         ));
 
         Spravkonv spravkonv = spravkonvService.findById(id_konv);
-        Date date1 = new Date();
+
+        LocalDateTime date1;
         try {
-            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+            date1 = DateUtils.parseIsoToDate(date);
         } catch (Exception e) {
             model.addAttribute("user", user);
             model.addAttribute("errtext", "Не удалось конвертировать формат!");
@@ -2674,7 +2573,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "prihoddel param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "prihoddel param=" +
                 " id = " + id
         ));
 
@@ -2701,7 +2600,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "prihodmarki"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "prihodmarki"));
 
         List<Prihodmarki> prihods = prihodmarkiService.findAll();
 
@@ -2717,19 +2616,12 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "prihodmarkiadd param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "prihodmarkiadd param=" +
                 " price = " + price +
                 " date = " + date
         ));
 
-        Date date1 = new Date();
-        try {
-            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-        } catch (Exception e) {
-            model.addAttribute("user", user);
-            model.addAttribute("errtext", "Не удалось конвертировать формат!");
-            return "fragment/err :: error";
-        }
+        LocalDateTime date1 = DateUtils.parseIsoToDate(date);
 
         Prihodmarki prihodmarki = new Prihodmarki(Double.valueOf(price), date1);
         prihodmarkiService.save(prihodmarki);
@@ -2747,7 +2639,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "prihodmarkidel param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "prihodmarkidel param=" +
                 " id = " + id
         ));
 
@@ -2773,7 +2665,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "konv"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "konv"));
 
         model.addAttribute("user", user);
         return "konv";
@@ -2785,7 +2677,7 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "avans"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "avans"));
 
         model.addAttribute("user", user);
         return "avans";
@@ -2798,28 +2690,19 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "Ссылка на авансовый отчет avanslink param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Ссылка на авансовый отчет avanslink param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2
         ));
 
-        Date date1 = new Date();
-        Date date2 = new Date();
+        LocalDateTime date1 = DateUtils.parseIsoToDate(dat1);
+        LocalDateTime date2 = DateUtils.parseIsoToDate(dat1);
 
-        date1 = dateyyyyMMdd(dat1);
-        date2 = dateyyyyMMdd(dat2);
+        model.addAttribute("date1", DateUtils.formatIsoToString(date1));
+        model.addAttribute("date2", DateUtils.formatIsoToString(date2));
 
-        //todo поработать с датами
-        //Long datenow = date2.getTime() + 86340000l; //23часа 59минут
-        //date2 = new Date(datenow);
-
-        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
-        model.addAttribute("date1", dateFormat1.format(date1));
-        model.addAttribute("date2", dateFormat1.format(date2));
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        model.addAttribute("date11", dateFormat.format(date1));
-        model.addAttribute("date22", dateFormat.format(date2));
+        model.addAttribute("date11", DateUtils.formatToString(date1));
+        model.addAttribute("date22", DateUtils.formatToString(date2));
 
 
         model.addAttribute("user", user);
@@ -2835,21 +2718,14 @@ public class OpfrController {
             HttpServletResponse resp,
             Model model) throws IOException {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "Печать отчета avanspechatdocx param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Печать отчета avanspechatdocx param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2
         ));
 
-        //todo поработать с датами
-        //Long datenow = date2.getTime() + 86340000l; //23часа 59минут
-        //date2 = new Date(datenow);
 
-        Date date1 = new Date();
-        Date date2 = new Date();
-        Date date1BeginMinusMonths = new Date();
-        Date date2EndMinusMonths = new Date();
-        date1 = dateyyyyMMdd(dat1);
-        date2 = dateyyyyMMdd(dat2);
+        LocalDateTime date1 = DateUtils.parseIsoToDate(dat1);
+        LocalDateTime date2 = DateUtils.parseIsoToDate(dat2);
         String mounth = "";
         String god = "";
         String day = "";
@@ -2858,11 +2734,6 @@ public class OpfrController {
             String[] subStr;
             String delimeter = "-"; // Разделитель
             subStr = dat2.split(delimeter);
-            LocalDate first = LocalDate.of(Integer.valueOf(subStr[0]), Integer.valueOf(subStr[1]), 1);
-            //LocalDate end = first.plusMonths(1).minusDays(1);
-            LocalDate end = first.plusMonths(1);
-            date1BeginMinusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(first.minusMonths(1).toString());
-            date2EndMinusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(end.minusMonths(1).toString());
             String[] moumths = {"января", "февраля", "марта", "апреля", "мая", "июня",
                     "июля", "августа", "сентября", "октября", "ноября", "декабря"};
             mounth = moumths[Integer.valueOf(subStr[1]) - 1];
@@ -3009,82 +2880,37 @@ public class OpfrController {
             @AuthenticationPrincipal User user,
             Model model) {
 
-        logiService.save(new Logi(new Date(), user.getLogin(), "history param=" +
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "history param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2
         ));
 
-        Date date1 = new Date();
-        Date date2 = new Date();
+        LocalDateTime date1;
+        LocalDateTime date2;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
         if (!(dat1.equals("") && dat2.equals(""))) {
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            date1 = dateyyyyMMdd(dat1);
-            date2 = dateyyyyMMdd(dat2);
-            Long datenow = date2.getTime() + 86340000l; //23часа 59минут
-            date2 = new Date(datenow);
+            // Если входные даты не пустые, преобразуем их в LocalDateTime
+            date1 = LocalDate.parse(dat1, formatter).atStartOfDay();
+            date2 = LocalDate.parse(dat2, formatter).atTime(23, 59, 59);
         } else {
-            LocalDateTime first = LocalDateTime.now().withDayOfMonth(1);
-            LocalDateTime last = first.plusMonths(1);
-            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-            try {
-                date1 = new SimpleDateFormat("dd.MM.yyyy").parse(first.format(formatter));
-                date2 = new SimpleDateFormat("dd.MM.yyyy").parse(last.format(formatter));
-                Long datenow = date2.getTime() - 60000l; //23часа 59минут
-                date2 = new Date(datenow);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            // Если входные даты пустые, используем текущий месяц
+            date1 = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+            date2 = date1.plusMonths(1).minusSeconds(1);
         }
 
-        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
-        model.addAttribute("date1", dateFormat1.format(date1));
-        model.addAttribute("date2", dateFormat1.format(date2));
+        model.addAttribute("date1", DateUtils.formatIsoToString(date1));
+        model.addAttribute("date2", DateUtils.formatIsoToString(date2));
 
-        SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd.MM.yyyy");
-        model.addAttribute("dat1", dateFormat2.format(date1));
-        model.addAttribute("dat2", dateFormat2.format(date2));
+        model.addAttribute("dat1", DateUtils.formatToString(date1));
+        model.addAttribute("dat2", DateUtils.formatToString(date2));
 
         model.addAttribute("user", user);
         return "history";
     }
 
-
-    Date dateddMMyyyy(String dat) {
-        Date date = new Date();
-        DateFormat format = null;
-        try{
-            format = new SimpleDateFormat("dd.MM.yyyy");
-        }catch (Exception e){
-            return dateyyyyMMdd(dat);
-        }
-        try {
-            date = format.parse(dat);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
-    }
-
-    Date dateyyyyMMdd(String dat) {
-        Date date = new Date();
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            date = format.parse(dat);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
-    }
-
-    /*String okrug(Float f) {
-        return f != null ? new DecimalFormat("#0.00").format(f) : null;
-    }*/
     String okrug(Double f) {
         return f != null ? new DecimalFormat("#0.00").format(f) : null;
     }
-
-
-//////////////////////////////////Functional-1
-
 
 }

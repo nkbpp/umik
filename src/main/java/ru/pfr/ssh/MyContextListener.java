@@ -3,51 +3,48 @@ package ru.pfr.ssh;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.pfr.Application;
 import ru.pfr.model.umikbd.Logi;
 import ru.pfr.service.bdumik.LogiService;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.util.Date;
+import java.time.LocalDateTime;
 
+@Component
 public class MyContextListener implements ServletContextListener {
 
     @Autowired
-    LogiService logiService;
+    private LogiService logiService;
 
     private static final Logger logger = LogManager.getLogger(Application.class);
 
     private SSHConnection conexionssh;
 
-    public MyContextListener()
-    {
+    public MyContextListener() {
         super();
     }
 
     /**
      * @see ServletContextListener#contextInitialized(ServletContextEvent)
      */
-    public void contextInitialized(ServletContextEvent arg0)
-    {
+    public void contextInitialized(ServletContextEvent arg0) {
         logiService.save(new Logi(
-                new Date(),
+                LocalDateTime.now(),
                 "system",
                 "SSH Создание соединения"));
         logger.info("SSH Создание соединения");
-        try
-        {
+        try {
             conexionssh = new SSHConnection();
             logiService.save(new Logi(
-                    new Date(),
+                    LocalDateTime.now(),
                     "system",
                     "SSH соединение успешно!"));
             logger.info("SSH соединение успешно!");
-        }
-        catch (Throwable e)
-        {
+        } catch (Throwable e) {
             logiService.save(new Logi(
-                    new Date(),
+                    LocalDateTime.now(),
                     "system",
                     "ОШИБКА ПОДКЛЮЧЕНИЯ К SSH"));
             logger.info("ОШИБКА ПОДКЛЮЧЕНИЯ К SSH");
@@ -58,10 +55,9 @@ public class MyContextListener implements ServletContextListener {
     /**
      * @see ServletContextListener#contextDestroyed(ServletContextEvent)
      */
-    public void contextDestroyed(ServletContextEvent arg0)
-    {
+    public void contextDestroyed(ServletContextEvent arg0) {
         logiService.save(new Logi(
-                new Date(),
+                LocalDateTime.now(),
                 "system",
                 "SSH соединение разрушено"));
         logger.info("SSH соединение разрушено");

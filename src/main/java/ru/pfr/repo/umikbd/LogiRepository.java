@@ -5,22 +5,20 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.pfr.model.umikbd.Logi;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface LogiRepository extends JpaRepository<Logi, Long> {
-    public Optional<Logi> findByUser(String login);
+    Optional<Logi> findByUser(String login);
 
-    public List<Logi> findByDateBetweenOrDateNotNullAndUserOrUserNotNullAndTypeOrTypeNull(Date d1, Date d2, String user, Long l);
+    List<Logi> findByDatelogBetweenOrDatelogNotNullAndUserOrUserNotNullAndTypeOrTypeNull(LocalDateTime d1, LocalDateTime d2, String user, Long l);
 
-    public List<Logi> findByUserOrUserNotNullAndTypeOrTypeNull(String user, Long l);
+    List<Logi> findByUserOrUserNotNullAndTypeOrTypeNull(String user, Long l);
 
-    //public List<Logi> findByUserOrUserNotNullAndTypeOrTypeNull(String user, Long l);
+    Optional<Logi> findByTypeAndUser(Long t, String login);
 
-    public Optional<Logi> findByTypeAndUser(Long t, String login);
-
-    public Optional<Logi> findByTypeAndUserAndDate(Long t, String login, Date date);
+    Optional<Logi> findByTypeAndUserAndDatelog(Long t, String login, LocalDateTime datelog);
 
     @Query(
             value = "SELECT l.id, l.datelog, l.user, l.type, l.text FROM Logi l " +
@@ -28,7 +26,7 @@ public interface LogiRepository extends JpaRepository<Logi, Long> {
                     "or (l.datelog between ?1 and ?2)) and " +
                     "(?3 is null or l.user=?3) and (?4 is null or l.type=?4) and (?5 is null or l.text=?5)",
             nativeQuery = true)
-    List<Logi> findByDateParam(Date d1, Date d2, String user, Long l, String text);
+    List<Logi> findByDateParam(LocalDateTime d1, LocalDateTime d2, String user, Long l, String text);
 
     @Query(
             value = "SELECT l.id, l.datelog, l.user, l.type, l.text " +

@@ -1,8 +1,9 @@
 package ru.pfr.model.umikbd;
 
+import ru.pfr.global.DateUtils;
+
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "otchmark")
@@ -12,16 +13,11 @@ public class Otchmark {
     @Column(name = "id")
     private Long id;
 
-/*    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_prihodmark")
-    private Prihodmarki prihodmark;*/
-
     @Column(name = "dat")
-    private Date date;
+    private LocalDateTime date;
 
     public String getDatestr() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        return dateFormat.format(this.date);
+        return DateUtils.formatToString(this.date);
     }
 
     @Column(name = "rashod1")
@@ -37,7 +33,7 @@ public class Otchmark {
     public Otchmark() {
     }
 
-    public Otchmark( Date date, Double rashod1, Double rashod2, Double ostatok) {
+    public Otchmark(LocalDateTime date, Double rashod1, Double rashod2, Double ostatok) {
         this.date = date;
         this.rashod1 = rashod1;
         this.rashod2 = rashod2;
@@ -52,11 +48,11 @@ public class Otchmark {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

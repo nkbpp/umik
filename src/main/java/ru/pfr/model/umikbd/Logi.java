@@ -1,7 +1,7 @@
 package ru.pfr.model.umikbd;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "logi")
@@ -12,7 +12,7 @@ public class Logi {
     private Long id;
 
     @Column(name = "datelog")
-    private Date date;
+    private LocalDateTime date;
 
     @Column(name = "user")
     private String user;
@@ -26,14 +26,14 @@ public class Logi {
     public Logi() {
     }
 
-    public Logi(Date date, String user, Long type, String text) {
+    public Logi(LocalDateTime date, String user, Long type, String text) {
         this.date = date;
         this.user = user;
         this.type = type;
         this.text = text;
     }
 
-    public Logi(Date date, String user, String text) {
+    public Logi(LocalDateTime date, String user, String text) {
         this.date = date;
         this.user = user;
         this.type = 0l;
@@ -48,11 +48,11 @@ public class Logi {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

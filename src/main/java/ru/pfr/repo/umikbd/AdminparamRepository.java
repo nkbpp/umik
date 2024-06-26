@@ -7,5 +7,5 @@ import ru.pfr.model.umikbd.Adminparam;
 import java.util.Optional;
 
 public interface AdminparamRepository extends JpaRepository<Adminparam, Long> {
-    public Optional<Adminparam> findById(Long l);
+    Optional<Adminparam> findById(Long l);
 }

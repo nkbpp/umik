@@ -12,7 +12,7 @@ import java.util.List;
 public class SpravkonvService {
 
     @Autowired
-    SpravkonvRepository spravkonvRepository;
+    private SpravkonvRepository spravkonvRepository;
 
     public Spravkonv findById(Long id) {
         return spravkonvRepository.findById(id).get();

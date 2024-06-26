@@ -1,8 +1,9 @@
 package ru.pfr.model.umikbd;
 
+import ru.pfr.global.DateUtils;
+
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reestr1")
@@ -13,7 +14,7 @@ public class Reestr1Viev {
     private Long id;
 
     @Column(name = "reg_date")
-    private Date reg_date;
+    private LocalDateTime reg_date;
 
     @Column(name = "reg_number")
     private String reg_number;
@@ -26,9 +27,9 @@ public class Reestr1Viev {
 
     public String getAddr() {
         String s;
-        if(text_org.equals("") || text_org==null)
-            s=text_fio;
-        else s=text_org;
+        if (text_org.equals("") || text_org == null)
+            s = text_fio;
+        else s = text_org;
         return s;
     }
 
@@ -69,19 +70,18 @@ public class Reestr1Viev {
     @Column(name = "kol_vo")
     private Integer kol_vo;
 
-    public Float getsumob(){
-        return  this.kol_vo * Float.valueOf(this.sum);
+    public Float getsumob() {
+        return this.kol_vo * Float.valueOf(this.sum);
     }
 
     public String getReg_datestr() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        return dateFormat.format(this.reg_date);
+        return DateUtils.formatToString(reg_date);
     }
 
     public Reestr1Viev() {
     }
 
-    public Reestr1Viev(Long id, Date reg_date, String reg_number, String text_org,
+    public Reestr1Viev(Long id, LocalDateTime reg_date, String reg_number, String text_org,
                        String text_fio, String name, Spravkonv spravkonv, Integer id_konv1,
                        Integer id_konv4, Integer id_konv5, Integer id_konv6, Integer id_konv7,
                        Integer id_konv22, Integer id_konv11, Integer id_konv14,
@@ -161,11 +161,11 @@ public class Reestr1Viev {
         this.id = id;
     }
 
-    public Date getReg_date() {
+    public LocalDateTime getReg_date() {
         return reg_date;
     }
 
-    public void setReg_date(Date reg_date) {
+    public void setReg_date(LocalDateTime reg_date) {
         this.reg_date = reg_date;
     }
 

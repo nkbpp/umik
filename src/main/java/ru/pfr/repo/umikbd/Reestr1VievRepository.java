@@ -4,12 +4,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.pfr.model.umikbd.Reestr1Viev;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface Reestr1VievRepository extends JpaRepository<Reestr1Viev, Long> {
 
-    public List<Reestr1Viev> findAll();
+    List<Reestr1Viev> findAll();
 
     @Query(
             value = "select id, reg_date, reg_number, text_org, text_fio, name, id_konv, sum, " +
@@ -18,7 +18,7 @@ public interface Reestr1VievRepository extends JpaRepository<Reestr1Viev, Long> 
                     "from otch2 " +
                     "where reg_date BETWEEN ?1 AND ?2 order by reg_date",
             nativeQuery = true)
-    public List<Reestr1Viev> findAllD(Date d1, Date d2);
+    List<Reestr1Viev> findAllD(LocalDateTime d1, LocalDateTime d2);
 
     @Query(
             value = "select 1 id, '2020-01-01' reg_date, '' reg_number, '' text_org, " +
@@ -30,7 +30,7 @@ public interface Reestr1VievRepository extends JpaRepository<Reestr1Viev, Long> 
                     "from otch2 " +
                     "where reg_date BETWEEN ?1 AND ?2 order by reg_date",
             nativeQuery = true)
-    public List<Reestr1Viev> findAllI(Date d1, Date d2);
+    List<Reestr1Viev> findAllI(LocalDateTime d1, LocalDateTime d2);
 
 
 }

@@ -1,9 +1,6 @@
 package ru.pfr.controller;
 
-import org.junit.*;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -37,7 +34,7 @@ public class OpfrControllerTest {
     //Проверяемые методы (основные)
 
     //Метод 	                                         Описание
-    /*fail(String) 	                                     Указывает на то что бы тестовый метод завалился при
+    /*fail(String)                                       Указывает на то что бы тестовый метод завалился при
                                                          этом выводя текстовое сообщение.*/
 
     /*assertTrue([message], boolean condition) 	         Проверяет, что логическое условие истинно.*/
@@ -55,7 +52,7 @@ public class OpfrControllerTest {
     /*assertArrayEquals                                  Функция для сравнения массивов, которая
                                                          сравнивает эквивалентность каждого элемента обоих
                                                          массивов друг с другом*/
-    @BeforeClass
+    @BeforeAll
     public static void globalSetUp() {
         System.out.println("Initial setup...");
         System.out.println("Test OpfrControllerTest");
@@ -65,52 +62,10 @@ public class OpfrControllerTest {
 
     private OpfrController opfrController;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         System.out.println("Code executes before each test method");
         opfrController = new OpfrController();
-    }
-
-    @Test
-    public void dateddMMyyyy() {
-
-        //expected
-        Date expected = null;
-        String date2 = "13.08.2020";
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        try {
-            expected = format.parse(date2);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        //actual
-        String s = "13.08.2020";
-        Date actual = opfrController.dateddMMyyyy(s);
-
-        assertEquals(expected,actual);
-
-    }
-
-    @Test
-    public void dateyyyyMMdd() {
-
-        //expected
-        Date expected = null;
-        String date2 = "13.08.2020";
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-        try {
-            expected = format.parse(date2);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        //actual
-        String s = "2020-08-13";
-        Date actual = opfrController.dateyyyyMMdd(s);
-
-        assertEquals(expected,actual);
-
     }
 
     @Test
@@ -119,19 +74,19 @@ public class OpfrControllerTest {
         double f = 15.33333f;
         String s = opfrController.okrug(f);
 
-        assertEquals("15,33",s);
-        assertEquals("1,00",opfrController.okrug(1d));
+        assertEquals("15,33", s);
+        assertEquals("1,00", opfrController.okrug(1d));
 
         //assertNull("Not NaN for null", opfrController.okrug());
 
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDown() {
         System.out.println("Tests finished");
     }
 
-    @After
+    @AfterEach
     public void afterMethod() {
         System.out.println("Code executes after each test method");
     }

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.pfr.global.DateUtils;
 import ru.pfr.model.umikbd.Adminparam;
 import ru.pfr.model.umikbd.Logi;
 import ru.pfr.model.umikbd.User;
@@ -16,8 +17,7 @@ import ru.pfr.service.bdumik.AdminparamService;
 import ru.pfr.service.bdumik.LogiService;
 import ru.pfr.service.bdumik.UserService;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -26,13 +26,13 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    LogiService logiService;
+    private LogiService logiService;
 
     @Autowired
-    AdminparamService adminparamService;
+    private AdminparamService adminparamService;
 
     @GetMapping("/admin")
     public String adminstart(
@@ -45,10 +45,10 @@ public class AdminController {
         Adminparam adminparam = adminparamService.findByAdminparam();
         model.addAttribute("adminparam", adminparam);
 
-        List<User> logerrs = userService.findAll();////////////////////
+        List<User> logerrs = userService.findAll();
         model.addAttribute("logerrs", logerrs);
 
-        logiService.save(new Logi(new Date(),user.getLogin(),"Страница администратора"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(),"Страница администратора"));
         return "admin";
     }
 
@@ -66,7 +66,7 @@ public class AdminController {
         adminparamService.save(adminparam);
 
         model.addAttribute("adminparam", adminparam);
-        logiService.save(new Logi(new Date(),user.getLogin(),"Изменение параметров в adminupdate"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Изменение параметров в adminupdate"));
         return "admin";
     }
 
@@ -78,7 +78,7 @@ public class AdminController {
 
         Iterable<Logi> logi = logiService.findAll();
         model.addAttribute("logi", logi);
-        logiService.save(new Logi(new Date(),user.getLogin(),"Вход в журнал"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(),"Вход в журнал"));
         return "juraudit";
     }
 
@@ -90,43 +90,47 @@ public class AdminController {
                         @RequestParam String text,
                         @AuthenticationPrincipal User user,
                         Model model) {
+        LocalDateTime date1 = null;
+        LocalDateTime date2 = null;
 
-        Date date1=null;
-        Date date2=null;
-
+        // Парсинг дат
         try {
-            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(d1);
-            date2 = new SimpleDateFormat("yyyy-MM-dd").parse(d2);
+            date1 = DateUtils.parseIsoToDate(d1);
+            date2 = DateUtils.parseIsoToDate(d2);
         } catch (Exception e) {
-            date1=null;
-            date2=null;
+            // Логирование ошибки парсинга
+            System.err.println("Ошибка парсинга дат: " + e.getMessage());
         }
+
         model.addAttribute("user", user);
 
-        Long type2=null;
+        Long type2 = null;
         try {
-            type2=Long.valueOf(type);
-        } catch (Exception e)
-        {}
-        if(login.equals(""))login=null;
-        if(text.equals(""))text=null;
-        Iterable<Logi> logi;
-        if(date1==null || date2==null){
-            if(login==null && type2==null && text==null){
-                logi = logiService.findAll();
-            }else{
-                logi = logiService.findByDateBetween(
-                        login,
-                        type2,
-                        text
-                );}
-        }else{
+            type2 = Long.valueOf(type);
+        } catch (NumberFormatException e) {
+            // Логирование ошибки преобразования типа
+            System.err.println("Ошибка преобразования типа: " + e.getMessage());
+        }
+
+        // Проверка на пустые значения
+        login = login.isEmpty() ? null : login;
+        text = text.isEmpty() ? null : text;
+
+        List<Logi> logi;
+
+        // Условие поиска логов
+        if (date1 == null || date2 == null) {
+            logi = (login == null && type2 == null && text == null)
+                    ? logiService.findAll()
+                    : logiService.findByDateBetween(login, type2, text);
+        } else {
             logi = logiService.findByDateBetween(date1, date2, login, type2, text);
         }
 
-        //Iterable<Logi> logi = logiService.findByDateBetween(date1, date2, login, Long.valueOf(type));
+        // Добавление логов и сохранение действия
         model.addAttribute("logi", logi);
-        logiService.save(new Logi(new Date(),user.getLogin(),"Фильтр журнала"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Фильтр журнала"));
+
         return "fragmentadmin/adminfragment :: tables";
     }
 
@@ -135,7 +139,7 @@ public class AdminController {
                         Model model) {
 
         logiService.clear();
-        logiService.save(new Logi(new Date(),user.getLogin(),"Очистка журнала"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(),"Очистка журнала"));
         Iterable<Logi> logi = logiService.findAll();
         model.addAttribute("logi", logi);
 
@@ -143,11 +147,10 @@ public class AdminController {
     }
 
 
-
     @GetMapping("/vihod/logout")
-    public void logout (@AuthenticationPrincipal User user,
-                        Model model) {
-        logiService.save(new Logi(new Date(),user.getLogin(),"Выход"));
+    public void logout(@AuthenticationPrincipal User user,
+                       Model model) {
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(),"Выход"));
 
     }
 
@@ -158,13 +161,13 @@ public class AdminController {
 
         User logerr = userService.findById(id);
         logerr.setActive(0l);
-        logerr.setDate(new Date());
+        logerr.setDate(LocalDateTime.now());
         userService.save(logerr);
 
         List<User> logerrs = userService.findAll();
         model.addAttribute("logerrs", logerrs);
 
-        logiService.save(new Logi(new Date(),user.getLogin(),"Снять блокировку пользователя "+logerr.getLogin()));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(),"Снять блокировку пользователя " + logerr.getLogin()));
 
         return "fragmentadmin/adminfragment :: blocks";
     }
@@ -177,13 +180,13 @@ public class AdminController {
 
         User logerr = userService.findById(id);
         logerr.setActive(1000l);
-        logerr.setDate(new Date());
+        logerr.setDate(LocalDateTime.now());
         userService.save(logerr);
 
         List<User> logerrs = userService.findAll();
         model.addAttribute("logerrs", logerrs);
 
-        logiService.save(new Logi(new Date(),user.getLogin(),"Заблокировать пользователя "+logerr.getLogin()));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(),"Заблокировать пользователя " + logerr.getLogin()));
 
         return "fragmentadmin/adminfragment :: blocks";
     }

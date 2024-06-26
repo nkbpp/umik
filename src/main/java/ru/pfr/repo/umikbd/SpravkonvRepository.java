@@ -9,6 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SpravkonvRepository extends JpaRepository<Spravkonv, Long> {
-    public Optional<Spravkonv> findById(Long l);
-    public List<Spravkonv> findAll();
+    Optional<Spravkonv> findById(Long l);
+    List<Spravkonv> findAll();
 }

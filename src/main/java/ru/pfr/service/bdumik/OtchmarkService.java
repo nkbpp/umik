@@ -6,17 +6,17 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.pfr.model.umikbd.Otchmark;
 import ru.pfr.repo.umikbd.OtchmarkRepository;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class OtchmarkService {
 
     @Autowired
-    OtchmarkRepository otchmarkRepository;
+    private OtchmarkRepository otchmarkRepository;
 
     public Otchmark findById(Long id) {
-        return otchmarkRepository.findById(id).get();
+        return otchmarkRepository.findById(id).orElse(null);
     }
 
     public List<Otchmark> findAll() {
@@ -24,8 +24,8 @@ public class OtchmarkService {
     }
 
     @Transactional
-    public void save(Otchmark otchraschodkonv) {
-        otchmarkRepository.save(otchraschodkonv);
+    public void save(Otchmark otchmark) {
+        otchmarkRepository.save(otchmark);
     }
 
     @Transactional
@@ -33,16 +33,14 @@ public class OtchmarkService {
         otchmarkRepository.deleteById(id);
     }
 
-    public List<Otchmark> findAllD(Date d1, Date d2) {
+    public List<Otchmark> findAllD(LocalDateTime d1, LocalDateTime d2) {
         return otchmarkRepository.findAllDat(d1, d2);
     }
 
-
     @Transactional
-    public void Del(Date d1, Date d2) {
-        List<Otchmark> otchraschodkonvs = otchmarkRepository.findAllDat(d1, d2);
-        for (Otchmark o:
-                otchraschodkonvs) {
+    public void Del(LocalDateTime d1, LocalDateTime d2) {
+        List<Otchmark> otchmarks = otchmarkRepository.findAllDat(d1, d2);
+        for (Otchmark o : otchmarks) {
             otchmarkRepository.delete(o);
         }
     }

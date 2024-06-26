@@ -1,8 +1,9 @@
 package ru.pfr.model.umikbd;
 
+import ru.pfr.global.DateUtils;
+
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "pravopriem")
@@ -14,7 +15,7 @@ public class Pravopriem {
     private Long id;
 
     @Column(name = "date")
-    private Date date;
+    private LocalDateTime date;
 
     @Column(name = "konvert_d")
     private Long konvert_d;
@@ -30,8 +31,7 @@ public class Pravopriem {
     private Double marki_k_zak_pis;
 
     public String get_datestr() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        return dateFormat.format(this.date);
+        return DateUtils.formatToString(date);
     }
 
     public Double getPrice() {
@@ -50,7 +50,7 @@ public class Pravopriem {
     public Pravopriem() {
     }
 
-    public Pravopriem(Date date, Long konvert_d, Prihod prihod, Double cena_sell, Double marki_k_zak_pis) {
+    public Pravopriem(LocalDateTime date, Long konvert_d, Prihod prihod, Double cena_sell, Double marki_k_zak_pis) {
         this.date = date;
         this.konvert_d = konvert_d;
         this.prihod = prihod;
@@ -66,11 +66,11 @@ public class Pravopriem {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -93,10 +93,6 @@ public class Pravopriem {
     public Double getMarki_k_zak_pis() {
         return marki_k_zak_pis;
     }
-
-/*    public Float getStoimost() {
-        return cena_sell!=null && cena_sell>0?cena_sell:marki_k_zak_pis;
-    }*/
 
     public Double getCena_sell() {
         return cena_sell;

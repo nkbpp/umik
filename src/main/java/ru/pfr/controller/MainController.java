@@ -12,8 +12,7 @@ import ru.pfr.model.umikbd.Logi;
 import ru.pfr.model.umikbd.User;
 import ru.pfr.service.bdumik.LogiService;
 
-
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping(value = {"/", "/umik"})
@@ -27,7 +26,7 @@ public class MainController {
     public String mains(
             @AuthenticationPrincipal User user,
             Model model) {
-        logiService.save(new Logi(new Date(),user.getLogin(),"Авторизация прошла успешно MainController mains()"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(),"Авторизация прошла успешно MainController mains()"));
         logger.info("User = " + user.getLogin() + " Авторизация прошла успешно MainController mains()");
         if (user.getRayon().getKod().equals("000"))
             return "redirect:/umik/main";

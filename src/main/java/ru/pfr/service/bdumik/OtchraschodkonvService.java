@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.pfr.model.umikbd.Otchraschodkonv;
 import ru.pfr.repo.umikbd.OtchraschodkonvRepository;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -16,7 +16,7 @@ public class OtchraschodkonvService {
     OtchraschodkonvRepository otchraschodkonvRepository;
 
     public Otchraschodkonv findById(Long id) {
-        return otchraschodkonvRepository.findById(id).get();
+        return otchraschodkonvRepository.findById(id).orElse(null);
     }
 
     public List<Otchraschodkonv> findAll() {
@@ -33,21 +33,16 @@ public class OtchraschodkonvService {
         otchraschodkonvRepository.deleteById(id);
     }
 
-    public List<Otchraschodkonv> findAllD(Date d1, Date d2) {
+    public List<Otchraschodkonv> findAllD(LocalDateTime d1, LocalDateTime d2) {
         return otchraschodkonvRepository.findAllD(d1, d2);
     }
 
     @Transactional
-    public void Del(Date d1, Date d2) {
+    public void Del(LocalDateTime d1, LocalDateTime d2) {
         List<Otchraschodkonv> otchraschodkonvs = otchraschodkonvRepository.findAllD(d1, d2);
-        for (Otchraschodkonv o:
-                otchraschodkonvs) {
+        for (Otchraschodkonv o : otchraschodkonvs) {
             otchraschodkonvRepository.delete(o);
         }
     }
-
-/*    public List<Otchraschodkonv> findAllDT(Date d1, Date d2, int i) {
-        return otchraschodkonvRepository.findAllD(d1, d2, i);
-    }*/
 
 }

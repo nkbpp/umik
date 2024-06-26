@@ -1,8 +1,9 @@
 package ru.pfr.model.umikbd;
 
+import ru.pfr.global.DateUtils;
+
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "peddeloproizvodstvo")
@@ -26,7 +27,7 @@ public class PEDdeloproizvodstvo {
     private String reg_postf;
 
     @Column(name = "reg_date")
-    private Date reg_date;
+    private LocalDateTime reg_date;
 
     @Column(name = "id_name")
     private Long id_name;
@@ -48,14 +49,13 @@ public class PEDdeloproizvodstvo {
     private Integer kol_vo;
 
     public String getReg_datestr() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        return dateFormat.format(this.reg_date);
+        return DateUtils.formatToString(reg_date);
     }
 
     public PEDdeloproizvodstvo() {
     }
 
-    public PEDdeloproizvodstvo(Long iddeloproizvodstvo, String reg_pref, String reg_number, String reg_postf, Date reg_date, Long id_name, String name, String text_org, Spravkonv spravkonv, Double sum, Integer kol_vo) {
+    public PEDdeloproizvodstvo(Long iddeloproizvodstvo, String reg_pref, String reg_number, String reg_postf, LocalDateTime reg_date, Long id_name, String name, String text_org, Spravkonv spravkonv, Double sum, Integer kol_vo) {
         this.iddeloproizvodstvo = iddeloproizvodstvo;
         this.reg_pref = reg_pref;
         this.reg_number = reg_number;
@@ -109,11 +109,11 @@ public class PEDdeloproizvodstvo {
         this.reg_postf = reg_postf;
     }
 
-    public Date getReg_date() {
+    public LocalDateTime getReg_date() {
         return reg_date;
     }
 
-    public void setReg_date(Date reg_date) {
+    public void setReg_date(LocalDateTime reg_date) {
         this.reg_date = reg_date;
     }
 

@@ -1,7 +1,7 @@
 package ru.pfr.model.rsdoc_pfr;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "r2_doc")
@@ -12,104 +12,104 @@ public class R2_doc {
     private Long id;
     @Column(name = "id_doc_type")
     private Long id_doc_type;
-    @Column(name="id_doc_kind")
+    @Column(name = "id_doc_kind")
     private Long id_doc_kind;
-    @Column(name="id_doc_status")
+    @Column(name = "id_doc_status")
     private Long id_doc_status;
-    @Column(name="id_author")
+    @Column(name = "id_author")
     private Long id_author;
-    @Column(name="author_name")
+    @Column(name = "author_name")
     private String author_name;
-    @Column(name="reg_pref")
+    @Column(name = "reg_pref")
     private String reg_pref;
-    @Column(name="reg_number")
+    @Column(name = "reg_number")
     private Long reg_number;
-    @Column(name="reg_postf")
+    @Column(name = "reg_postf")
     private String reg_postf;
-    @Column(name="reg_date")
-    private Date reg_date;
-    @Column(name="ref_doc_n")
+    @Column(name = "reg_LocalDateTime")
+    private LocalDateTime reg_LocalDateTime;
+    @Column(name = "ref_doc_n")
     private String ref_doc_n;
-    @Column(name="ref_doc_dt")
-    private Date ref_doc_dt;
-    @Column(name="doc_date")
-    private Date doc_date;
-    @Column(name="doc_no")
+    @Column(name = "ref_doc_dt")
+    private LocalDateTime ref_doc_dt;
+    @Column(name = "doc_LocalDateTime")
+    private LocalDateTime doc_LocalDateTime;
+    @Column(name = "doc_no")
     private String doc_no;
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
-    @Column(name="short_contents")
+    @Column(name = "short_contents")
     private String short_contents;
-    @Column(name="note")
+    @Column(name = "note")
     private String note;
-    @Column(name="doc_version")
+    @Column(name = "doc_version")
     private Long doc_version;
-    @Column(name="actual_version")
+    @Column(name = "actual_version")
     private Long actual_version;
-    @Column(name="id_arch_volume")
+    @Column(name = "id_arch_volume")
     private Double id_arch_volume;
     //id_arch_volume numeric
-    @Column(name="dt_pass_arch")
-    private Date dt_pass_arch;
-    @Column(name="n_list")
+    @Column(name = "dt_pass_arch")
+    private LocalDateTime dt_pass_arch;
+    @Column(name = "n_list")
     private Long n_list;
-    @Column(name="n_copies")
+    @Column(name = "n_copies")
     private Long n_copies;
-    @Column(name="dt_creation")
-    private Date dt_creation;
-    @Column(name="id_creator")
+    @Column(name = "dt_creation")
+    private LocalDateTime dt_creation;
+    @Column(name = "id_creator")
     private Long id_creator;
-    @Column(name="account_num")
+    @Column(name = "account_num")
     private Long account_num;
-    @Column(name="account_date")
-    private Date account_date;
-    @Column(name="dt_change")
-    private Date dt_change;
-    @Column(name="id_ref_doc")
+    @Column(name = "account_LocalDateTime")
+    private LocalDateTime account_LocalDateTime;
+    @Column(name = "dt_change")
+    private LocalDateTime dt_change;
+    @Column(name = "id_ref_doc")
     private Long id_ref_doc;
-    @Column(name="id_doc_group")
+    @Column(name = "id_doc_group")
     private Long id_doc_group;
-    @Column(name="id_control_kind")
+    @Column(name = "id_control_kind")
     private Long id_control_kind;
-    @Column(name="id_security_type")
+    @Column(name = "id_security_type")
     private Long id_security_type;
-    @Column(name="id_validity")
+    @Column(name = "id_validity")
     private Long id_validity;
-    @Column(name="id_urgency")
+    @Column(name = "id_urgency")
     private Long id_urgency;
-    @Column(name="id_doc_category")
+    @Column(name = "id_doc_category")
     private Long id_doc_category;
-    @Column(name="id_sys_status")
+    @Column(name = "id_sys_status")
     private Long id_sys_status;
-    @Column(name="id_theme")
+    @Column(name = "id_theme")
     private Long id_theme;
-    @Column(name="dt_create")
-    private Date dt_create;
-    @Column(name="dt_edit")
-    private Date dt_edit;
-    @Column(name="id_editor")
+    @Column(name = "dt_create")
+    private LocalDateTime dt_create;
+    @Column(name = "dt_edit")
+    private LocalDateTime dt_edit;
+    @Column(name = "id_editor")
     private Long id_editor;
-    @Column(name="dt_delete")
-    private Date dt_delete;
-    @Column(name="dt_start")
-    private Date dt_start;
-    @Column(name="dt_expire")
-    private Date dt_expire;
-    @Column(name="id_arch_folder")
+    @Column(name = "dt_delete")
+    private LocalDateTime dt_delete;
+    @Column(name = "dt_start")
+    private LocalDateTime dt_start;
+    @Column(name = "dt_expire")
+    private LocalDateTime dt_expire;
+    @Column(name = "id_arch_folder")
     private Long id_arch_folder;
-    @Column(name="guid")
+    @Column(name = "guid")
     private String guid;
-    @Column(name="report_contents")
+    @Column(name = "report_contents")
     private String report_contents;
-    @Column(name="id_report_statistic")
+    @Column(name = "id_report_statistic")
     private Long id_report_statistic;
-    @Column(name="code")
+    @Column(name = "code")
     private Long code;
 
     public R2_doc() {
     }
 
-    public R2_doc(Long id_doc_type, Long id_doc_kind, Long id_doc_status, Long id_author, String author_name, String reg_pref, Long reg_number, String reg_postf, Date reg_date, String ref_doc_n, Date ref_doc_dt, Date doc_date, String doc_no, String name, String short_contents, String note, Long doc_version, Long actual_version, Double id_arch_volume, Date dt_pass_arch, Long n_list, Long n_copies, Date dt_creation, Long id_creator, Long account_num, Date account_date, Date dt_change, Long id_ref_doc, Long id_doc_group, Long id_control_kind, Long id_security_type, Long id_validity, Long id_urgency, Long id_doc_category, Long id_sys_status, Long id_theme, Date dt_create, Date dt_edit, Long id_editor, Date dt_delete, Date dt_start, Date dt_expire, Long id_arch_folder, String guid, String report_contents, Long id_report_statistic, Long code) {
+    public R2_doc(Long id_doc_type, Long id_doc_kind, Long id_doc_status, Long id_author, String author_name, String reg_pref, Long reg_number, String reg_postf, LocalDateTime reg_LocalDateTime, String ref_doc_n, LocalDateTime ref_doc_dt, LocalDateTime doc_LocalDateTime, String doc_no, String name, String short_contents, String note, Long doc_version, Long actual_version, Double id_arch_volume, LocalDateTime dt_pass_arch, Long n_list, Long n_copies, LocalDateTime dt_creation, Long id_creator, Long account_num, LocalDateTime account_LocalDateTime, LocalDateTime dt_change, Long id_ref_doc, Long id_doc_group, Long id_control_kind, Long id_security_type, Long id_validity, Long id_urgency, Long id_doc_category, Long id_sys_status, Long id_theme, LocalDateTime dt_create, LocalDateTime dt_edit, Long id_editor, LocalDateTime dt_delete, LocalDateTime dt_start, LocalDateTime dt_expire, Long id_arch_folder, String guid, String report_contents, Long id_report_statistic, Long code) {
         this.id_doc_type = id_doc_type;
         this.id_doc_kind = id_doc_kind;
         this.id_doc_status = id_doc_status;
@@ -118,10 +118,10 @@ public class R2_doc {
         this.reg_pref = reg_pref;
         this.reg_number = reg_number;
         this.reg_postf = reg_postf;
-        this.reg_date = reg_date;
+        this.reg_LocalDateTime = reg_LocalDateTime;
         this.ref_doc_n = ref_doc_n;
         this.ref_doc_dt = ref_doc_dt;
-        this.doc_date = doc_date;
+        this.doc_LocalDateTime = doc_LocalDateTime;
         this.doc_no = doc_no;
         this.name = name;
         this.short_contents = short_contents;
@@ -135,7 +135,7 @@ public class R2_doc {
         this.dt_creation = dt_creation;
         this.id_creator = id_creator;
         this.account_num = account_num;
-        this.account_date = account_date;
+        this.account_LocalDateTime = account_LocalDateTime;
         this.dt_change = dt_change;
         this.id_ref_doc = id_ref_doc;
         this.id_doc_group = id_doc_group;
@@ -231,12 +231,12 @@ public class R2_doc {
         this.reg_postf = reg_postf;
     }
 
-    public Date getReg_date() {
-        return reg_date;
+    public LocalDateTime getReg_LocalDateTime() {
+        return reg_LocalDateTime;
     }
 
-    public void setReg_date(Date reg_date) {
-        this.reg_date = reg_date;
+    public void setReg_LocalDateTime(LocalDateTime reg_LocalDateTime) {
+        this.reg_LocalDateTime = reg_LocalDateTime;
     }
 
     public String getRef_doc_n() {
@@ -247,20 +247,20 @@ public class R2_doc {
         this.ref_doc_n = ref_doc_n;
     }
 
-    public Date getRef_doc_dt() {
+    public LocalDateTime getRef_doc_dt() {
         return ref_doc_dt;
     }
 
-    public void setRef_doc_dt(Date ref_doc_dt) {
+    public void setRef_doc_dt(LocalDateTime ref_doc_dt) {
         this.ref_doc_dt = ref_doc_dt;
     }
 
-    public Date getDoc_date() {
-        return doc_date;
+    public LocalDateTime getDoc_LocalDateTime() {
+        return doc_LocalDateTime;
     }
 
-    public void setDoc_date(Date doc_date) {
-        this.doc_date = doc_date;
+    public void setDoc_LocalDateTime(LocalDateTime doc_LocalDateTime) {
+        this.doc_LocalDateTime = doc_LocalDateTime;
     }
 
     public String getDoc_no() {
@@ -319,11 +319,11 @@ public class R2_doc {
         this.id_arch_volume = id_arch_volume;
     }
 
-    public Date getDt_pass_arch() {
+    public LocalDateTime getDt_pass_arch() {
         return dt_pass_arch;
     }
 
-    public void setDt_pass_arch(Date dt_pass_arch) {
+    public void setDt_pass_arch(LocalDateTime dt_pass_arch) {
         this.dt_pass_arch = dt_pass_arch;
     }
 
@@ -343,11 +343,11 @@ public class R2_doc {
         this.n_copies = n_copies;
     }
 
-    public Date getDt_creation() {
+    public LocalDateTime getDt_creation() {
         return dt_creation;
     }
 
-    public void setDt_creation(Date dt_creation) {
+    public void setDt_creation(LocalDateTime dt_creation) {
         this.dt_creation = dt_creation;
     }
 
@@ -367,19 +367,19 @@ public class R2_doc {
         this.account_num = account_num;
     }
 
-    public Date getAccount_date() {
-        return account_date;
+    public LocalDateTime getAccount_LocalDateTime() {
+        return account_LocalDateTime;
     }
 
-    public void setAccount_date(Date account_date) {
-        this.account_date = account_date;
+    public void setAccount_LocalDateTime(LocalDateTime account_LocalDateTime) {
+        this.account_LocalDateTime = account_LocalDateTime;
     }
 
-    public Date getDt_change() {
+    public LocalDateTime getDt_change() {
         return dt_change;
     }
 
-    public void setDt_change(Date dt_change) {
+    public void setDt_change(LocalDateTime dt_change) {
         this.dt_change = dt_change;
     }
 
@@ -455,19 +455,19 @@ public class R2_doc {
         this.id_theme = id_theme;
     }
 
-    public Date getDt_create() {
+    public LocalDateTime getDt_create() {
         return dt_create;
     }
 
-    public void setDt_create(Date dt_create) {
+    public void setDt_create(LocalDateTime dt_create) {
         this.dt_create = dt_create;
     }
 
-    public Date getDt_edit() {
+    public LocalDateTime getDt_edit() {
         return dt_edit;
     }
 
-    public void setDt_edit(Date dt_edit) {
+    public void setDt_edit(LocalDateTime dt_edit) {
         this.dt_edit = dt_edit;
     }
 
@@ -479,27 +479,27 @@ public class R2_doc {
         this.id_editor = id_editor;
     }
 
-    public Date getDt_delete() {
+    public LocalDateTime getDt_delete() {
         return dt_delete;
     }
 
-    public void setDt_delete(Date dt_delete) {
+    public void setDt_delete(LocalDateTime dt_delete) {
         this.dt_delete = dt_delete;
     }
 
-    public Date getDt_start() {
+    public LocalDateTime getDt_start() {
         return dt_start;
     }
 
-    public void setDt_start(Date dt_start) {
+    public void setDt_start(LocalDateTime dt_start) {
         this.dt_start = dt_start;
     }
 
-    public Date getDt_expire() {
+    public LocalDateTime getDt_expire() {
         return dt_expire;
     }
 
-    public void setDt_expire(Date dt_expire) {
+    public void setDt_expire(LocalDateTime dt_expire) {
         this.dt_expire = dt_expire;
     }
 

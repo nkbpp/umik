@@ -3,29 +3,27 @@ package ru.pfr.service.bdumik;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import ru.pfr.model.umikbd.Prihodmarki;
 import ru.pfr.repo.umikbd.PrihodmarkiRepository;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class PrihodmarkiService {
 
     @Autowired
-    PrihodmarkiRepository prihodmarkiRepository;
+    private PrihodmarkiRepository prihodmarkiRepository;
 
     public Prihodmarki findById(Long id) {
-        return prihodmarkiRepository.findById(id).get();
+        return prihodmarkiRepository.findById(id).orElse(null);
     }
 
     public List<Prihodmarki> findAll() {
         return prihodmarkiRepository.findAll();
     }
 
-
-    public List<Prihodmarki> findAllDat(Date d1, Date d2) {
+    public List<Prihodmarki> findAllDat(LocalDateTime d1, LocalDateTime d2) {
         return prihodmarkiRepository.findAllDat(d1, d2);
     }
 

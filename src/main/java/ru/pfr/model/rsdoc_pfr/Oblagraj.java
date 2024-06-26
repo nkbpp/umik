@@ -1,8 +1,9 @@
 package ru.pfr.model.rsdoc_pfr;
 
+import ru.pfr.global.DateUtils;
+
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "oblagraj")
@@ -25,7 +26,7 @@ public class Oblagraj {
     private String reg_postf;
 
     @Column(name = "reg_date")
-    private Date regdate;
+    private LocalDateTime regdate;
 
     @Column(name = "id_type_send")
     private Long id_type_send;
@@ -47,14 +48,14 @@ public class Oblagraj {
     private String addr_list;
 
     public String getReg_datestr() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        return dateFormat.format(this.regdate);
+        return DateUtils.formatToString(regdate);
+
     }
 
     public Oblagraj() {
     }
 
-    public Oblagraj(Long id, String reg_pref, String regnumber, String reg_postf, Date regdate, Long id_type_send, String name, String id_com_type, String text_org, String text_fio, String addr_list) {
+    public Oblagraj(Long id, String reg_pref, String regnumber, String reg_postf, LocalDateTime regdate, Long id_type_send, String name, String id_com_type, String text_org, String text_fio, String addr_list) {
         this.id = id;
         this.reg_pref = reg_pref;
         this.regnumber = regnumber;
@@ -124,11 +125,11 @@ public class Oblagraj {
         this.reg_postf = reg_postf;
     }
 
-    public Date getRegdate() {
+    public LocalDateTime getRegdate() {
         return regdate;
     }
 
-    public void setRegdate(Date regdate) {
+    public void setRegdate(LocalDateTime regdate) {
         this.regdate = regdate;
     }
 

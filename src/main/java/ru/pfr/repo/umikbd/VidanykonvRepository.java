@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface VidanykonvRepository extends JpaRepository<Vidanykonv, Long> {
-    public Optional<Vidanykonv> findById(Long l);
-    public List<Vidanykonv> findAll();
+    Optional<Vidanykonv> findById(Long l);
+    List<Vidanykonv> findAll();
 }

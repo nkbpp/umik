@@ -1,7 +1,7 @@
 package ru.pfr.model.umikbd;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
@@ -18,7 +18,7 @@ public class User {
     private Long active;
 
     @Column(name = "date")
-    private Date date;
+    private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_rayon")
@@ -32,28 +32,28 @@ public class User {
         this.login = login;
         this.active = active;
         this.rayon = rayon;
-        this.date = new Date();
+        this.date = LocalDateTime.now();
     }
 
     public User(String login, Long active, Rayon rayon) {
         this.login = login;
         this.active = active;
         this.rayon = rayon;
-        this.date = new Date();
+        this.date = LocalDateTime.now();
     }
 
     public User(String login, Rayon rayon) {
         this.login = login;
         this.active = 1l;
         this.rayon = rayon;
-        this.date = new Date();
+        this.date = LocalDateTime.now();
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

@@ -6,23 +6,22 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.pfr.model.umikbd.Prihod;
 import ru.pfr.repo.umikbd.PrihodRepository;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class PrihodService {
 
     @Autowired
-    PrihodRepository prihodRepository;
+    private PrihodRepository prihodRepository;
 
     public Prihod findById(Long id) {
-        return prihodRepository.findById(id).get();
+        return prihodRepository.findById(id).orElse(null);
     }
 
     public List<Prihod> findAll() {
         return prihodRepository.findAll();
     }
-
 
     public List<Prihod> findAllTypeD() {
         return prihodRepository.findAllTypeD();
@@ -32,7 +31,7 @@ public class PrihodService {
         return prihodRepository.findTypeDLast();
     }
 
-    public List<Prihod> findAllD(Date d1, Date d2) {
+    public List<Prihod> findAllD(LocalDateTime d1, LocalDateTime d2) {
         return prihodRepository.findAllD(d1, d2);
     }
 
@@ -41,7 +40,7 @@ public class PrihodService {
         prihodRepository.save(prihod);
     }
 
-    public boolean findbyDatId(Date d1, Date d2, Long i) {
+    public boolean findbyDatId(LocalDateTime d1, LocalDateTime d2, Long i) {
         List<Prihod> p = prihodRepository.findbyDatId(d1, d2, i);
         return p.isEmpty();
     }

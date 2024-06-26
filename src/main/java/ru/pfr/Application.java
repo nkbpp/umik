@@ -11,7 +11,7 @@ import ru.pfr.model.umikbd.Logi;
 import ru.pfr.service.bdumik.LogiService;
 
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @SpringBootApplication
 public class Application implements ApplicationRunner {
@@ -28,7 +28,7 @@ public class Application implements ApplicationRunner {
     public void run(ApplicationArguments applicationArguments) throws Exception {
         /*        logger.debug("Debugging log");*/
         logiService.save(new Logi(
-                new Date(),
+                LocalDateTime.now(),
                 "system",
                 "ПРИЛОЖЕНИЕ ЗАПУЩЕНО!"));
         logger.info("LOG START!!!");
