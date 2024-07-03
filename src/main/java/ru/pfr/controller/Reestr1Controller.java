@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import ru.pfr.configuration.UserPrincipal;
 import ru.pfr.global.DateUtils;
 import ru.pfr.model.umikbd.Logi;
 import ru.pfr.model.umikbd.Reestr1Viev;
@@ -46,9 +47,9 @@ public class Reestr1Controller {
     public String reestr1(
             @RequestParam(value = "dat1", defaultValue = "") String dat1,
             @RequestParam(value = "dat2", defaultValue = "") String dat2,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "reestr1 param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2
@@ -87,10 +88,10 @@ public class Reestr1Controller {
     byte[] reestr1pechatdocx(
             @RequestParam(value = "date1", defaultValue = "") String dat1,
             @RequestParam(value = "date2", defaultValue = "") String dat2,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             HttpServletResponse resp,
             Model model) throws IOException {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "reestr1pechatdocx param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2

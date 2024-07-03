@@ -4,7 +4,7 @@ package ru.pfr.ssh;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
-public class SSHConnection {
+/*public class SSHConnection {
     private final static String S_PATH_FILE_PRIVATE_KEY = "C:\\id_rsa_ped"; //windows absolut path of our ssh private key locally saved
     private final static String S_PATH_FILE_KNOWN_HOSTS = "C:\\known_hosts";
     private final static String S_PASS_PHRASE = "db2admin";
@@ -39,4 +39,4 @@ public class SSHConnection {
         sesion.setPortForwardingL(LOCAl_PORT, MYSQL_REMOTE_SERVER, REMOTE_PORT);
 
     }
-}
+}*/

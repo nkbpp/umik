@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.pfr.configuration.UserPrincipal;
 import ru.pfr.global.DateUtils;
 import ru.pfr.model.umikbd.*;
 import ru.pfr.service.bdumik.LogiService;
@@ -40,9 +41,9 @@ public class PravopriyemnikiController {
 
     @GetMapping
     public String pravopriem(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "pravopriem"));
 
         List<Pravopriem> pravopriems = pravopriemService.findAllTekMounth();
@@ -82,9 +83,9 @@ public class PravopriyemnikiController {
             @RequestParam String id_prihod,
             @RequestParam String cena_sell,
             @RequestParam String sum_mark,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "pravopriemadd param=" +
                 " date = " + date +
                 " kol_d = " + kol_d +
@@ -124,9 +125,9 @@ public class PravopriyemnikiController {
     @GetMapping("/del")
     public String pravopriemdel(
             @RequestParam Long id,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "pravopriemdel param=" +
                 " id = " + id
         ));

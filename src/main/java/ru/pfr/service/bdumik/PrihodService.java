@@ -8,6 +8,7 @@ import ru.pfr.repo.umikbd.PrihodRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PrihodService {
@@ -20,7 +21,8 @@ public class PrihodService {
     }
 
     public List<Prihod> findAll() {
-        return prihodRepository.findAll();
+        return prihodRepository.findAll().stream().sorted((prihod, t1) ->
+                t1.getDate().compareTo(prihod.getDate())).collect(Collectors.toList());
     }
 
     public List<Prihod> findAllTypeD() {

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import ru.pfr.configuration.UserPrincipal;
 import ru.pfr.global.DateUtils;
 import ru.pfr.global.MyNumbers;
 import ru.pfr.model.umikbd.*;
@@ -50,9 +51,9 @@ public class AvansController {
 
     @GetMapping("/avans")
     public String avans(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "avans"));
 
         model.addAttribute("user", user);
@@ -63,9 +64,9 @@ public class AvansController {
     public String avanslink(
             @RequestParam(value = "date1", defaultValue = "") String dat1,
             @RequestParam(value = "date2", defaultValue = "") String dat2,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Ссылка на авансовый отчет avanslink param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2
@@ -90,10 +91,10 @@ public class AvansController {
     byte[] avanspechatdocx(
             @RequestParam(value = "date1", defaultValue = "") String dat1,
             @RequestParam(value = "date2", defaultValue = "") String dat2,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             HttpServletResponse resp,
             Model model) throws IOException {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Печать отчета avanspechatdocx param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2

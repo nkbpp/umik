@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.pfr.configuration.UserPrincipal;
 import ru.pfr.global.DateUtils;
 import ru.pfr.model.umikbd.Logi;
 import ru.pfr.model.umikbd.Prihodmarki;
@@ -30,9 +31,9 @@ public class PrihodMarkiController {
 
     @GetMapping
     public String prihodmarki(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "prihodmarki"));
 
         List<Prihodmarki> prihods = prihodmarkiService.findAll();
@@ -46,9 +47,9 @@ public class PrihodMarkiController {
     public String prihodmarkiadd(
             @RequestParam String price,
             @RequestParam String date,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "prihodmarkiadd param=" +
                 " price = " + price +
                 " date = " + date
@@ -69,9 +70,9 @@ public class PrihodMarkiController {
     @GetMapping("/del")
     public String prihodmarkidel(
             @RequestParam Long id,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "prihodmarkidel param=" +
                 " id = " + id
         ));

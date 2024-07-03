@@ -8,6 +8,7 @@ import ru.pfr.repo.umikbd.PrihodmarkiRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PrihodmarkiService {
@@ -20,7 +21,8 @@ public class PrihodmarkiService {
     }
 
     public List<Prihodmarki> findAll() {
-        return prihodmarkiRepository.findAll();
+        return prihodmarkiRepository.findAll().stream().sorted((prihodmarki, t1) ->
+                t1.getDate().compareTo(prihodmarki.getDate())).collect(Collectors.toList());
     }
 
     public List<Prihodmarki> findAllDat(LocalDateTime d1, LocalDateTime d2) {

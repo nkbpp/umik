@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.pfr.configuration.UserPrincipal;
 import ru.pfr.model.umikbd.Logi;
 import ru.pfr.model.umikbd.Spravkonv;
 import ru.pfr.model.umikbd.User;
@@ -29,9 +30,9 @@ public class SpravochnikKonvertovController {
 
     @GetMapping
     public String spravkonv(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "spravkonv"));
 
         List<Spravkonv> spravkonvs = spravkonvService.findAll();
@@ -44,9 +45,9 @@ public class SpravochnikKonvertovController {
     @GetMapping("/add")
     public String spravkonvadd(
             @RequestParam String typekonv,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "spravkonvadd param=" +
                 " typekonv = " + typekonv
         ));
@@ -76,9 +77,9 @@ public class SpravochnikKonvertovController {
     @GetMapping("/del")
     public String spravkonvdel(
             @RequestParam Long id,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "spravkonvdel param=" +
                 " id = " + id
         ));

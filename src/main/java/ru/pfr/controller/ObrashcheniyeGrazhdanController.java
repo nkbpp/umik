@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.pfr.configuration.UserPrincipal;
 import ru.pfr.global.DateUtils;
 import ru.pfr.model.umikbd.*;
 import ru.pfr.service.bdumik.LogiService;
@@ -39,8 +40,9 @@ public class ObrashcheniyeGrazhdanController {
 
     @GetMapping
     public String obragraj(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
+        User user = userPrincipal.getUser();
         List<Spravkonv> spravkonvs = spravkonvService.findAll();
         model.addAttribute("spravkonvs", spravkonvs);
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "obragraj"));
@@ -65,9 +67,9 @@ public class ObrashcheniyeGrazhdanController {
             @RequestParam String text_fio,
             @RequestParam String addr_list,
             @RequestParam Integer kol_vo,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "obragraj param=" +
                 " reg_pref = " + reg_pref +
                 " reg_number = " + reg_number +
@@ -116,9 +118,9 @@ public class ObrashcheniyeGrazhdanController {
     @GetMapping("/del")
     public String obragrajdel(
             @RequestParam Long id,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "obragrajdel param=" +
                 " id = " + id
         ));

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.pfr.configuration.UserPrincipal;
 import ru.pfr.global.DateUtils;
 import ru.pfr.model.umikbd.Bolgaria;
 import ru.pfr.model.umikbd.Logi;
@@ -35,9 +36,9 @@ public class BolgariaController {
 
     @GetMapping
     public String bolgaria(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "bolgaria"));
 
         List<Spravkonv> spravkonvs = spravkonvService.findAll();
@@ -60,9 +61,9 @@ public class BolgariaController {
             @RequestParam Long type,
             @RequestParam String sum,
             @RequestParam Integer kol_vo,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "bolgariaadd param=" +
                 " reg_number = " + reg_number +
                 " reg_date = " + reg_date +
@@ -109,9 +110,9 @@ public class BolgariaController {
     @GetMapping("/del")
     public String bolgariadel(
             @RequestParam Long id,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "bolgariadel param=" +
                 " id = " + id
         ));

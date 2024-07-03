@@ -1,3 +1,4 @@
+/*
 package ru.pfr.configuration;
 
 import jodd.http.HttpUtil;
@@ -49,10 +50,10 @@ public class AuthProvider implements AuthenticationProvider {
     private AdminparamService adminparamService;
 
     @Autowired
-    LogiService logiService;
+    private LogiService logiService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     private static final Logger logger = LogManager.getLogger(Application.class);
 
@@ -64,43 +65,46 @@ public class AuthProvider implements AuthenticationProvider {
         String username = String.valueOf(auth.getPrincipal());
         String password = String.valueOf(auth.getCredentials());
 
-        logger.info("Формирование параметров для HTTP-запроса для аутентификации");
-        Map<String, String> parameterList = new HashMap<>();
-        parameterList.put("adr", "http://127.0.0.0/Autent");
-        parameterList.put("kod", "161"); // Номер программы
-        parameterList.put("login", username);
-        parameterList.put("pass", password);
-
         logiService.save(new Logi(LocalDateTime.now(), username, "Попытка авторизации по логину " + username + " AuthProvider authenticate()"));
         logger.info("Попытка авторизации по логину " + username + " AuthProvider authenticate()");
 
-        logger.info("Получение ответа от внешнего сервиса и обработка заголовков ответа.");
-        CloseableHttpResponse httpResponse = getHTTPResponse("http://10.41.0.247:322/ACS/AutentAll", parameterList);
-        Header[] headers = httpResponse.getHeaders("Location");
-
-        User logerr = Optional.ofNullable(userService.findByLoginuser(username)).orElseGet(() -> {
+        //ищем если запись об пользователе в бд
+        User userdb = Optional.ofNullable(userService.findByLoginuser(username)).orElseGet(() -> {
+            //если пользователя нет делаем запись в бд
             User newUser = new User(username, rayonService.findByKod("1000").get());
             userService.save(newUser);
             return newUser;
         });
 
         Adminparam adminparam = adminparamService.findByAdminparam();
-        Long datenow = new Date().getTime() + 10800000L; // Избавление от погрешности во времени
+        LocalDateTime datenow = LocalDateTime.now();//new Date().getTime() + 10800000L; // Избавление от погрешности во времени
 
-        if (logerr.getActive() >= adminparam.getKolpopitok() &&
-                logerr.getActive() < adminparam.getBlock() &&
-                (datenow - logerr.getDate().getTime()) <= (600000L + ((adminparam.getKolpopitok() - 2) * adminparam.getKoefpopitok() * 60000L))) {
-            handleFailedAttempt(logerr, username, datenow, "Превышен лимит попыток");
+*/
+/*        if (userdb.getActive() >= adminparam.getKolpopitok() &&
+                userdb.getActive() < adminparam.getBlock() &&
+                (datenow - userdb.getDate().getTime()) <= (600000L + ((adminparam.getKolpopitok() - 2) * adminparam.getKoefpopitok() * 60000L))) {
+            handleFailedAttempt(userdb, username, datenow, "Превышен лимит попыток");
+        }*//*
+
+
+        if (userdb.getActive() >= adminparam.getBlock()) {
+            handleFailedAttempt(userdb, username, datenow, "Пользователь заблокирован");
         }
 
-        if (logerr.getActive() >= adminparam.getBlock()) {
-            handleFailedAttempt(logerr, username, datenow, "Пользователь заблокирован");
-        }
+        logger.info("Формирование параметров для HTTP-запроса для аутентификации");
+        Map<String, String> parameterList = new HashMap<>();
+        parameterList.put("adr", "http://127.0.0.0/Autent");
+        parameterList.put("kod", "161"); // Номер программы
+        parameterList.put("login", username);
+        parameterList.put("pass", password);
+        CloseableHttpResponse httpResponse = getHTTPResponse("http://10.41.0.247:322/ACS/AutentAll", parameterList);
+        logger.info("Получение ответа от внешнего сервиса и обработка заголовков ответа.");
+        Header[] headers = httpResponse.getHeaders("Location");
 
         if (headers.length == 0) {
-            handleFailedAttempt(logerr, username, datenow, "Пароль неверен");
+            handleFailedAttempt(userdb, username, datenow, "Пароль неверен");
         } else {
-            resetFailedAttempts(logerr, datenow);
+            resetFailedAttempts(userdb, datenow);
         }
 
         String response = headers[0].getValue();
@@ -149,34 +153,40 @@ public class AuthProvider implements AuthenticationProvider {
         return type.equals(UsernamePasswordAuthenticationToken.class);
     }
 
-    /**
+    */
+/**
      * Обрабатывают неудачные попытки авторизации
-     */
-    private void handleFailedAttempt(User logerr, String username, Long datenow, String message) {
+     *//*
+
+    private void handleFailedAttempt(User logerr, String username, LocalDateTime datenow, String message) {
         logerr.setActive(logerr.getActive() + 1);
-        logerr.setDate(new Date(datenow));
+        logerr.setDate(datenow);
         userService.save(logerr);
         logiService.save(new Logi(LocalDateTime.now(), username, "Попытка авторизации " + message + " количество попыток " + logerr.getActive() + " AuthProvider authenticate()"));
         logger.info("Попытка авторизации по логину " + username + " " + message + " количество попыток " + logerr.getActive() + " AuthProvider authenticate()");
         throw new BadCredentialsException(message);
     }
 
-    /**
+    */
+/**
      * Сбрасывает счетчик неудачных попыток
-     */
-    private void resetFailedAttempts(User logerr, Long datenow) {
+     *//*
+
+    private void resetFailedAttempts(User logerr, LocalDateTime datenow) {
         logerr.setActive(0L);
-        logerr.setDate(new Date(datenow));
+        logerr.setDate(datenow);
         userService.save(logerr);
     }
 
 
-    /**
+    */
+/**
      * Отправляет HTTP-запрос к внешнему сервису для проверки аутентификационных данных пользователя.
      * @param addr
      * @param parameterList
      * @return
-     */
+     *//*
+
     public CloseableHttpResponse getHTTPResponse(String addr, Map<String, String> parameterList) {
         try {
             BasicCookieStore cookieStore = new BasicCookieStore();
@@ -201,3 +211,4 @@ public class AuthProvider implements AuthenticationProvider {
         }
     }
 }
+*/

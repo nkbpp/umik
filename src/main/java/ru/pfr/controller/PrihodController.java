@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.pfr.configuration.UserPrincipal;
 import ru.pfr.global.DateUtils;
 import ru.pfr.model.umikbd.Logi;
 import ru.pfr.model.umikbd.Prihod;
@@ -35,9 +36,9 @@ public class PrihodController {
 
     @GetMapping
     public String prihod(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "prihod"));
 
         List<Prihod> prihods = prihodService.findAll();
@@ -56,9 +57,9 @@ public class PrihodController {
             @RequestParam String kol_vo,
             @RequestParam Long id_konv,
             @RequestParam String date,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "prihodadd param=" +
                 " prefix = " + prefix +
                 " index = " + index +
@@ -94,9 +95,9 @@ public class PrihodController {
     @GetMapping("/del")
     public String prihoddel(
             @RequestParam Long id,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "prihoddel param=" +
                 " id = " + id
         ));

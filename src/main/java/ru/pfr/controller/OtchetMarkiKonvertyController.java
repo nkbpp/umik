@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import ru.pfr.configuration.UserPrincipal;
 import ru.pfr.global.DateUtils;
 import ru.pfr.global.MyNumbers;
 import ru.pfr.model.umikbd.*;
@@ -57,9 +58,9 @@ public class OtchetMarkiKonvertyController {
 
     @GetMapping
     public String otchmarkandkonv(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "otchmarkandkonv"));
 
         model.addAttribute("user", user);
@@ -70,9 +71,9 @@ public class OtchetMarkiKonvertyController {
     public String otchmarkandkonvform(
             @RequestParam(value = "date1", defaultValue = "") String dat1,
             @RequestParam(value = "date2", defaultValue = "") String dat2,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "otchmarkandkonvform param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2
@@ -147,9 +148,9 @@ public class OtchetMarkiKonvertyController {
             @RequestParam(value = "p110x220", defaultValue = "") String p110x220,
             @RequestParam(value = "reestr1m", defaultValue = "") String reestr1m,
             @RequestParam(value = "reestr2m", defaultValue = "") String reestr2m,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "otchmarkandkonvlink param=" +
                 " date = " + date +
                 " otD = " + otD +
@@ -295,10 +296,10 @@ public class OtchetMarkiKonvertyController {
     byte[] otchmarkandkonvpechatdocx(
             @RequestParam(value = "date1", defaultValue = "") String dat1,
             @RequestParam(value = "date2", defaultValue = "") String dat2,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             HttpServletResponse resp,
             Model model) throws IOException {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "otchmarkandkonvpechatdocx param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2

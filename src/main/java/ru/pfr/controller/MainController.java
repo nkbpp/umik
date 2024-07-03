@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.pfr.Application;
+import ru.pfr.configuration.UserPrincipal;
 import ru.pfr.model.umikbd.Logi;
 import ru.pfr.model.umikbd.User;
 import ru.pfr.service.bdumik.LogiService;
@@ -24,8 +25,9 @@ public class MainController {
 
     @RequestMapping
     public String mains(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(),"Авторизация прошла успешно MainController mains()"));
         logger.info("User = " + user.getLogin() + " Авторизация прошла успешно MainController mains()");
         if (user.getRayon().getKod().equals("000"))

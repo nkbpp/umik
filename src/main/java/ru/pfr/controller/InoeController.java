@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.pfr.configuration.UserPrincipal;
 import ru.pfr.global.DateUtils;
 import ru.pfr.model.umikbd.*;
 import ru.pfr.service.bdumik.InoeService;
@@ -39,9 +40,10 @@ public class InoeController {
 
     @GetMapping
     public String inoe(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
 
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "inoe"));
 
         List<Vidanykonv> vidanykonvs = vidanykonvService.findAll();
@@ -63,9 +65,10 @@ public class InoeController {
             @RequestParam Long typevk,
             @RequestParam Long type,
             @RequestParam Integer kol_vo,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
 
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "inoeadd param=" +
                 " reg_date = " + reg_date +
                 " typevk = " + typevk +
@@ -106,9 +109,9 @@ public class InoeController {
     @GetMapping("/del")
     public String inoedel(
             @RequestParam Long id,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "inoedel param=" +
                 " id = " + id
         ));

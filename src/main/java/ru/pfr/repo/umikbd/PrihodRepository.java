@@ -17,14 +17,14 @@ public interface PrihodRepository extends JpaRepository<Prihod, Long> {
     @Query(
             value = "select id, prefix, indexx, kol_vo, price, id_konv, dat " +
                     "from prihod " +
-                    "where dat BETWEEN ?1 AND ?2",
+                    "where dat BETWEEN ?1 AND ?2 order by dat desc",
             nativeQuery = true)
     List<Prihod> findAllD(LocalDateTime d1, LocalDateTime d2);
 
     @Query(
             value = "select id, prefix, indexx, kol_vo, price, id_konv, dat " +
                     "from prihod " +
-                    "where dat BETWEEN ?1 AND ?2 and id=?3",
+                    "where dat BETWEEN ?1 AND ?2 and id=?3  order by dat desc",
             nativeQuery = true)
     List<Prihod> findbyDatId(LocalDateTime d1, LocalDateTime d2, Long i);
 
@@ -32,14 +32,14 @@ public interface PrihodRepository extends JpaRepository<Prihod, Long> {
     @Query(
             value = "select id, prefix, indexx, kol_vo, price, id_konv, dat " +
                     "from prihod " +
-                    "where id_konv=3",
+                    "where id_konv=3 order by dat desc",
             nativeQuery = true)
     List<Prihod> findAllTypeD();
 
     // Конверт D max
     @Query(
             value = "select id, prefix, indexx, kol_vo, price, id_konv, dat " +
-                    "from prihod where id = (select max(id) from prihod where id_konv=3)",
+                    "from prihod where id = (select max(id) from prihod where id_konv=3)  order by dat desc",
             nativeQuery = true)
     Prihod findTypeDLast();
 }

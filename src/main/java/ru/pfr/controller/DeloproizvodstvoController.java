@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.pfr.configuration.UserPrincipal;
 import ru.pfr.global.DateUtils;
 import ru.pfr.model.umikbd.Logi;
 import ru.pfr.model.umikbd.PEDdeloproizvodstvo;
@@ -38,8 +39,9 @@ public class DeloproizvodstvoController {
 
     @GetMapping
     public String deloproiz(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
+        User user = userPrincipal.getUser();
         List<Spravkonv> spravkonvs = spravkonvService.findAll();
         model.addAttribute("spravkonvs", spravkonvs);
 
@@ -54,9 +56,9 @@ public class DeloproizvodstvoController {
 
     @GetMapping("/ruki")
     public String deloproizfind_ruki(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         try {
             List<Spravkonv> spravkonvs = spravkonvService.findAll();
             model.addAttribute("spravkonvs", spravkonvs);
@@ -79,9 +81,9 @@ public class DeloproizvodstvoController {
             @RequestParam Long type,
             @RequestParam String sum,
             @RequestParam Integer kol_vo,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "deloproizadd param=" +
                 " reg_pref = " + reg_pref +
                 " reg_number = " + reg_number +
@@ -127,9 +129,9 @@ public class DeloproizvodstvoController {
     @GetMapping("/del")
     public String deloproizdel(
             @RequestParam Long id,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "deloproizdel param=" +
                 " id = " + id
         ));

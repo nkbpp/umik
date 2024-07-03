@@ -1,3 +1,4 @@
+/*
 package ru.pfr.ssh;
 
 import org.apache.logging.log4j.LogManager;
@@ -26,9 +27,11 @@ public class MyContextListener implements ServletContextListener {
         super();
     }
 
-    /**
+    */
+/**
      * @see ServletContextListener#contextInitialized(ServletContextEvent)
-     */
+     *//*
+
     public void contextInitialized(ServletContextEvent arg0) {
         logiService.save(new Logi(
                 LocalDateTime.now(),
@@ -52,9 +55,11 @@ public class MyContextListener implements ServletContextListener {
         }
     }
 
-    /**
+    */
+/**
      * @see ServletContextListener#contextDestroyed(ServletContextEvent)
-     */
+     *//*
+
     public void contextDestroyed(ServletContextEvent arg0) {
         logiService.save(new Logi(
                 LocalDateTime.now(),
@@ -65,3 +70,4 @@ public class MyContextListener implements ServletContextListener {
         conexionssh.closeSSH(); // disconnect
     }
 }
+*/

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.pfr.configuration.UserPrincipal;
 import ru.pfr.global.DateUtils;
 import ru.pfr.model.umikbd.Adminparam;
 import ru.pfr.model.umikbd.Logi;
@@ -36,10 +37,10 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String adminstart(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
 
-
+        User user = userPrincipal.getUser();
         model.addAttribute("user", user);
 
         Adminparam adminparam = adminparamService.findByAdminparam();
@@ -57,9 +58,9 @@ public class AdminController {
             @RequestParam Long kolpopitok,
             @RequestParam Long koefpopitok,
             @RequestParam Long block,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         model.addAttribute("user", user);
 
         Adminparam adminparam = new Adminparam(kolpopitok, koefpopitok, block);
@@ -71,9 +72,9 @@ public class AdminController {
     }
 
     @GetMapping("/juraudit")
-    public String juraudit(@AuthenticationPrincipal User user,
+    public String juraudit(@AuthenticationPrincipal UserPrincipal userPrincipal,
                            Model model) {
-
+        User user = userPrincipal.getUser();
         model.addAttribute("user", user);
 
         Iterable<Logi> logi = logiService.findAll();
@@ -88,8 +89,9 @@ public class AdminController {
                         @RequestParam String login,
                         @RequestParam String type,
                         @RequestParam String text,
-                        @AuthenticationPrincipal User user,
+                        @AuthenticationPrincipal UserPrincipal userPrincipal,
                         Model model) {
+        User user = userPrincipal.getUser();
         LocalDateTime date1 = null;
         LocalDateTime date2 = null;
 
@@ -135,9 +137,9 @@ public class AdminController {
     }
 
     @GetMapping("/juraudit/clear")
-    public String clear(@AuthenticationPrincipal User user,
+    public String clear(@AuthenticationPrincipal UserPrincipal userPrincipal,
                         Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.clear();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(),"Очистка журнала"));
         Iterable<Logi> logi = logiService.findAll();
@@ -148,17 +150,18 @@ public class AdminController {
 
 
     @GetMapping("/vihod/logout")
-    public void logout(@AuthenticationPrincipal User user,
+    public void logout(@AuthenticationPrincipal UserPrincipal userPrincipal,
                        Model model) {
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(),"Выход"));
 
     }
 
     @GetMapping("/admin/clear")
     public String admintwoclear(@RequestParam Long id,
-                                @AuthenticationPrincipal User user,
+                                @AuthenticationPrincipal UserPrincipal userPrincipal,
                                 Model model) {
-
+        User user = userPrincipal.getUser();
         User logerr = userService.findById(id);
         logerr.setActive(0l);
         logerr.setDate(LocalDateTime.now());
@@ -175,9 +178,9 @@ public class AdminController {
 
     @GetMapping("/admin/zablock")
     public String admintwozablock(@RequestParam Long id,
-                                  @AuthenticationPrincipal User user,
+                                  @AuthenticationPrincipal UserPrincipal userPrincipal,
                                   Model model) {
-
+        User user = userPrincipal.getUser();
         User logerr = userService.findById(id);
         logerr.setActive(1000l);
         logerr.setDate(LocalDateTime.now());

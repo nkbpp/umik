@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.pfr.configuration.UserPrincipal;
 import ru.pfr.global.DateUtils;
 import ru.pfr.model.umikbd.Logi;
 import ru.pfr.model.umikbd.User;
@@ -25,9 +26,9 @@ public class OpfrController {
 
     @GetMapping()
     public String startupfr(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Главная страница startupfr"));
 
         model.addAttribute("user", user);
@@ -37,9 +38,9 @@ public class OpfrController {
 
     @GetMapping("/avansotch")
     public String avansotch(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Вход в авансовый отчет avansotch"));
 
         model.addAttribute("user", user);
@@ -49,9 +50,9 @@ public class OpfrController {
 
     @GetMapping("/konv")
     public String konv(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "konv"));
 
         model.addAttribute("user", user);
@@ -63,9 +64,9 @@ public class OpfrController {
     public String history(
             @RequestParam(value = "date1", defaultValue = "") String dat1,
             @RequestParam(value = "date2", defaultValue = "") String dat2,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "history param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2

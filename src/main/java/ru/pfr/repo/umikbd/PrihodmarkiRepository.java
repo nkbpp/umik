@@ -17,7 +17,7 @@ public interface PrihodmarkiRepository extends JpaRepository<Prihodmarki, Long> 
     @Query(
             value = "select id, price, dat " +
                     "from prihodmarki " +
-                    "where dat BETWEEN ?1 AND ?2",
+                    "where dat BETWEEN ?1 AND ?2  order by dat desc" ,
             nativeQuery = true)
     List<Prihodmarki> findAllDat(LocalDateTime d1, LocalDateTime d2);
 

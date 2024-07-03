@@ -1,5 +1,5 @@
 server:
-  port: 8094
+  port: 8100
 spring:
   config:
     import: classpath:myconfig.yml
@@ -9,6 +9,8 @@ spring:
       max-request-size: 45MB
   jpa:
     show-sql: true
+    hibernate:
+      ddl-auto: validate
   thymeleaf:
     cache: false
 umikbd:
@@ -17,8 +19,5 @@ umikbd:
       jdbcUrl: ${db.umik.url}
       username: ${db.umik.username}
       password: ${db.umik.password}
-    jpa:
-      generate-ddl: true
-
-
-
+#    jpa:
+#      generate-ddl: true

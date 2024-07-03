@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import ru.pfr.configuration.UserPrincipal;
 import ru.pfr.global.DateUtils;
 import ru.pfr.global.MyNumbers;
 import ru.pfr.model.umikbd.*;
@@ -48,9 +49,9 @@ public class OtchetPoKonvertamController {
     
     @GetMapping
     public String otchpokon(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "otchpokon"));
 
         model.addAttribute("user", user);
@@ -61,9 +62,9 @@ public class OtchetPoKonvertamController {
     public String otchpokonform(
             @RequestParam(value = "date1", defaultValue = "") String dat1,
             @RequestParam(value = "date2", defaultValue = "") String dat2,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "otchpokonform param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2
@@ -197,9 +198,9 @@ public class OtchetPoKonvertamController {
 
             @RequestParam(value = "ot110x220clear", defaultValue = "") String ot110x220clear,
             @RequestParam(value = "p110x220clear", defaultValue = "") String p110x220clear,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "otchpokonlink param=" +
                 " date = " + date +
                 " ota4 = " + ota4 +
@@ -441,10 +442,10 @@ public class OtchetPoKonvertamController {
     byte[] otchpokonpechatdocx(
             @RequestParam(value = "date1", defaultValue = "") String dat1,
             @RequestParam(value = "date2", defaultValue = "") String dat2,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             HttpServletResponse resp
     ) throws IOException {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "otchpokonpechatdocx param=" +
                 " date1 = " + dat1 +
                 " date2 = " + dat2

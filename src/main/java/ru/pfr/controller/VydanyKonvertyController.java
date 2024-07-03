@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.pfr.configuration.UserPrincipal;
 import ru.pfr.model.umikbd.Logi;
 import ru.pfr.model.umikbd.User;
 import ru.pfr.model.umikbd.Vidanykonv;
@@ -29,9 +30,9 @@ public class VydanyKonvertyController {
 
     @GetMapping
     public String vidanykonv(
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "vidanykonv"));
 
         List<Vidanykonv> vidanykonvs = vidanykonvService.findAll();
@@ -44,9 +45,9 @@ public class VydanyKonvertyController {
     @GetMapping("/add")
     public String vidanykonvadd(
             @RequestParam String vidanykonv,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "vidanykonvadd param=" +
                 " vidanykonv = " + vidanykonv
         ));
@@ -76,9 +77,9 @@ public class VydanyKonvertyController {
     @GetMapping("/del")
     public String vidanykonvdel(
             @RequestParam Long id,
-            @AuthenticationPrincipal User user,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
-
+        User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "vidanykonvdel param=" +
                 " id = " + id
         ));
