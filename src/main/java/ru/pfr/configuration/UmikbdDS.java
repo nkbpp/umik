@@ -23,6 +23,7 @@ import javax.sql.DataSource;
         basePackages = "ru.pfr.repo.umikbd"
 )
 public class UmikbdDS {
+
     @Primary
     @Bean(name = "umikbdDataSource")
     @ConfigurationProperties(prefix = "umikbd.spring.datasource")
@@ -32,24 +33,21 @@ public class UmikbdDS {
 
     @Primary
     @Bean(name = "umikbdEntityManager")
-    public LocalContainerEntityManagerFactoryBean
-    umikbdEntityManagerFactory(
+    public LocalContainerEntityManagerFactoryBean umikbdEntityManagerFactory(
             EntityManagerFactoryBuilder builder,
             @Qualifier("umikbdDataSource") DataSource dataSource
     ) {
-        return
-                builder
-                        .dataSource(dataSource)
-                        .packages("ru.pfr.model.umikbd")//
-                        .persistenceUnit("umikbd")//
-                        .build();//
+        return builder
+                .dataSource(dataSource)
+                .packages("ru.pfr.model.umikbd")//
+                .persistenceUnit("umikbd")//
+                .build();//
     }
 
     @Primary
     @Bean(name = "transactionManager")
     public PlatformTransactionManager umikbdTransactionManager(
-            @Qualifier("umikbdEntityManager") EntityManagerFactory
-                    umikbdEntityManagerFactory
+            @Qualifier("umikbdEntityManager") EntityManagerFactory umikbdEntityManagerFactory
     ) {
         return new JpaTransactionManager(umikbdEntityManagerFactory);
     }

@@ -1,6 +1,5 @@
 server:
-  port: 8100
-#  port: 8094
+  port: 8094
 spring:
   config:
     import: classpath:myconfig.yml
@@ -20,14 +19,3 @@ umikbd:
       jdbcUrl: ${db.umik.url}
       username: ${db.umik.username}
       password: ${db.umik.password}
-#rsdocpfr:
-#  spring:
-#    datasource:
-#      initialization-mode: ${db.rsdocpfr.initialization-mode}
-#      platform: ${db.rsdocpfr.platform}
-#      jdbcUrl: ${db.rsdocpfr.jdbcUrl}
-#      username: ${db.rsdocpfr.username}
-#      password: ${db.rsdocpfr.password}
-
-#    jpa:
-#      generate-ddl: true
