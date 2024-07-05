@@ -93,7 +93,7 @@ public class OtchetPoKonvertamController {
         List<Reestr1Viev> reestr1s = reestr1VievService.findAllD(date1, date2);
         model.addAttribute("reestr1s", reestr1s);
         //здесь суммы конвертов за месяц
-        Reestr1Viev reestr1i = reestr1VievService.findAllI(date1, date2);
+        Reestr1Itog reestr1i = reestr1VievService.findAllI(reestr1s);
         model.addAttribute("reestr1i", reestr1i);//итого
 
         List<Otchraschodkonv> otchraschodkonv = otchraschodkonvService.findAllD(date1minusMonths, date2minusMonths);

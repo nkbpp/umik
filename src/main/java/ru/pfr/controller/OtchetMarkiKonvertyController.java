@@ -87,7 +87,7 @@ public class OtchetMarkiKonvertyController {
         LocalDateTime date2minusMonths = date1minusMonths.plusMonths(1).minusSeconds(1);
 
         //здесь суммы конвертов за месяц 110x120
-        Reestr1Viev reestr1i = reestr1VievService.findAllI(date1, date2);
+        Reestr1Itog reestr1i = reestr1VievService.findAllI(reestr1VievService.findAllD(date1, date2));
         model.addAttribute("reestr1i", reestr1i);
 
         List<Pravopriem> pravopriems = pravopriemService.findAllD(date1, date2);

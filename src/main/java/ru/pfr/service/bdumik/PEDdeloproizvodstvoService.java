@@ -28,8 +28,8 @@ public class PEDdeloproizvodstvoService {
         return peDdeloproizvodstvos.isEmpty() || peDdeloproizvodstvos.size() > 0 ? peDdeloproizvodstvoRepository.findByName(name).get(0).getId_name() : null;
     }
 
-    public List<PEDdeloproizvodstvo> findAllDate(LocalDateTime d1, LocalDateTime d2) {
-        return peDdeloproizvodstvoRepository.findAllDate(d1, d2);
+    public List<PEDdeloproizvodstvo> findAllByRegDateBetween(LocalDateTime d1, LocalDateTime d2) {
+        return peDdeloproizvodstvoRepository.findAllByRegDateBetween(d1, d2);
     }
 
     public List<PEDdeloproizvodstvo> findAllTekMounth() {

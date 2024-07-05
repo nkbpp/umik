@@ -81,8 +81,8 @@
             <td class='table-active raspr'
                 th:if="${iter.count==1}"
                 th:rowspan="${otchmarkandkonv110x120.size() + prihods5.size()}"
-                th:name="${reestr1i.id_konv5}"
-                th:text="${reestr1i.id_konv5}"></td>
+                th:name="${reestr1i.konv5}"
+                th:text="${reestr1i.konv5}"></td>
             <td class="text-end">
                 <input  class="form-control"
                         type="number"
@@ -236,7 +236,7 @@
                             <div class="col s1" th:text="${o.ostatok}">
                             </div>
                             <div class="col s3">
-                                <input type="text" value="0" name="reestr1" th:value="${reestr1i.id_konv5}">
+                                <input type="text" value="0" name="reestr1" th:value="${reestr1i.konv5}">
                             </div>
                         </div>
                     </div>
@@ -248,7 +248,7 @@
                             <div class="col s1" th:text="${p.kol_vo}">
                             </div>
                             <div class="col s3">
-                                <input type="text" value="0" name="reestr1" th:value="${reestr1i.id_konv5}">
+                                <input type="text" value="0" name="reestr1" th:value="${reestr1i.konv5}">
                             </div>
                         </div>
                     </div>

@@ -20,7 +20,7 @@ public interface PEDobragrajRepository extends JpaRepository<PEDobragraj, Long> 
                     "from pedobragraj " +
                     "where reg_date BETWEEN ?1 AND ?2",
             nativeQuery = true)
-    List<PEDobragraj> findAllDate(LocalDateTime d1, LocalDateTime d2);
+    List<PEDobragraj> findAllByRegDateBetween(LocalDateTime d1, LocalDateTime d2);
 
     @Query(
             value = "select * " +

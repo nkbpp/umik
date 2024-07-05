@@ -43,4 +43,7 @@ public class InoeService {
         inoeRepository.deleteById(id);
     }
 
+    public List<Inoe> findAllByRegDateBetween(LocalDateTime d1, LocalDateTime d2) {
+        return inoeRepository.findAllByRegDateBetween(d1, d2);
+    }
 }

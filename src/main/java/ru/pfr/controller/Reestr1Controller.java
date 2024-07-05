@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.pfr.configuration.UserPrincipal;
 import ru.pfr.global.DateUtils;
-import ru.pfr.model.umikbd.Logi;
-import ru.pfr.model.umikbd.Reestr1Viev;
-import ru.pfr.model.umikbd.Shablon;
-import ru.pfr.model.umikbd.User;
+import ru.pfr.model.umikbd.*;
 import ru.pfr.service.bdumik.LogiService;
 import ru.pfr.service.bdumik.Reestr1VievService;
 import ru.pfr.service.bdumik.ShablonService;
@@ -29,6 +26,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static ru.pfr.global.MyNumbers.okrug;
 
 @Controller
 @RequestMapping("/umik/main/reestr1")
@@ -73,7 +73,7 @@ public class Reestr1Controller {
         List<Reestr1Viev> reestr1s = reestr1VievService.findAllD(date1, date2);
         model.addAttribute("reestr1s", reestr1s);
 
-        Reestr1Viev reestr1i = reestr1VievService.findAllI(date1, date2);
+        Reestr1Itog reestr1i = reestr1VievService.findAllI(reestr1s);
 
         model.addAttribute("reestr1i", reestr1i);
 
@@ -199,14 +199,14 @@ public class Reestr1Controller {
                             //
 
                             default:
-                                st = reestr1Viev.getSum();
+                                st = okrug(reestr1Viev.getSum());
                                 break;
                         }
                         run.setText(st);
                         tableRowTwo.getCell(i).setParagraph(paragraph);
                     }
                 } catch (Exception e) {
-                    System.out.println(e);
+                    System.out.println(e.getMessage());
                 }
 
 
@@ -221,7 +221,7 @@ public class Reestr1Controller {
                 tableRowTwo.getCell(i).setParagraph(paragraph);
             }
 
-            Reestr1Viev reestr1i = reestr1VievService.findAllI(date1, date2);
+            Reestr1Itog reestr1i = reestr1VievService.findAllI(reestr1s);
 
             for (int i = 3; i < 11; i++) { // i < 9
                 paragraph = document.createParagraph();
@@ -235,29 +235,43 @@ public class Reestr1Controller {
                         st = "ИТОГО по РЕЕСТРУ";
                         break;
                     case 4:
-                        st = String.valueOf(reestr1i.getId_konv1());
+                        st = String.valueOf(
+                                reestr1i.getKonv1()
+                        );
                         break;
                     case 5:
-                        st = String.valueOf(reestr1i.getId_konv4());
+                        st = String.valueOf(
+                                reestr1i.getKonv4()
+                        );
                         break;
                     case 6:
-                        st = String.valueOf(reestr1i.getId_konv5());
+                        st = String.valueOf(
+                                reestr1i.getKonv5()
+                        );
                         break;
                     case 7:
-                        st = String.valueOf(reestr1i.getId_konv6());
+                        st = String.valueOf(
+                                reestr1i.getKonv6()
+                        );
                         break;
-
-                    //
                     case 8:
-                        st = String.valueOf(reestr1i.getId_konv11());
+                        st = String.valueOf(
+                                reestr1i.getKonv11()
+                        );
                         break;
                     case 9:
-                        st = String.valueOf(reestr1i.getId_konv14());
+                        st = String.valueOf(
+                                reestr1i.getKonv14()
+                        );
                         break;
-                    //
 
                     default:
-                        st = String.valueOf(reestr1i.getSum());
+                        st = okrug(
+                                reestr1s.stream()
+                                        .map(Reestr1Viev::getSum)
+                                        .mapToDouble(s -> s)
+                                        .sum()
+                        );
                         break;
                 }
                 run.setText(st);

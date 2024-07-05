@@ -8,6 +8,7 @@ import ru.pfr.repo.umikbd.BolgariaRepository;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,4 +66,7 @@ public class BolgariaService {
         bolgariaRepository.deleteById(id);
     }
 
+    public List<Bolgaria> findAllByRegDateBetween(LocalDateTime d1, LocalDateTime d2) {
+        return bolgariaRepository.findAllByRegDateBetween(d1, d2);
+    }
 }

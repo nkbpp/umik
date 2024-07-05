@@ -23,8 +23,8 @@ public class PEDobragrajService {
         return peDobragrajRepository.findAll();
     }
 
-    public List<PEDobragraj> findAllDate(LocalDateTime d1, LocalDateTime d2) {
-        return peDobragrajRepository.findAllDate(d1, d2);
+    public List<PEDobragraj> findAllByRegDateBetween(LocalDateTime d1, LocalDateTime d2) {
+        return peDobragrajRepository.findAllByRegDateBetween(d1, d2);
     }
 
     public List<PEDobragraj> findAllTekMounth() {

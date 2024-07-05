@@ -2,90 +2,84 @@ package ru.pfr.model.umikbd;
 
 import ru.pfr.global.DateUtils;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
-@Entity
-@Table(name = "reestr1")
+import static ru.pfr.global.MyNumbers.okrug;
+
+
 public class Reestr1Viev {
 
-    @Id
-    @Column(name = "id")
-    private Long id;
+    private UUID id;
 
-    @Column(name = "reg_date")
     private LocalDateTime reg_date;
 
-    @Column(name = "reg_number")
     private String reg_number;
 
-    @Column(name = "text_org")
     private String text_org;
 
-    @Column(name = "text_fio")
     private String text_fio;
 
-    public String getAddr() {
-        String s;
-        if (text_org.equals("") || text_org == null)
-            s = text_fio;
-        else s = text_org;
-        return s;
-    }
-
-    @Column(name = "name")
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_konv")
     private Spravkonv spravkonv;
 
-    @Column(name = "id_konv1")
-    private Integer id_konv1;
+    private Double sum;
 
-    @Column(name = "id_konv4")
-    private Integer id_konv4;
-
-    @Column(name = "id_konv5")
-    private Integer id_konv5;
-
-    @Column(name = "id_konv6")
-    private Integer id_konv6;
-
-    @Column(name = "id_konv7")
-    private Integer id_konv7;
-
-    @Column(name = "id_konv22")
-    private Integer id_konv22;
-
-    @Column(name = "id_konv11")
-    private Integer id_konv11;
-
-    @Column(name = "id_konv14")
-    private Integer id_konv14;
-
-    @Column(name = "sum")
-    private String sum;
-
-    @Column(name = "kol_vo")
     private Integer kol_vo;
 
-    public Float getsumob() {
-        return this.kol_vo * Float.valueOf(this.sum);
+    public Reestr1Viev(Bolgaria bolgaria) {
+        this.id = UUID.randomUUID();
+        this.reg_date = bolgaria.getReg_date();
+        this.reg_number = bolgaria.getReg_number();
+        this.text_org = bolgaria.getText_org();
+        ;
+        this.text_fio = "";
+        this.name = bolgaria.getName();
+        this.spravkonv = bolgaria.getSpravkonv();
+        this.sum = bolgaria.getSum();
+        this.kol_vo = bolgaria.getKol_vo();
     }
 
-    public String getReg_datestr() {
-        return DateUtils.formatToString(reg_date);
+    public Reestr1Viev(PEDdeloproizvodstvo peDdeloproizvodstvo) {
+        this.id = UUID.randomUUID();
+        this.reg_date = peDdeloproizvodstvo.getReg_date();
+        this.reg_number = peDdeloproizvodstvo.getReg_number();
+        this.text_org = peDdeloproizvodstvo.getText_org();
+        this.text_fio = "";
+        this.name = peDdeloproizvodstvo.getName();
+        this.spravkonv = peDdeloproizvodstvo.getSpravkonv();
+        this.sum = peDdeloproizvodstvo.getSum();
+        this.kol_vo = peDdeloproizvodstvo.getKol_vo();
     }
 
-    public Reestr1Viev() {
+    public Reestr1Viev(PEDobragraj peDobragraj) {
+        this.id = UUID.randomUUID();
+        this.reg_date = peDobragraj.getReg_date();
+        this.reg_number = peDobragraj.getReg_number();
+        this.text_org = peDobragraj.getText_org();
+        this.text_fio = peDobragraj.getText_fio();
+        this.name = peDobragraj.getName();
+        this.spravkonv = peDobragraj.getSpravkonv();
+        this.sum = peDobragraj.getSum();
+        this.kol_vo = peDobragraj.getKol_vo();
     }
 
-    public Reestr1Viev(Long id, LocalDateTime reg_date, String reg_number, String text_org,
-                       String text_fio, String name, Spravkonv spravkonv, Integer id_konv1,
-                       Integer id_konv4, Integer id_konv5, Integer id_konv6, Integer id_konv7,
-                       Integer id_konv22, Integer id_konv11, Integer id_konv14,
-                       String sum, Integer kol_vo) {
+    public Reestr1Viev(Inoe inoe) {
+        this.id = UUID.randomUUID();
+        this.reg_date = inoe.getReg_date();
+        this.reg_number = "";
+        this.text_org = inoe.getVidanykonv().getAdres();
+        this.text_fio = "";
+        this.name = "";
+        this.spravkonv = inoe.getSpravkonv();
+        this.sum = .0;
+        this.kol_vo = inoe.getKol_vo();
+    }
+
+    public Reestr1Viev(UUID id, LocalDateTime reg_date, String reg_number, String text_org,
+                       String text_fio, String name, Spravkonv spravkonv,
+                       Double sum, Integer kol_vo) {
         this.id = id;
         this.reg_date = reg_date;
         this.reg_number = reg_number;
@@ -93,16 +87,24 @@ public class Reestr1Viev {
         this.text_fio = text_fio;
         this.name = name;
         this.spravkonv = spravkonv;
-        this.id_konv1 = id_konv1;
-        this.id_konv4 = id_konv4;
-        this.id_konv5 = id_konv5;
-        this.id_konv6 = id_konv6;
-        this.id_konv7 = id_konv7;
-        this.id_konv22 = id_konv22;
-        this.id_konv11 = id_konv11;
-        this.id_konv14 = id_konv14;
         this.sum = sum;
         this.kol_vo = kol_vo;
+    }
+
+    public String getAddr() {
+        String s;
+        if (text_org.isEmpty() || text_org == null)
+            s = text_fio;
+        else s = text_org;
+        return s;
+    }
+
+    public Double getsumob() {
+        return this.kol_vo * this.sum;
+    }
+
+    public String getReg_datestr() {
+        return DateUtils.formatToString(reg_date);
     }
 
     public String getText_fio() {
@@ -114,50 +116,43 @@ public class Reestr1Viev {
     }
 
     public Integer getId_konv1() {
-        return id_konv1;
+        return spravkonv.getId().equals(1L) ? kol_vo : 0;
     }
 
-    public void setId_konv1(Integer id_konv1) {
-        this.id_konv1 = id_konv1;
-    }
 
     public Integer getId_konv4() {
-        return id_konv4;
-    }
-
-    public void setId_konv4(Integer id_konv4) {
-        this.id_konv4 = id_konv4;
+        return spravkonv.getId().equals(4L) ? kol_vo : 0;
     }
 
     public Integer getId_konv5() {
-        return id_konv5;
-    }
-
-    public void setId_konv5(Integer id_konv5) {
-        this.id_konv5 = id_konv5;
+        return spravkonv.getId().equals(5L) ? kol_vo : 0;
     }
 
     public Integer getId_konv6() {
-        return id_konv6;
-    }
-
-    public void setId_konv6(Integer id_konv6) {
-        this.id_konv6 = id_konv6;
+        return spravkonv.getId().equals(6L) ? kol_vo : 0;
     }
 
     public Integer getId_konv7() {
-        return id_konv7;
+        return spravkonv.getId().equals(7L) ? kol_vo : 0;
     }
 
-    public void setId_konv7(Integer id_konv7) {
-        this.id_konv7 = id_konv7;
+    public Integer getId_konv22() {
+        return spravkonv.getId().equals(22L) ? kol_vo : 0;
     }
 
-    public Long getId() {
+    public Integer getId_konv11() {
+        return spravkonv.getId().equals(11L) ? kol_vo : 0;
+    }
+
+    public Integer getId_konv14() {
+        return spravkonv.getId().equals(14L) ? kol_vo : 0;
+    }
+
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -201,11 +196,11 @@ public class Reestr1Viev {
         this.spravkonv = spravkonv;
     }
 
-    public String getSum() {
+    public Double getSum() {
         return sum;
     }
 
-    public void setSum(String sum) {
+    public void setSum(Double sum) {
         this.sum = sum;
     }
 
@@ -217,28 +212,4 @@ public class Reestr1Viev {
         this.kol_vo = kol_vo;
     }
 
-    public Integer getId_konv22() {
-        return id_konv22;
-    }
-
-    public void setId_konv22(Integer id_konv22) {
-        this.id_konv22 = id_konv22;
-    }
-
-
-    public Integer getId_konv11() {
-        return id_konv11;
-    }
-
-    public void setId_konv11(Integer id_konv7) {
-        this.id_konv11 = id_konv11;
-    }
-
-    public Integer getId_konv14() {
-        return id_konv14;
-    }
-
-    public void setId_konv14(Integer id_konv14) {
-        this.id_konv14 = id_konv14;
-    }
 }

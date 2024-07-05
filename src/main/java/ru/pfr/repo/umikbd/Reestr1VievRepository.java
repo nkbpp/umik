@@ -1,3 +1,4 @@
+/*
 package ru.pfr.repo.umikbd;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,3 +35,4 @@ public interface Reestr1VievRepository extends JpaRepository<Reestr1Viev, Long> 
 
 
 }
+*/

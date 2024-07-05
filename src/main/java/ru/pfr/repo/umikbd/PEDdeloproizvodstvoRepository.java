@@ -21,7 +21,7 @@ public interface PEDdeloproizvodstvoRepository extends JpaRepository<PEDdeloproi
                     "from peddeloproizvodstvo " +
                     "where reg_date BETWEEN ?1 AND ?2",
             nativeQuery = true)
-    List<PEDdeloproizvodstvo> findAllDate(LocalDateTime d1, LocalDateTime d2);
+    List<PEDdeloproizvodstvo> findAllByRegDateBetween(LocalDateTime d1, LocalDateTime d2);
 
     @Query(
             value = "select * " +

@@ -23,10 +23,10 @@
                 <tr th:each="o, iter : ${otchraschodkonv1}" th:name="'ot-' + ${o.id}">
                     <td th:text="'Реестр 1 ' + ${o.prihod.getFullName()}"></td>
                     <td class='table-active raspr'
-                        th:name="${reestr1i.id_konv1}"
+                        th:name="${reestr1i.konv1}"
                         th:if="${iter.count==1}"
                         th:rowspan="${otchraschodkonv1.size() + prihods1.size()}"
-                        th:text="${reestr1i.id_konv1}"></td>
+                        th:text="${reestr1i.konv1}"></td>
                     <td class="text-end">
                         <input  class="form-control"
                                 type="number"
@@ -81,10 +81,10 @@
                 <tr th:each="o, iter : ${otchraschodkonv4}" th:name="'ot-' + ${o.id}"><!--each name-->
                     <td th:text="'Реестр 1 ' + ${o.prihod.getFullName()}"></td>
                     <td class='table-active raspr'
-                        th:name="${reestr1i.id_konv4}"
+                        th:name="${reestr1i.konv4}"
                         th:if="${iter.count==1}"
                         th:rowspan="${otchraschodkonv4.size() + prihods4.size()}"
-                        th:text="${reestr1i.id_konv4}"></td>
+                        th:text="${reestr1i.konv4}"></td>
                     <td class="text-end">
                         <input  class="form-control"
                                 type="number"
@@ -139,10 +139,10 @@
                 <tr th:each="o, iter : ${otchraschodkonv6}" th:name="'ot-' + ${o.id}">
                     <td th:text="'Реестр 1 ' + ${o.prihod.getFullName()}"></td>
                     <td class='table-active raspr'
-                        th:name="${reestr1i.id_konv6}"
+                        th:name="${reestr1i.konv6}"
                         th:if="${iter.count==1}"
                         th:rowspan="${otchraschodkonv6.size() + prihods6.size()}"
-                        th:text="${reestr1i.id_konv6}"></td>
+                        th:text="${reestr1i.konv6}"></td>
                     <td class="text-end">
                         <input  class="form-control"
                                 type="number"
@@ -197,10 +197,10 @@
                 <tr th:each="o, iter : ${otchraschodkonv7}" th:name="'ot-' + ${o.id}"><!--each name-->
                     <td th:text="'Реестр 1 ' + ${o.prihod.getFullName()}"></td>
                     <td class='table-active raspr'
-                        th:name="${reestr1i.id_konv7}"
+                        th:name="${reestr1i.konv7}"
                         th:if="${iter.count==1}"
                         th:rowspan="${otchraschodkonv7.size() + prihods7.size()}"
-                        th:text="${reestr1i.id_konv7}"></td>
+                        th:text="${reestr1i.konv7}"></td>
                     <td class="text-end">
                         <input  class="form-control"
                                 type="number"
@@ -255,10 +255,10 @@
                 <tr th:each="o, iter : ${otchraschodkonv22}" th:name="'ot-' + ${o.id}"><!--each name-->
                     <td th:text="'Реестр 1 ' + ${o.prihod.getFullName()}"></td>
                     <td class='table-active raspr'
-                        th:name="${reestr1i.id_konv22}"
+                        th:name="${reestr1i.konv22}"
                         th:if="${iter.count==1}"
                         th:rowspan="${otchraschodkonv22.size() + prihods22.size()}"
-                        th:text="${reestr1i.id_konv22}"></td>
+                        th:text="${reestr1i.konv22}"></td>
                     <td class="text-end">
                         <input  class="form-control"
                                 type="number"
