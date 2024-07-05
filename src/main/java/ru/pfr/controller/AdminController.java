@@ -47,8 +47,8 @@ public class AdminController {
         Adminparam adminparam = adminparamService.findByAdminparam();
         model.addAttribute("adminparam", adminparam);
 
-        List<User> logerrs = userService.findAll();
-        model.addAttribute("logerrs", logerrs);
+        List<User> users = userService.findAll();
+        model.addAttribute("users", users);
 
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Страница администратора"));
         return "admin";
@@ -81,8 +81,8 @@ public class AdminController {
         User user = userPrincipal.getUser();
         model.addAttribute("user", user);
 
-        Iterable<Logi> logi = logiService.findAll();
-        model.addAttribute("logi", logi);
+        List<Logi> logs = logiService.findAll();
+        model.addAttribute("logi", logs);
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Вход в журнал"));
         return "juraudit";
     }
@@ -150,18 +150,16 @@ public class AdminController {
         User user = userPrincipal.getUser();
         logiService.clear();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Очистка журнала"));
-        Iterable<Logi> logi = logiService.findAll();
+        List<Logi> logi = logiService.findAll();
         model.addAttribute("logi", logi);
 
         return "fragmentadmin/adminfragment :: tables";
     }
 
-
     @GetMapping("/vihod/logout")
     public void logout(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Выход"));
-
     }
 
     @GetMapping("/admin/clear")
@@ -171,15 +169,15 @@ public class AdminController {
             Model model
     ) {
         User user = userPrincipal.getUser();
-        User logerr = userService.findById(id);
-        logerr.setActive(0L);
-        logerr.setDate(LocalDateTime.now());
-        userService.save(logerr);
+        User targetUser = userService.findById(id);
+        targetUser.setActive(0L);
+        targetUser.setDate(LocalDateTime.now());
+        userService.save(targetUser);
 
-        List<User> logerrs = userService.findAll();
-        model.addAttribute("logerrs", logerrs);
+        List<User> users = userService.findAll();
+        model.addAttribute("users", users);
 
-        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Снять блокировку пользователя " + logerr.getLogin()));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Снять блокировку пользователя " + targetUser.getLogin()));
 
         return "fragmentadmin/adminfragment :: blocks";
     }
@@ -197,8 +195,8 @@ public class AdminController {
         logerr.setDate(LocalDateTime.now());
         userService.save(logerr);
 
-        List<User> logerrs = userService.findAll();
-        model.addAttribute("logerrs", logerrs);
+        List<User> users = userService.findAll();
+        model.addAttribute("users", users);
 
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Заблокировать пользователя " + logerr.getLogin()));
 

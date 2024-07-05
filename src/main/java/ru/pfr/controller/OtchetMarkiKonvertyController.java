@@ -160,8 +160,6 @@ public class OtchetMarkiKonvertyController {
                 " reestr2m = " + reestr2m
         ));
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
         LocalDateTime date1 = DateUtils.parseIsoToDate(date);
 
         LocalDateTime date1Begin = date1.withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
@@ -268,8 +266,8 @@ public class OtchetMarkiKonvertyController {
             @RequestParam(value = "date1", defaultValue = "") String dat1,
             @RequestParam(value = "date2", defaultValue = "") String dat2,
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            HttpServletResponse resp,
-            Model model) throws IOException {
+            HttpServletResponse resp
+    ) throws IOException {
         User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "otchmarkandkonvpechatdocx param=" +
                 " date1 = " + dat1 +
@@ -319,7 +317,6 @@ public class OtchetMarkiKonvertyController {
             XWPFParagraph paragraph;
             XWPFRun run;
 
-            int ras = 0;
             double s1 = 0;
             double s2 = 0;
             double s3 = 0;
@@ -380,7 +377,6 @@ public class OtchetMarkiKonvertyController {
                         case 6:
                             if (otchmarkandkonv.getReestr1() != 0) {
                                 st = String.valueOf(otchmarkandkonv.getReestr1());
-                                ras += otchmarkandkonv.getReestr1();
                             } else
                                 st = "";
                             break;
@@ -395,11 +391,9 @@ public class OtchetMarkiKonvertyController {
                             st = String.valueOf(bilo - otchmarkandkonv.getReestr1());
                             break;
                         default:
-
                             st = MyNumbers.okrug(
                                     (bilo - otchmarkandkonv.getReestr1()) * otchmarkandkonv.getPrihod().getPrice());
                             s4 += (bilo - otchmarkandkonv.getReestr1()) * otchmarkandkonv.getPrihod().getPrice();
-
                             break;
                     }
 
@@ -441,7 +435,6 @@ public class OtchetMarkiKonvertyController {
                     }
                 }
             }
-
 
             //Замутить марки!!!!!!!!!!!!
             Otchmark otchmark = otchmarkService.findAllD(date1, date2).get(0);

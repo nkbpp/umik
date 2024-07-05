@@ -42,7 +42,8 @@ public class PravopriyemnikiController {
     @GetMapping
     public String pravopriem(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            Model model) {
+            Model model
+    ) {
         User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "pravopriem"));
 
@@ -82,7 +83,8 @@ public class PravopriyemnikiController {
             @RequestParam String cena_sell,
             @RequestParam String sum_mark,
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            Model model) {
+            Model model
+    ) {
         User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "pravopriemadd param=" +
                 " date = " + date +
@@ -124,7 +126,8 @@ public class PravopriyemnikiController {
     public String pravopriemdel(
             @RequestParam Long id,
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            Model model) {
+            Model model
+    ) {
         User user = userPrincipal.getUser();
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "pravopriemdel param=" +
                 " id = " + id

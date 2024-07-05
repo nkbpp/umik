@@ -26,7 +26,7 @@
     </table>
 </div>
 
-<div id="aaa" th:fragment="blocks(logerrs)">
+<div id="aaa" th:fragment="blocks(users)">
     <table id="block">
         <thead>
         <tr>
@@ -38,7 +38,7 @@
             <td align="center">Заблокировать</td>
         </tr>
         </thead>
-        <tr th:each="l : ${logerrs}">
+        <tr th:each="l : ${users}">
             <td th:text="${l.id}">
             </td>
             <td th:text="${l.login}">
