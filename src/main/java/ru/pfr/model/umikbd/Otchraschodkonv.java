@@ -1,10 +1,14 @@
 package ru.pfr.model.umikbd;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.pfr.global.DateUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "otchraschodkonv")
 public class Otchraschodkonv {
@@ -27,9 +31,6 @@ public class Otchraschodkonv {
     @Column(name = "reestr1")
     private Integer reestr1;
 
-/*    @Column(name = "reestr2")
-    private Integer reestr2;*/
-
     public Integer getRashod(){
         return this.reestr1;    }
 
@@ -47,44 +48,5 @@ public class Otchraschodkonv {
         this.ostatok = ostatok;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Prihod getPrihod() {
-        return prihod;
-    }
-
-    public void setPrihod(Prihod prihod) {
-        this.prihod = prihod;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public Integer getReestr1() {
-        return reestr1;
-    }
-
-    public void setReestr1(Integer reestr1) {
-        this.reestr1 = reestr1;
-    }
-
-
-    public Integer getOstatok() {
-        return ostatok;
-    }
-
-    public void setOstatok(Integer ostatok) {
-        this.ostatok = ostatok;
-    }
 }

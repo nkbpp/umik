@@ -1,10 +1,14 @@
 package ru.pfr.model.umikbd;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.pfr.global.DateUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "prihodmarki")
 public class Prihodmarki {
@@ -31,27 +35,4 @@ public class Prihodmarki {
         this.date = date;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
 }

@@ -12,9 +12,6 @@ import java.util.stream.Collectors;
 @Service
 public class Reestr1VievService {
 
-    //@Autowired
-    //private Reestr1VievRepository reestr1VievRepository;
-
     @Autowired
     private PEDdeloproizvodstvoService peDdeloproizvodstvoService;
 
@@ -98,26 +95,6 @@ public class Reestr1VievService {
         return findAllByRegDateBetween(d1, d2);
     }
 
-    /**
-     * Найти первую запись в заданном диапазоне дат.
-     *
-     * @param d1 Начальная дата.
-     * @param d2 Конечная дата.
-     * @return Первая запись в диапазоне дат.
-     */
-/*    public Reestr1Viev findAllI(LocalDateTime d1, LocalDateTime d2) {
-
-        if (d1 == null || d2 == null) {
-            throw new IllegalArgumentException("Дата не может быть null");
-        }
-
-        List<Reestr1Viev> resultList = reestr1VievRepository.findAllI(d1, d2);
-        if (resultList.isEmpty()) {
-            throw new RuntimeException("Записи не найдены");
-        }
-
-        return resultList.get(0);
-    }*/
     public Reestr1Itog findAllI(List<Reestr1Viev> reestr1s) {
         return new Reestr1Itog(
                 reestr1s.stream()
@@ -150,6 +127,5 @@ public class Reestr1VievService {
                         .sum()
         );
     }
-
 
 }

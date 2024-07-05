@@ -1,8 +1,13 @@
 package ru.pfr.model.umikbd;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "users")
 public class User {
@@ -44,48 +49,9 @@ public class User {
 
     public User(String login, Rayon rayon) {
         this.login = login;
-        this.active = 1l;
+        this.active = 1L;
         this.rayon = rayon;
         this.date = LocalDateTime.now();
     }
 
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public Long getActive() {
-        return active;
-    }
-
-    public void setActive(Long active) {
-        this.active = active;
-    }
-
-    public Rayon getRayon() {
-        return rayon;
-    }
-
-    public void setRayon(Rayon rayon) {
-        this.rayon = rayon;
-    }
 }

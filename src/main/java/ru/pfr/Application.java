@@ -25,17 +25,11 @@ public class Application implements ApplicationRunner {
     }
 
     @Override
-    public void run(ApplicationArguments applicationArguments) throws Exception {
-        /*        logger.debug("Debugging log");*/
+    public void run(ApplicationArguments applicationArguments) {
         logiService.save(new Logi(
                 LocalDateTime.now(),
                 "system",
                 "ПРИЛОЖЕНИЕ ЗАПУЩЕНО!"));
         logger.info("LOG START!!!");
-
-
-/*        logger.warn("Hey, This is a warning!");
-        logger.error("Oops! We have an Error. OK");
-        logger.fatal("Damn! Fatal error. Please fix me.");*/
     }
 }

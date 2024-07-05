@@ -76,7 +76,7 @@ public class OpfrController {
         LocalDateTime date2;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        if (!(dat1.equals("") && dat2.equals(""))) {
+        if (!(dat1.isEmpty() && dat2.isEmpty())) {
             // Если входные даты не пустые, преобразуем их в LocalDateTime
             date1 = LocalDate.parse(dat1, formatter).atStartOfDay();
             date2 = LocalDate.parse(dat2, formatter).atTime(23, 59, 59);

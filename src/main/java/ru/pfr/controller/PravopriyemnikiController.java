@@ -60,10 +60,8 @@ public class PravopriyemnikiController {
 
         List<Otchmarkandkonv> otchmarkandkonvD = otchmarkandkonvService.findAllDatOnlyTypeD(firstDayOfLastMonth, lastDayOfLastMonth);
         List<Prihod> prihodsD = new ArrayList<>();
-        otchmarkandkonvD.forEach(otchmarkandkonv -> {
-            prihodsD.add(otchmarkandkonv.getPrihod());
-        });
-        if (otchmarkandkonvD.size() == 0) {
+        otchmarkandkonvD.forEach(otchmarkandkonv -> prihodsD.add(otchmarkandkonv.getPrihod()));
+        if (otchmarkandkonvD.isEmpty()) {
             prihodsD.add(prihodService.findTypeDLast());
         }
 

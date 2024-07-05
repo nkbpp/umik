@@ -1,7 +1,12 @@
 package ru.pfr.model.umikbd;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "vidanykonv")
 public class Vidanykonv {
@@ -20,19 +25,4 @@ public class Vidanykonv {
         this.adres = adres;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getAdres() {
-        return adres;
-    }
-
-    public void setAdres(String adres) {
-        this.adres = adres;
-    }
 }

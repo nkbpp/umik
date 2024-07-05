@@ -38,7 +38,8 @@ public class AdminController {
     @GetMapping("/admin")
     public String adminstart(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            Model model) {
+            Model model
+    ) {
 
         User user = userPrincipal.getUser();
         model.addAttribute("user", user);
@@ -49,7 +50,7 @@ public class AdminController {
         List<User> logerrs = userService.findAll();
         model.addAttribute("logerrs", logerrs);
 
-        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(),"Страница администратора"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Страница администратора"));
         return "admin";
     }
 
@@ -59,7 +60,8 @@ public class AdminController {
             @RequestParam Long koefpopitok,
             @RequestParam Long block,
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            Model model) {
+            Model model
+    ) {
         User user = userPrincipal.getUser();
         model.addAttribute("user", user);
 
@@ -72,25 +74,29 @@ public class AdminController {
     }
 
     @GetMapping("/juraudit")
-    public String juraudit(@AuthenticationPrincipal UserPrincipal userPrincipal,
-                           Model model) {
+    public String juraudit(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            Model model
+    ) {
         User user = userPrincipal.getUser();
         model.addAttribute("user", user);
 
         Iterable<Logi> logi = logiService.findAll();
         model.addAttribute("logi", logi);
-        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(),"Вход в журнал"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Вход в журнал"));
         return "juraudit";
     }
 
     @GetMapping("/juraudit/tables")
-    public String table(@RequestParam String d1,
-                        @RequestParam String d2,
-                        @RequestParam String login,
-                        @RequestParam String type,
-                        @RequestParam String text,
-                        @AuthenticationPrincipal UserPrincipal userPrincipal,
-                        Model model) {
+    public String table(
+            @RequestParam String d1,
+            @RequestParam String d2,
+            @RequestParam String login,
+            @RequestParam String type,
+            @RequestParam String text,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            Model model
+    ) {
         User user = userPrincipal.getUser();
         LocalDateTime date1 = null;
         LocalDateTime date2 = null;
@@ -137,11 +143,13 @@ public class AdminController {
     }
 
     @GetMapping("/juraudit/clear")
-    public String clear(@AuthenticationPrincipal UserPrincipal userPrincipal,
-                        Model model) {
+    public String clear(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            Model model
+    ) {
         User user = userPrincipal.getUser();
         logiService.clear();
-        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(),"Очистка журнала"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Очистка журнала"));
         Iterable<Logi> logi = logiService.findAll();
         model.addAttribute("logi", logi);
 
@@ -150,46 +158,49 @@ public class AdminController {
 
 
     @GetMapping("/vihod/logout")
-    public void logout(@AuthenticationPrincipal UserPrincipal userPrincipal,
-                       Model model) {
+    public void logout(@AuthenticationPrincipal UserPrincipal userPrincipal) {
         User user = userPrincipal.getUser();
-        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(),"Выход"));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Выход"));
 
     }
 
     @GetMapping("/admin/clear")
-    public String admintwoclear(@RequestParam Long id,
-                                @AuthenticationPrincipal UserPrincipal userPrincipal,
-                                Model model) {
+    public String admintwoclear(
+            @RequestParam Long id,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            Model model
+    ) {
         User user = userPrincipal.getUser();
         User logerr = userService.findById(id);
-        logerr.setActive(0l);
+        logerr.setActive(0L);
         logerr.setDate(LocalDateTime.now());
         userService.save(logerr);
 
         List<User> logerrs = userService.findAll();
         model.addAttribute("logerrs", logerrs);
 
-        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(),"Снять блокировку пользователя " + logerr.getLogin()));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Снять блокировку пользователя " + logerr.getLogin()));
 
         return "fragmentadmin/adminfragment :: blocks";
     }
 
 
     @GetMapping("/admin/zablock")
-    public String admintwozablock(@RequestParam Long id,
-                                  @AuthenticationPrincipal UserPrincipal userPrincipal,
-                                  Model model) {
+    public String admintwozablock(
+            @RequestParam Long id,
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            Model model
+    ) {
         User user = userPrincipal.getUser();
         User logerr = userService.findById(id);
-        logerr.setActive(1000l);
+        logerr.setActive(1000L);
         logerr.setDate(LocalDateTime.now());
         userService.save(logerr);
 
         List<User> logerrs = userService.findAll();
         model.addAttribute("logerrs", logerrs);
 
-        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(),"Заблокировать пользователя " + logerr.getLogin()));
+        logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "Заблокировать пользователя " + logerr.getLogin()));
 
         return "fragmentadmin/adminfragment :: blocks";
     }

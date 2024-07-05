@@ -103,23 +103,21 @@ public class AvansController {
 
         LocalDateTime date1 = DateUtils.parseIsoToDate(dat1);
         LocalDateTime date2 = DateUtils.parseIsoToDate(dat2);
-        String mounth = "";
-        String god = "";
-        String day = "";
-        String lastDay = "";
-        try {
-            String[] subStr;
-            String delimeter = "-"; // Разделитель
-            subStr = dat2.split(delimeter);
-            String[] moumths = {"января", "февраля", "марта", "апреля", "мая", "июня",
-                    "июля", "августа", "сентября", "октября", "ноября", "декабря"};
-            mounth = moumths[Integer.valueOf(subStr[1]) - 1];
-            god = subStr[0].substring(2, 4);
-            day = subStr[2];
-            lastDay = subStr[2] + "." + subStr[1] + "." + subStr[0];
+        String mounth;
+        String god;
+        String day;
+        String lastDay;
 
-        } catch (Exception e) {
-        }
+        String[] subStr;
+        String delimeter = "-"; // Разделитель
+        subStr = dat2.split(delimeter);
+        String[] moumths = {"января", "февраля", "марта", "апреля", "мая", "июня",
+                "июля", "августа", "сентября", "октября", "ноября", "декабря"};
+        mounth = moumths[Integer.parseInt(subStr[1]) - 1];
+        god = subStr[0].substring(2, 4);
+        day = subStr[2];
+        lastDay = subStr[2] + "." + subStr[1] + "." + subStr[0];
+
 
         InputStream in = null;
         try {
@@ -151,14 +149,14 @@ public class AvansController {
             //марки!!!!!!!!!!!!
             Otchmark otchmark = otchmarkService.findAllD(date1, date2).get(0);
             List<Prihodmarki> prihodmarkis = prihodmarkiService.findAllDat(date1, date2);
-            Double prihodm = prihodmarkis.size() != 0 ? prihodmarkis.get(0).getPrice() : 0D;
+            double prihodm = !prihodmarkis.isEmpty() ? prihodmarkis.get(0).getPrice() : 0D;
             s1 += otchmark.getOstatok() + otchmark.getRashod1() + otchmark.getRashod2() - prihodm;
             s2 += prihodm;
             r3 += otchmark.getRashod1() + otchmark.getRashod2();
             s3 += otchmark.getRashod1() + otchmark.getRashod2();
             s4 += otchmark.getOstatok();
 
-            Shablon shablon = shablonService.findById(5l);
+            Shablon shablon = shablonService.findById(5L);
 
             InputStream inputStream = new ByteArrayInputStream(shablon.getDokument());
             // формируем из файла экземпляр HSSFWorkbook

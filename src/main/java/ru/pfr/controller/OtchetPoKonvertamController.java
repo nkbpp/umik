@@ -43,10 +43,10 @@ public class OtchetPoKonvertamController {
 
     @Autowired
     private ShablonService shablonService;
-    
+
     @Autowired
     private LogiService logiService;
-    
+
     @GetMapping
     public String otchpokon(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -70,25 +70,14 @@ public class OtchetPoKonvertamController {
                 " date2 = " + dat2
         ));
 
-        LocalDateTime date1 = null;
-        LocalDateTime date2 = null;
-        LocalDateTime date1minusMonths = null;
-        LocalDateTime date2minusMonths = null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        try {
-            date1 = LocalDate.parse(dat1, formatter).atStartOfDay();
-            date2 = LocalDate.parse(dat2, formatter).atTime(23, 59, 59);
+        LocalDateTime date1 = LocalDate.parse(dat1, formatter).atStartOfDay();
+        LocalDateTime date2 = LocalDate.parse(dat2, formatter).atTime(23, 59, 59);
 
-            // Вычисление дат за прошлый месяц
-            LocalDateTime first = date1.minusMonths(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
-            LocalDateTime end = first.plusMonths(1).minusSeconds(1);
-
-            date1minusMonths = first;
-            date2minusMonths = end;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // Вычисление дат за прошлый месяц
+        LocalDateTime first = date1.minusMonths(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime end = first.plusMonths(1).minusSeconds(1);
 
         List<Reestr1Viev> reestr1s = reestr1VievService.findAllD(date1, date2);
         model.addAttribute("reestr1s", reestr1s);
@@ -96,11 +85,10 @@ public class OtchetPoKonvertamController {
         Reestr1Itog reestr1i = reestr1VievService.findAllI(reestr1s);
         model.addAttribute("reestr1i", reestr1i);//итого
 
-        List<Otchraschodkonv> otchraschodkonv = otchraschodkonvService.findAllD(date1minusMonths, date2minusMonths);
+        List<Otchraschodkonv> otchraschodkonv = otchraschodkonvService.findAllD(first, end);
 
         List<Otchraschodkonv> otchraschodkonv1 = new ArrayList<>();
         List<Otchraschodkonv> otchraschodkonv4 = new ArrayList<>();
-//        List<Otchraschodkonv> otchraschodkonv5 = new ArrayList<>();
         List<Otchraschodkonv> otchraschodkonv6 = new ArrayList<>();
 
         List<Otchraschodkonv> otchraschodkonv7 = new ArrayList<>();
@@ -114,17 +102,12 @@ public class OtchetPoKonvertamController {
             if (o.getPrihod().getSpravkonv().getId() == 4 && o.getOstatok() != 0) {
                 otchraschodkonv4.add(o);
             }
-            /*if (o.getPrihod().getSpravkonv().getId() == 6) {
-                otchraschodkonv6.add(o);
-            }*/
             if (o.getPrihod().getSpravkonv().getId() == 6 && o.getOstatok() != 0) {
                 otchraschodkonv6.add(o);
             }
-
             if (o.getPrihod().getSpravkonv().getId() == 7 && o.getOstatok() != 0) {
                 otchraschodkonv7.add(o);
             }
-
             if (o.getPrihod().getSpravkonv().getId() == 22 && o.getOstatok() != 0) {
                 otchraschodkonv22.add(o);
             }
@@ -132,14 +115,12 @@ public class OtchetPoKonvertamController {
         }
         model.addAttribute("otchraschodkonv1", otchraschodkonv1);
         model.addAttribute("otchraschodkonv4", otchraschodkonv4);
-//        model.addAttribute("otchraschodkonv5", otchraschodkonv5);
         model.addAttribute("otchraschodkonv6", otchraschodkonv6);
         model.addAttribute("otchraschodkonv7", otchraschodkonv7);
         model.addAttribute("otchraschodkonv22", otchraschodkonv22);
 
         List<Prihod> prihods1 = new ArrayList<>();
         List<Prihod> prihods4 = new ArrayList<>();
-//        List<Prihod> prihods5 = new ArrayList<>();
         List<Prihod> prihods6 = new ArrayList<>();
         List<Prihod> prihods7 = new ArrayList<>();
         List<Prihod> prihods22 = new ArrayList<>();
@@ -152,9 +133,6 @@ public class OtchetPoKonvertamController {
             if (p.getSpravkonv().getId() == 4) {
                 prihods4.add(p);
             }
-/*            if (p.getSpravkonv().getId() == 5) {
-                prihods5.add(p);
-            }*/
             if (p.getSpravkonv().getId() == 6) {
                 prihods6.add(p);
             }
@@ -170,12 +148,9 @@ public class OtchetPoKonvertamController {
 
         model.addAttribute("prihods1", prihods1);
         model.addAttribute("prihods4", prihods4);
-//        model.addAttribute("prihods5", prihods5);
         model.addAttribute("prihods6", prihods6);
         model.addAttribute("prihods7", prihods7);
         model.addAttribute("prihods22", prihods22);
-
-
         model.addAttribute("user", user);
         return "fragment/otchpokonfrag :: form";
     }
@@ -189,8 +164,6 @@ public class OtchetPoKonvertamController {
             @RequestParam(value = "pa4", defaultValue = "") String pa4,
             @RequestParam(value = "otc5", defaultValue = "") String otc5,
             @RequestParam(value = "pc5", defaultValue = "") String pc5,
-/*            @RequestParam(value = "ot110x220", defaultValue = "") String ot110x220,
-            @RequestParam(value = "p110x220", defaultValue = "") String p110x220,*/
             @RequestParam(value = "otpk", defaultValue = "") String otpk,
             @RequestParam(value = "ppk", defaultValue = "") String ppk,
             @RequestParam(value = "otte", defaultValue = "") String otte,
@@ -207,8 +180,6 @@ public class OtchetPoKonvertamController {
                 " pa4 " + pa4 +
                 " otc5 = " + otc5 +
                 " pc5 = " + pc5 +
-/*                " ot110x220 = " + ot110x220 +
-                " p110x220 = " + p110x220 +*/
                 " otpk = " + otpk +
                 " ppk = " + ppk +
                 " otte = " + otte +
@@ -234,8 +205,6 @@ public class OtchetPoKonvertamController {
         String[] pa41 = pa4.split(delimeter1);
         String[] otc51 = otc5.split(delimeter1);
         String[] pc51 = pc5.split(delimeter1);
-/*        String[] ot110x2201 = ot110x220.split(delimeter1);
-        String[] p110x2201 = p110x220.split(delimeter1);*/
         String[] otpk1 = otpk.split(delimeter1);
         String[] ppk1 = ppk.split(delimeter1);
 
@@ -245,8 +214,7 @@ public class OtchetPoKonvertamController {
         String[] ot110x220clear1 = ot110x220clear.split(delimeter1);
         String[] p110x220clear1 = p110x220clear.split(delimeter1);
 
-
-        if (otpk1.length > 0 && !otpk1[0].equals("")) {
+        if (otpk1.length > 0 && !otpk1[0].isEmpty()) {
             for (String ot :
                     otpk1) {
                 String[] sm = ot.split(delimeter2);
@@ -256,13 +224,13 @@ public class OtchetPoKonvertamController {
                         currentDateTime,
                         Integer.valueOf(sm[1]),
 
-                        otchraschodkonv.getOstatok() - Integer.valueOf(sm[1])
+                        otchraschodkonv.getOstatok() - Integer.parseInt(sm[1])
                 );
                 otchraschodkonvService.save(otchraschodkonvNEW);
             }
         }
 
-        if (ppk1.length > 0 && !ppk1[0].equals("")) {
+        if (ppk1.length > 0 && !ppk1[0].isEmpty()) {
             for (String ot :
                     ppk1) {
                 String[] sm = ot.split(delimeter2);
@@ -271,43 +239,13 @@ public class OtchetPoKonvertamController {
                         prihod,
                         currentDateTime,
                         Integer.valueOf(sm[1]),
-                        prihod.getKol_vo() - Integer.valueOf(sm[1])
-                );
-                otchraschodkonvService.save(otchraschodkonvNEW);
-            }
-        }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////// otchpokon
-/*        if (ot110x2201.length > 0 && !ot110x2201[0].equals("")) {
-            for (String ot :
-                    ot110x2201) {
-                String[] sm = ot.split(delimeter2);
-                Otchraschodkonv otchraschodkonv = otchraschodkonvService.findById(Long.valueOf(sm[0]));
-                Otchraschodkonv otchraschodkonvNEW = new Otchraschodkonv(
-                        otchraschodkonv.getPrihod(),
-                        date1,
-                        Integer.valueOf(sm[1]),
-                        otchraschodkonv.getOstatok() - Integer.valueOf(sm[1])
+                        prihod.getKol_vo() - Integer.parseInt(sm[1])
                 );
                 otchraschodkonvService.save(otchraschodkonvNEW);
             }
         }
 
-        if (p110x2201.length > 0 && !p110x2201[0].equals("")) {
-            for (String ot :
-                    p110x2201) {
-                String[] sm = ot.split(delimeter2);
-                Prihod prihod = prihodService.findById(Long.valueOf(sm[0]));
-                Otchraschodkonv otchraschodkonvNEW = new Otchraschodkonv(
-                        prihod,
-                        date1,
-                        Integer.valueOf(sm[1]),
-                        prihod.getKol_vo() - Integer.valueOf(sm[1])
-                );
-                otchraschodkonvService.save(otchraschodkonvNEW);
-            }
-        }*/
-
-        if (otc51.length > 0 && !otc51[0].equals("")) {
+        if (otc51.length > 0 && !otc51[0].isEmpty()) {
             for (String ot :
                     otc51) {
                 String[] sm = ot.split(delimeter2);
@@ -316,13 +254,13 @@ public class OtchetPoKonvertamController {
                         otchraschodkonv.getPrihod(),
                         currentDateTime,
                         Integer.valueOf(sm[1]),
-                        otchraschodkonv.getOstatok() - Integer.valueOf(sm[1])
+                        otchraschodkonv.getOstatok() - Integer.parseInt(sm[1])
                 );
                 otchraschodkonvService.save(otchraschodkonvNEW);
             }
         }
 
-        if (pc51.length > 0 && !pc51[0].equals("")) {
+        if (pc51.length > 0 && !pc51[0].isEmpty()) {
             for (String ot :
                     pc51) {
                 String[] sm = ot.split(delimeter2);
@@ -331,13 +269,13 @@ public class OtchetPoKonvertamController {
                         prihod,
                         currentDateTime,
                         Integer.valueOf(sm[1]),
-                        prihod.getKol_vo() - Integer.valueOf(sm[1])
+                        prihod.getKol_vo() - Integer.parseInt(sm[1])
                 );
                 otchraschodkonvService.save(otchraschodkonvNEW);
             }
         }
 
-        if (ota41.length > 0 && !ota41[0].equals("")) {
+        if (ota41.length > 0 && !ota41[0].isEmpty()) {
             for (String ot :
                     ota41) {
                 String[] sm = ot.split(delimeter2);
@@ -346,13 +284,13 @@ public class OtchetPoKonvertamController {
                         otchraschodkonv.getPrihod(),
                         currentDateTime,
                         Integer.valueOf(sm[1]),
-                        otchraschodkonv.getOstatok() - Integer.valueOf(sm[1])
+                        otchraschodkonv.getOstatok() - Integer.parseInt(sm[1])
                 );
                 otchraschodkonvService.save(otchraschodkonvNEW);
             }
         }
 
-        if (pa41.length > 0 && !pa41[0].equals("")) {
+        if (pa41.length > 0 && !pa41[0].isEmpty()) {
             for (String ot :
                     pa41) {
                 String[] sm = ot.split(delimeter2);
@@ -361,14 +299,13 @@ public class OtchetPoKonvertamController {
                         prihod,
                         currentDateTime,
                         Integer.valueOf(sm[1]),
-                        prihod.getKol_vo() - Integer.valueOf(sm[1])
+                        prihod.getKol_vo() - Integer.parseInt(sm[1])
                 );
                 otchraschodkonvService.save(otchraschodkonvNEW);
             }
         }
 
-        //--otte1
-        if (otte1.length > 0 && !otte1[0].equals("")) {
+        if (otte1.length > 0 && !otte1[0].isEmpty()) {
             for (String ot :
                     otte1) {
                 String[] sm = ot.split(delimeter2);
@@ -378,13 +315,13 @@ public class OtchetPoKonvertamController {
                         currentDateTime,
                         Integer.valueOf(sm[1]),
 
-                        otchraschodkonv.getOstatok() - Integer.valueOf(sm[1])
+                        otchraschodkonv.getOstatok() - Integer.parseInt(sm[1])
                 );
                 otchraschodkonvService.save(otchraschodkonvNEW);
             }
         }
 
-        if (pte1.length > 0 && !pte1[0].equals("")) {
+        if (pte1.length > 0 && !pte1[0].isEmpty()) {
             for (String ot :
                     pte1) {
                 String[] sm = ot.split(delimeter2);
@@ -393,14 +330,13 @@ public class OtchetPoKonvertamController {
                         prihod,
                         currentDateTime,
                         Integer.valueOf(sm[1]),
-                        prihod.getKol_vo() - Integer.valueOf(sm[1])
+                        prihod.getKol_vo() - Integer.parseInt(sm[1])
                 );
                 otchraschodkonvService.save(otchraschodkonvNEW);
             }
         }
 
-        //
-        if (ot110x220clear1.length > 0 && !ot110x220clear1[0].equals("")) {
+        if (ot110x220clear1.length > 0 && !ot110x220clear1[0].isEmpty()) {
             for (String ot :
                     ot110x220clear1) {
                 String[] sm = ot.split(delimeter2);
@@ -409,13 +345,13 @@ public class OtchetPoKonvertamController {
                         otchraschodkonv.getPrihod(),
                         currentDateTime,
                         Integer.valueOf(sm[1]),
-                        otchraschodkonv.getOstatok() - Integer.valueOf(sm[1])
+                        otchraschodkonv.getOstatok() - Integer.parseInt(sm[1])
                 );
                 otchraschodkonvService.save(otchraschodkonvNEW);
             }
         }
 
-        if (p110x220clear1.length > 0 && !p110x220clear1[0].equals("")) {
+        if (p110x220clear1.length > 0 && !p110x220clear1[0].isEmpty()) {
             for (String ot :
                     p110x220clear1) {
                 String[] sm = ot.split(delimeter2);
@@ -424,7 +360,7 @@ public class OtchetPoKonvertamController {
                         prihod,
                         currentDateTime,
                         Integer.valueOf(sm[1]),
-                        prihod.getKol_vo() - Integer.valueOf(sm[1])
+                        prihod.getKol_vo() - Integer.parseInt(sm[1])
                 );
                 otchraschodkonvService.save(otchraschodkonvNEW);
             }
@@ -458,11 +394,11 @@ public class OtchetPoKonvertamController {
 
         InputStream in = null;
         try {
-            Shablon shablon = shablonService.findById(3l);
+            Shablon shablon = shablonService.findById(3L);
 
             InputStream inputStream = new ByteArrayInputStream(shablon.getDokument());
 
-            XWPFDocument docxFile = null;
+            XWPFDocument docxFile;
             docxFile = new XWPFDocument(inputStream);
             // открываем файл и считываем его содержимое в объект XWPFDocument
 
@@ -585,7 +521,7 @@ public class OtchetPoKonvertamController {
                     } else tableRowTwo.createCell().setParagraph(paragraph);
                 }
 
-                if (otchraschodkonv.getReestr1() != 0/* && otchraschodkonv.getReestr2()!=0*/) {
+                if (otchraschodkonv.getReestr1() != 0) {
                     tableRowTwo = T.createRow();
                     for (int i = 0; i < 10; i++) {
                         paragraph = document.createParagraph();
@@ -672,5 +608,5 @@ public class OtchetPoKonvertamController {
 
         return IOUtils.toByteArray(in);
     }
-    
+
 }

@@ -1,7 +1,12 @@
 package ru.pfr.model.umikbd;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "shablon")
 public class Shablon {
@@ -13,9 +18,9 @@ public class Shablon {
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "dokument", columnDefinition = "LONGBLOB")
     private byte[] dokument;
-    @Column(name = "name_dokument", nullable = true, length = 400)
+    @Column(name = "name_dokument", length = 400)
     private String nameDokument;
-    @Column(name = "name_file", nullable = true, length = 400)
+    @Column(name = "name_file", length = 400)
     private String nameFile;
 
     public Shablon() {
@@ -27,35 +32,4 @@ public class Shablon {
         this.nameFile = nameFile;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public byte[] getDokument() {
-        return dokument;
-    }
-
-    public void setDokument(byte[] dokument) {
-        this.dokument = dokument;
-    }
-
-    public String getNameDokument() {
-        return nameDokument;
-    }
-
-    public void setNameDokument(String nameDokument) {
-        this.nameDokument = nameDokument;
-    }
-
-    public String getNameFile() {
-        return nameFile;
-    }
-
-    public void setNameFile(String nameFile) {
-        this.nameFile = nameFile;
-    }
 }

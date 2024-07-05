@@ -94,23 +94,22 @@ public class OtchetMarkiKonvertyController {
 
         int k = 0, mzp = 0;
 
-        for (int i = 0; i < pravopriems.size(); i++) {
-            Pravopriem r = pravopriems.get(i);
+        for (Pravopriem r : pravopriems) {
             mzp += r.getMarki_k_zak_pis();
             k += r.getKonvert_d();
         }
 
         model.addAttribute("pravopriems", pravopriems);
-        model.addAttribute("k", Double.valueOf(k));
-        model.addAttribute("r2", Double.valueOf(mzp));
-        model.addAttribute("r1", Double.valueOf(reestr1i.getSum()));
-        model.addAttribute("ob", MyNumbers.okrug(Double.valueOf(mzp) + Double.valueOf(reestr1i.getSum())));
+        model.addAttribute("k", (double) k);
+        model.addAttribute("r2", (double) mzp);
+        model.addAttribute("r1", reestr1i.getSum());
+        model.addAttribute("ob", MyNumbers.okrug((double) mzp + reestr1i.getSum()));
 
         List<Prihodmarki> prihodmarkis = prihodmarkiService.findAllDat(date1, date2);
         List<Otchmark> otchmark = otchmarkService.findAllD(date1minusMonths, date2minusMonths);
 
-        model.addAttribute("ostat", MyNumbers.okrug(otchmark.size() != 0 ? Double.valueOf(otchmark.get(0).getOstatok()) : 0));
-        model.addAttribute("prihodm", MyNumbers.okrug(prihodmarkis.size() != 0 ? prihodmarkis.get(0).getPrice() : 0));
+        model.addAttribute("ostat", MyNumbers.okrug(!otchmark.isEmpty() ? otchmark.get(0).getOstatok() : 0));
+        model.addAttribute("prihodm", MyNumbers.okrug(!prihodmarkis.isEmpty() ? prihodmarkis.get(0).getPrice() : 0));
 
         List<Otchmarkandkonv> otchmarkandkonvD = otchmarkandkonvService.findAllDatOnlyTypeD(date1minusMonths, date2minusMonths);
         List<Otchmarkandkonv> otchmarkandkonv110x120 = otchmarkandkonvService.findAllDatOnlyType110x120(date1minusMonths, date2minusMonths);
@@ -170,48 +169,23 @@ public class OtchetMarkiKonvertyController {
         LocalDateTime date1BeginMinusMonths = date1Begin.minusMonths(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
         LocalDateTime date2EndMinusMonths = date1BeginMinusMonths.plusMonths(1).minusSeconds(1);
 
-/*        Date date1 = new Date();
-
-        Date date1Begin = new Date();
-        Date date2End = new Date();
-
-        Date date1BeginMinusMonths = new Date();
-        Date date2EndMinusMonths = new Date();
-        try {
-            date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-            String[] subStr;
-            String delimeter = "-"; // Разделитель
-            subStr = date.split(delimeter);
-            LocalDate first = LocalDate.of(Integer.valueOf(subStr[0]), Integer.valueOf(subStr[1]), 1);
-            LocalDate end = first.plusMonths(1);
-
-            date1Begin = new SimpleDateFormat("yyyy-MM-dd").parse(first.toString());
-            date2End = new SimpleDateFormat("yyyy-MM-dd").parse(end.toString());
-
-            date1BeginMinusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(first.minusMonths(1).toString());
-            date2EndMinusMonths = new SimpleDateFormat("yyyy-MM-dd").parse(end.minusMonths(1).toString());
-        } catch (Exception e) {
-        }*/
-
-
         otchmarkandkonvService.Del(date1Begin, date2End);//Удаляем старое
         otchmarkService.Del(date1Begin, date2End);//Удаляем старое
 
         //Работа с марками
         List<Prihodmarki> prihodmarkis = prihodmarkiService.findAllDat(date1Begin, date2End);
-        Double prihodm = prihodmarkis.size() != 0 ? prihodmarkis.get(0).getPrice() : 0D;
+        Double prihodm = !prihodmarkis.isEmpty() ? prihodmarkis.get(0).getPrice() : 0D;
 
         List<Otchmark> otchmarks = otchmarkService.findAllD(date1BeginMinusMonths, date2EndMinusMonths);
-        Double ostatm = otchmarks.size() != 0 ? otchmarks.get(0).getOstatok() : 0;
+        Double ostatm = !otchmarks.isEmpty() ? otchmarks.get(0).getOstatok() : 0;
 
         Otchmark otchmark = new Otchmark(
                 date1,
                 Double.valueOf(reestr1m),
                 Double.valueOf(reestr2m),
-                Double.valueOf(ostatm + prihodm - (Double.valueOf(reestr1m) + Double.valueOf(reestr2m)))
+                ostatm + prihodm - (Double.parseDouble(reestr1m) + Double.parseDouble(reestr2m))
         );
         otchmarkService.save(otchmark);
-        //--------
 
         String delimeter1 = "!"; // Разделитель
         String delimeter2 = ";"; // Разделитель
@@ -221,10 +195,7 @@ public class OtchetMarkiKonvertyController {
         String[] ot110x2201 = ot110x220.split(delimeter1);
         String[] p110x2201 = p110x220.split(delimeter1);
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        if (ot110x2201.length > 0 && !ot110x2201[0].equals("")) {
+        if (ot110x2201.length > 0 && !ot110x2201[0].isEmpty()) {
             for (String ot :
                     ot110x2201) {
                 String[] sm = ot.split(delimeter2);
@@ -233,13 +204,13 @@ public class OtchetMarkiKonvertyController {
                         otchmarkandkonv.getPrihod(),
                         date1,
                         Integer.valueOf(sm[1]),
-                        otchmarkandkonv.getOstatok() - Integer.valueOf(sm[1])
+                        otchmarkandkonv.getOstatok() - Integer.parseInt(sm[1])
                 );
                 otchmarkandkonvService.save(otchmarkandkonvNEW);
             }
         }
 
-        if (p110x2201.length > 0 && !p110x2201[0].equals("")) {
+        if (p110x2201.length > 0 && !p110x2201[0].isEmpty()) {
             for (String ot :
                     p110x2201) {
                 String[] sm = ot.split(delimeter2);
@@ -248,13 +219,13 @@ public class OtchetMarkiKonvertyController {
                         prihod,
                         date1,
                         Integer.valueOf(sm[1]),
-                        prihod.getKol_vo() - Integer.valueOf(sm[1])
+                        prihod.getKol_vo() - Integer.parseInt(sm[1])
                 );
                 otchmarkandkonvService.save(otchmarkandkonvNEW);
             }
         }
 
-        if (otD1.length > 0 && !otD1[0].equals("")) {
+        if (otD1.length > 0 && !otD1[0].isEmpty()) {
             for (String ot :
                     otD1) {
                 String[] sm = ot.split(delimeter2);
@@ -263,13 +234,13 @@ public class OtchetMarkiKonvertyController {
                         otchmarkandkonv.getPrihod(),
                         date1,
                         Integer.valueOf(sm[1]),
-                        otchmarkandkonv.getOstatok() - Integer.valueOf(sm[1])
+                        otchmarkandkonv.getOstatok() - Integer.parseInt(sm[1])
                 );
                 otchmarkandkonvService.save(otchmarkandkonvNEW);
             }
         }
 
-        if (pD1.length > 0 && !pD1[0].equals("")) {
+        if (pD1.length > 0 && !pD1[0].isEmpty()) {
             for (String ot :
                     pD1) {
                 String[] sm = ot.split(delimeter2);
@@ -278,7 +249,7 @@ public class OtchetMarkiKonvertyController {
                         prihod,
                         date1,
                         Integer.valueOf(sm[1]),
-                        prihod.getKol_vo() - Integer.valueOf(sm[1])
+                        prihod.getKol_vo() - Integer.parseInt(sm[1])
                 );
                 otchmarkandkonvService.save(otchmarkandkonvNEW);
             }
@@ -312,11 +283,11 @@ public class OtchetMarkiKonvertyController {
 
         InputStream in = null;
         try {
-            Shablon shablon = shablonService.findById(4l);
+            Shablon shablon = shablonService.findById(4L);
 
             InputStream inputStream = new ByteArrayInputStream(shablon.getDokument());
 
-            XWPFDocument docxFile = null;
+            XWPFDocument docxFile;
             docxFile = new XWPFDocument(inputStream);
             // открываем файл и считываем его содержимое в объект XWPFDocument
 
@@ -476,7 +447,7 @@ public class OtchetMarkiKonvertyController {
             Otchmark otchmark = otchmarkService.findAllD(date1, date2).get(0);
 
             List<Prihodmarki> prihodmarkis = prihodmarkiService.findAllDat(date1, date2);
-            Double prihodm = prihodmarkis.size() != 0 ? prihodmarkis.get(0).getPrice() : 0D;
+            double prihodm = !prihodmarkis.isEmpty() ? prihodmarkis.get(0).getPrice() : 0D;
 
             tableRowTwo = T.createRow();
             for (int i = 0; i < 10; i++) {

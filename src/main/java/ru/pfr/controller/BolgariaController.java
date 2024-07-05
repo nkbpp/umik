@@ -88,7 +88,7 @@ public class BolgariaController {
                     Double.valueOf(sum),
                     kol_vo
             );
-            System.out.println("");
+            System.out.println();
             bolgariaService.save(bolgaria);
 
         } catch (DataAccessResourceFailureException e) {

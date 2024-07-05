@@ -1,10 +1,14 @@
 package ru.pfr.model.umikbd;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.pfr.global.DateUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "prihod")
 public class Prihod {
@@ -56,59 +60,4 @@ public class Prihod {
         this.date = date;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
-    }
-
-    public String getIndex() {
-        return index;
-    }
-
-    public void setIndex(String index) {
-        this.index = index;
-    }
-
-    public Integer getKol_vo() {
-        return kol_vo;
-    }
-
-    public void setKol_vo(Integer kol_vo) {
-        this.kol_vo = kol_vo;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Spravkonv getSpravkonv() {
-        return spravkonv;
-    }
-
-    public void setSpravkonv(Spravkonv spravkonv) {
-        this.spravkonv = spravkonv;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
 }

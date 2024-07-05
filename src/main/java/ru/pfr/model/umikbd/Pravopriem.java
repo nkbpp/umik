@@ -1,10 +1,14 @@
 package ru.pfr.model.umikbd;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.pfr.global.DateUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "pravopriem")
 public class Pravopriem {
@@ -30,6 +34,17 @@ public class Pravopriem {
     @Column(name = "marki_k_zak_pis")
     private Double marki_k_zak_pis;
 
+    public Pravopriem() {
+    }
+
+    public Pravopriem(LocalDateTime date, Long konvert_d, Prihod prihod, Double cena_sell, Double marki_k_zak_pis) {
+        this.date = date;
+        this.konvert_d = konvert_d;
+        this.prihod = prihod;
+        this.cena_sell = cena_sell;
+        this.marki_k_zak_pis = marki_k_zak_pis;
+    }
+
     public String get_datestr() {
         return DateUtils.formatToString(date);
     }
@@ -47,62 +62,4 @@ public class Pravopriem {
         return get_sumk()+this.marki_k_zak_pis;
     }
 
-    public Pravopriem() {
-    }
-
-    public Pravopriem(LocalDateTime date, Long konvert_d, Prihod prihod, Double cena_sell, Double marki_k_zak_pis) {
-        this.date = date;
-        this.konvert_d = konvert_d;
-        this.prihod = prihod;
-        this.cena_sell = cena_sell;
-        this.marki_k_zak_pis = marki_k_zak_pis;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public Long getKonvert_d() {
-        return konvert_d;
-    }
-
-    public void setKonvert_d(Long konvert_d) {
-        this.konvert_d = konvert_d;
-    }
-
-    public Prihod getPrihod() {
-        return prihod;
-    }
-
-    public void setPrihod(Prihod prihod) {
-        this.prihod = prihod;
-    }
-
-    public Double getMarki_k_zak_pis() {
-        return marki_k_zak_pis;
-    }
-
-    public Double getCena_sell() {
-        return cena_sell;
-    }
-
-    public void setCena_sell(Double cena_sell) {
-        this.cena_sell = cena_sell;
-    }
-
-    public void setMarki_k_zak_pis(Double marki_k_zak_pis) {
-        this.marki_k_zak_pis = marki_k_zak_pis;
-    }
 }

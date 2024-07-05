@@ -60,7 +60,7 @@ public class Reestr2Controller {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        if (!(dat1.equals("") && dat2.equals(""))) {
+        if (!(dat1.isEmpty() && dat2.isEmpty())) {
             // Если входные даты не пустые, преобразуем их в LocalDateTime
             date1 = LocalDate.parse(dat1, formatter).atStartOfDay();
             date2 = LocalDate.parse(dat2, formatter).atTime(23, 59, 59);
@@ -74,8 +74,7 @@ public class Reestr2Controller {
 
         double so = 0, m = 0, k = 0, mzp = 0;
 
-        for (int i = 0; i < pravopriems.size(); i++) {
-            Pravopriem r = pravopriems.get(i);
+        for (Pravopriem r : pravopriems) {
             mzp += r.getMarki_k_zak_pis();
             k += r.getKonvert_d();
             m += r.get_sumk();
@@ -112,7 +111,7 @@ public class Reestr2Controller {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        if (!(dat1.equals("") && dat2.equals(""))) {
+        if (!(dat1.isEmpty() && dat2.isEmpty())) {
             // Если входные даты не пустые, преобразуем их в LocalDateTime
             date1 = LocalDate.parse(dat1, formatter).atStartOfDay();
             date2 = LocalDate.parse(dat2, formatter).atTime(23, 59, 59);
@@ -126,8 +125,7 @@ public class Reestr2Controller {
 
         double so = 0, m = 0, k = 0, mzp = 0;
 
-        for (int i = 0; i < pravopriems.size(); i++) {
-            Pravopriem r = pravopriems.get(i);
+        for (Pravopriem r : pravopriems) {
             mzp += r.getMarki_k_zak_pis();
             k += r.getKonvert_d();
             m += r.get_sumk();
@@ -136,11 +134,11 @@ public class Reestr2Controller {
 
         InputStream in = null;
         try {
-            Shablon shablon = shablonService.findById(2l);
+            Shablon shablon = shablonService.findById(2L);
 
             InputStream inputStream = new ByteArrayInputStream(shablon.getDokument());
 
-            XWPFDocument docxFile = null;
+            XWPFDocument docxFile;
             docxFile = new XWPFDocument(inputStream);
             // открываем файл и считываем его содержимое в объект XWPFDocument
 

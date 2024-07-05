@@ -26,7 +26,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static ru.pfr.global.MyNumbers.okrug;
 
@@ -60,7 +59,7 @@ public class Reestr1Controller {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        if (!(dat1.equals("") && dat2.equals(""))) {
+        if (!(dat1.isEmpty() && dat2.isEmpty())) {
             // Если входные даты не пустые, преобразуем их в LocalDateTime
             date1 = LocalDate.parse(dat1, formatter).atStartOfDay();
             date2 = LocalDate.parse(dat2, formatter).atTime(23, 59, 59);
@@ -101,7 +100,7 @@ public class Reestr1Controller {
         LocalDateTime date2;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        if (!(dat1.equals("") && dat2.equals(""))) {
+        if (!(dat1.isEmpty() && dat2.isEmpty())) {
             // Если входные даты не пустые, преобразуем их в LocalDateTime
             date1 = LocalDate.parse(dat1, formatter).atStartOfDay();
             date2 = LocalDate.parse(dat2, formatter).atTime(23, 59, 59);
@@ -115,11 +114,11 @@ public class Reestr1Controller {
 
         InputStream in = null;
         try {
-            Shablon shablon = shablonService.findById(1l);
+            Shablon shablon = shablonService.findById(1L);
 
             InputStream inputStream = new ByteArrayInputStream(shablon.getDokument());
 
-            XWPFDocument docxFile = null;
+            XWPFDocument docxFile;
             docxFile = new XWPFDocument(inputStream);
             // открываем файл и считываем его содержимое в объект XWPFDocument
 
@@ -337,7 +336,7 @@ public class Reestr1Controller {
 
             in = new ByteArrayInputStream(b.toByteArray());
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
         return IOUtils.toByteArray(in);

@@ -1,10 +1,14 @@
 package ru.pfr.model.umikbd;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.pfr.global.DateUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "inoe")
 public class Inoe {
@@ -42,43 +46,4 @@ public class Inoe {
         this.kol_vo = kol_vo;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getReg_date() {
-        return reg_date;
-    }
-
-    public void setReg_date(LocalDateTime reg_date) {
-        this.reg_date = reg_date;
-    }
-
-    public Vidanykonv getVidanykonv() {
-        return vidanykonv;
-    }
-
-    public void setVidanykonv(Vidanykonv vidanykonv) {
-        this.vidanykonv = vidanykonv;
-    }
-
-    public Spravkonv getSpravkonv() {
-        return spravkonv;
-    }
-
-    public void setSpravkonv(Spravkonv spravkonv) {
-        this.spravkonv = spravkonv;
-    }
-
-    public Integer getKol_vo() {
-        return kol_vo;
-    }
-
-    public void setKol_vo(Integer kol_vo) {
-        this.kol_vo = kol_vo;
-    }
 }

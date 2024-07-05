@@ -13,7 +13,7 @@ import java.util.List;
 public class PEDdeloproizvodstvoService {
 
     @Autowired
-    PEDdeloproizvodstvoRepository peDdeloproizvodstvoRepository;
+    private PEDdeloproizvodstvoRepository peDdeloproizvodstvoRepository;
 
     public PEDdeloproizvodstvo findById(Long id) {
         return peDdeloproizvodstvoRepository.findById(id).orElse(null);
@@ -23,18 +23,13 @@ public class PEDdeloproizvodstvoService {
         return peDdeloproizvodstvoRepository.findAll();
     }
 
-    public Long findNameId(String name) {
-        List<PEDdeloproizvodstvo> peDdeloproizvodstvos = peDdeloproizvodstvoRepository.findByName(name);
-        return peDdeloproizvodstvos.isEmpty() || peDdeloproizvodstvos.size() > 0 ? peDdeloproizvodstvoRepository.findByName(name).get(0).getId_name() : null;
-    }
-
     public List<PEDdeloproizvodstvo> findAllByRegDateBetween(LocalDateTime d1, LocalDateTime d2) {
         return peDdeloproizvodstvoRepository.findAllByRegDateBetween(d1, d2);
     }
 
     public List<PEDdeloproizvodstvo> findAllTekMounth() {
         LocalDateTime date1 = LocalDateTime.now().withDayOfMonth(1);
-        LocalDateTime date2 = date1.plusMonths(1).minusDays(1); // Last day of current month
+        LocalDateTime date2 = date1.plusMonths(1).minusDays(1);
 
         return peDdeloproizvodstvoRepository.findAllDateOrderBy(date1, date2);
     }

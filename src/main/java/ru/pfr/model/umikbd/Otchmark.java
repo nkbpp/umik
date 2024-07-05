@@ -1,10 +1,14 @@
 package ru.pfr.model.umikbd;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.pfr.global.DateUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "otchmark")
 public class Otchmark {
@@ -40,43 +44,4 @@ public class Otchmark {
         this.ostatok = ostatok;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public Double getRashod1() {
-        return rashod1;
-    }
-
-    public void setRashod1(Double rashod1) {
-        this.rashod1 = rashod1;
-    }
-
-    public Double getRashod2() {
-        return rashod2;
-    }
-
-    public void setRashod2(Double rashod2) {
-        this.rashod2 = rashod2;
-    }
-
-    public Double getOstatok() {
-        return ostatok;
-    }
-
-    public void setOstatok(Double ostatok) {
-        this.ostatok = ostatok;
-    }
 }

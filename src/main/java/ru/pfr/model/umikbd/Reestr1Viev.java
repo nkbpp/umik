@@ -1,13 +1,15 @@
 package ru.pfr.model.umikbd;
 
+import lombok.Getter;
+import lombok.Setter;
 import ru.pfr.global.DateUtils;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static ru.pfr.global.MyNumbers.okrug;
 
-
+@Setter
+@Getter
 public class Reestr1Viev {
 
     private UUID id;
@@ -33,7 +35,6 @@ public class Reestr1Viev {
         this.reg_date = bolgaria.getReg_date();
         this.reg_number = bolgaria.getReg_number();
         this.text_org = bolgaria.getText_org();
-        ;
         this.text_fio = "";
         this.name = bolgaria.getName();
         this.spravkonv = bolgaria.getSpravkonv();
@@ -93,7 +94,7 @@ public class Reestr1Viev {
 
     public String getAddr() {
         String s;
-        if (text_org.isEmpty() || text_org == null)
+        if (text_org.isEmpty())
             s = text_fio;
         else s = text_org;
         return s;
@@ -105,14 +106,6 @@ public class Reestr1Viev {
 
     public String getReg_datestr() {
         return DateUtils.formatToString(reg_date);
-    }
-
-    public String getText_fio() {
-        return text_fio;
-    }
-
-    public void setText_fio(String text_fio) {
-        this.text_fio = text_fio;
     }
 
     public Integer getId_konv1() {
@@ -146,70 +139,6 @@ public class Reestr1Viev {
 
     public Integer getId_konv14() {
         return spravkonv.getId().equals(14L) ? kol_vo : 0;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getReg_date() {
-        return reg_date;
-    }
-
-    public void setReg_date(LocalDateTime reg_date) {
-        this.reg_date = reg_date;
-    }
-
-    public String getReg_number() {
-        return reg_number;
-    }
-
-    public void setReg_number(String reg_number) {
-        this.reg_number = reg_number;
-    }
-
-    public String getText_org() {
-        return text_org;
-    }
-
-    public void setText_org(String text_org) {
-        this.text_org = text_org;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Spravkonv getSpravkonv() {
-        return spravkonv;
-    }
-
-    public void setSpravkonv(Spravkonv spravkonv) {
-        this.spravkonv = spravkonv;
-    }
-
-    public Double getSum() {
-        return sum;
-    }
-
-    public void setSum(Double sum) {
-        this.sum = sum;
-    }
-
-    public Integer getKol_vo() {
-        return kol_vo;
-    }
-
-    public void setKol_vo(Integer kol_vo) {
-        this.kol_vo = kol_vo;
     }
 
 }

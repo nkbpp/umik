@@ -1,5 +1,7 @@
 package ru.pfr.model.umikbd;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -12,9 +14,13 @@ public class Rayon implements GrantedAuthority {
     @Column(name = "id_rayon")
     private Long id_rayon;
 
+    @Setter
+    @Getter
     @Column(name = "namerayon")
     private String namerayon;
 
+    @Setter
+    @Getter
     @Column(name = "kod")
     private String kod;
 
@@ -38,22 +44,6 @@ public class Rayon implements GrantedAuthority {
 
     public void setId(Long id) {
         this.id_rayon = id;
-    }
-
-    public String getNamerayon() {
-        return namerayon;
-    }
-
-    public void setNamerayon(String namerayon) {
-        this.namerayon = namerayon;
-    }
-
-    public String getKod() {
-        return kod;
-    }
-
-    public void setKod(String kod) {
-        this.kod = kod;
     }
 
     @Override
