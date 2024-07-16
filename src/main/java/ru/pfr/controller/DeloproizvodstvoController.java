@@ -10,13 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.pfr.configuration.UserPrincipal;
 import ru.pfr.global.DateUtils;
-import ru.pfr.model.umikbd.Logi;
-import ru.pfr.model.umikbd.PEDdeloproizvodstvo;
-import ru.pfr.model.umikbd.Spravkonv;
-import ru.pfr.model.umikbd.User;
+import ru.pfr.model.umikbd.*;
 import ru.pfr.service.bdumik.LogiService;
 import ru.pfr.service.bdumik.PEDdeloproizvodstvoService;
 import ru.pfr.service.bdumik.SpravkonvService;
+import ru.pfr.service.bdumik.VidDostService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,11 +35,16 @@ public class DeloproizvodstvoController {
     @Autowired
     private LogiService logiService;
 
+    @Autowired
+    private VidDostService vidDostService;
+
     @GetMapping
     public String deloproiz(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             Model model) {
         User user = userPrincipal.getUser();
+        List<VidDost> vidDosts = vidDostService.findAll();
+        model.addAttribute("viddost_ruki", vidDosts);
         List<Spravkonv> spravkonvs = spravkonvService.findAll();
         model.addAttribute("spravkonvs", spravkonvs);
 

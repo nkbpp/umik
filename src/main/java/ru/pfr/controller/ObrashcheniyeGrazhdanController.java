@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.pfr.configuration.UserPrincipal;
 import ru.pfr.global.DateUtils;
 import ru.pfr.model.umikbd.*;
-import ru.pfr.service.bdumik.LogiService;
-import ru.pfr.service.bdumik.PEDdeloproizvodstvoService;
-import ru.pfr.service.bdumik.PEDobragrajService;
-import ru.pfr.service.bdumik.SpravkonvService;
+import ru.pfr.service.bdumik.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,6 +35,9 @@ public class ObrashcheniyeGrazhdanController {
     @Autowired
     private PEDdeloproizvodstvoService peDdeloproizvodstvoService;
 
+    @Autowired
+    private VidDostService vidDostService;
+
     @GetMapping
     public String obragraj(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -45,6 +45,8 @@ public class ObrashcheniyeGrazhdanController {
         User user = userPrincipal.getUser();
         List<Spravkonv> spravkonvs = spravkonvService.findAll();
         model.addAttribute("spravkonvs", spravkonvs);
+        List<VidDost> vidDosts = vidDostService.findAll();
+        model.addAttribute("viddost_ruki", vidDosts);
         logiService.save(new Logi(LocalDateTime.now(), user.getLogin(), "obragraj"));
 
         List<PEDobragraj> peDobragrajs = peDobragrajService.findAllTekMounth();
