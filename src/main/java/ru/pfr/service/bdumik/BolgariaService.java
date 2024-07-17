@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BolgariaService {
@@ -44,7 +45,7 @@ public class BolgariaService {
         LocalDateTime startOfMonth = currentMonth.atDay(1).atStartOfDay();
         LocalDateTime endOfMonth = currentMonth.atEndOfMonth().atTime(23, 59, 59);
 
-        return bolgariaRepository.findAllByRegDateBetween(startOfMonth, endOfMonth);
+        return bolgariaRepository.findAllByRegDateBetween(startOfMonth, endOfMonth).stream().sorted((o1, o2) -> Long.compare(o2.getId(), o1.getId())).collect(Collectors.toList());
     }
 
     /**

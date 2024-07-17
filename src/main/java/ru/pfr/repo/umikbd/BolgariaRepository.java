@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface BolgariaRepository extends JpaRepository<Bolgaria, Long> {
     Optional<Bolgaria> findById(Long l);
+
     List<Bolgaria> findAll();
 
     @Query("SELECT b FROM Bolgaria b WHERE b.reg_date >= :startOfMonth AND b.reg_date < :endOfMonth ORDER BY b.id")

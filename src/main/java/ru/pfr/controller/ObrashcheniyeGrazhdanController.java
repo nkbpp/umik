@@ -86,8 +86,8 @@ public class ObrashcheniyeGrazhdanController {
 
         try {
             Spravkonv spravkonv = spravkonvService.findById(type);
-
-            LocalDateTime date = DateUtils.parseToDate(reg_date);
+            VidDost vidDost = vidDostService.findById(viddost);
+            LocalDateTime date = DateUtils.parseIsoToDate(reg_date);
 
             PEDobragraj peDobragraj = new PEDobragraj(
                     null,
@@ -95,8 +95,8 @@ public class ObrashcheniyeGrazhdanController {
                     reg_number.toString(),
                     reg_postf,
                     date,
-                    null,//vidDost.getId(),/*peDdeloproizvodstvoService.findNameId(name),*/
-                    null,//vidDost.getName(),
+                    vidDost.getId(),
+                    vidDost.getName(),
                     text_org,
                     text_fio,
                     addr_list,

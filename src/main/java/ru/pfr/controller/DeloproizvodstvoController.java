@@ -63,6 +63,8 @@ public class DeloproizvodstvoController {
             Model model) {
         User user = userPrincipal.getUser();
         try {
+            List<VidDost> vidDosts = vidDostService.findAll();
+            model.addAttribute("viddost_ruki", vidDosts);
             List<Spravkonv> spravkonvs = spravkonvService.findAll();
             model.addAttribute("spravkonvs", spravkonvs);
         } catch (DataAccessResourceFailureException e) {
@@ -73,7 +75,7 @@ public class DeloproizvodstvoController {
         return "fragment/deloproizfrag :: rukivvod";
     }
 
-    @GetMapping("/deloproiz/add_ruki")
+    @GetMapping("/add_ruki")
     public String deloproizadd_ruki(
             @RequestParam Integer reg_number,
             @RequestParam String reg_date,
@@ -102,7 +104,9 @@ public class DeloproizvodstvoController {
         try {
             Spravkonv spravkonv = spravkonvService.findById(type);
 
-            LocalDateTime date = DateUtils.parseToDate(reg_date);
+            VidDost vidDost = vidDostService.findById(viddost);
+
+            LocalDateTime date = DateUtils.parseIsoToDate(reg_date);
 
             PEDdeloproizvodstvo peDdeloproizvodstvo = new PEDdeloproizvodstvo(
                     null,
@@ -110,9 +114,10 @@ public class DeloproizvodstvoController {
                     reg_number.toString(),
                     reg_postf,
                     date,
-                    null,
-                    null,
-                    text_org, spravkonv,
+                    vidDost.getId(),
+                    vidDost.getName(),
+                    text_org,
+                    spravkonv,
                     Double.valueOf(sum), kol_vo
             );
             peDdeloproizvodstvoService.save(peDdeloproizvodstvo);
